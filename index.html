@@ -15,24 +15,21 @@
     --gold:#d8b467; --kai:#64d1a5; --danger:#fca5a5; --warn:#fcd34d; --success:#86efac;
     --link:#bcd8ff; --link-hover:#e7f1ff;
     --shadow:0 12px 34px rgba(0,0,0,.45);
-
     --ornament: linear-gradient(90deg, rgba(216,180,103,.35), rgba(216,180,103,0), rgba(216,180,103,.35));
     --grain: radial-gradient(1200px 700px at 15% -10%, rgba(63,78,112,.25), rgba(0,0,0,0) 60%);
   }
   html[data-theme="light"]{
-    --bg:#f7f4ec;
-    --ink:#1a1b1a; --muted:#60625c;
+    --bg:#f6f2e9;
+    --ink:#141414; --muted:#6b6b66;
     --panel:#fffaf1; --panel-br:#e2dccf; --panel-soft:#f3efe6;
     --paper:#fffaf1; --paper-br:#e2dccf;
     --brand:#0c7f5f; --accent:#1d4ed8; --accent-strong:#163aa5;
     --gold:#8b6a2c; --kai:#0a6a52; --danger:#b13a3a; --warn:#9a7a18; --success:#216f43;
     --link:#2049b2; --link-hover:#132f7a;
     --shadow:0 10px 30px rgba(67,52,25,.15);
-
     --ornament: linear-gradient(90deg, rgba(139,106,44,.35), rgba(139,106,44,0), rgba(139,106,44,.35));
     --grain: radial-gradient(1200px 700px at 15% -10%, rgba(195,177,140,.25), rgba(0,0,0,0) 60%);
   }
-
   html,body{height:100%}
   body{
     margin:0;background:
@@ -40,10 +37,9 @@
       var(--grain),
       var(--bg);
     color:var(--ink);
-    font:14px/1.55 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    font:14px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     -webkit-tap-highlight-color:transparent
   }
-
   a{color:var(--link);text-decoration:none}
   a:hover{color:var(--link-hover);text-decoration:underline}
   .hidden{display:none !important}
@@ -56,15 +52,13 @@
   .app{display:grid;grid-template-rows:auto 1fr auto;min-height:100vh;min-height:100dvh}
   .topbar{
     position:sticky;top:0;z-index:50;display:flex;gap:8px;align-items:center;padding:10px 12px;
-    background:var(--panel);
-    border-bottom:1px solid var(--panel-br);
-    box-shadow:var(--shadow)
+    background:var(--panel); border-bottom:1px solid var(--panel-br); box-shadow:var(--shadow)
   }
   .btn{
     background:var(--panel-soft);border:1px solid var(--panel-br);color:var(--ink);
     padding:8px 10px;border-radius:10px;cursor:pointer;box-shadow:var(--shadow)
   }
-  .btn:hover{filter:brightness(1.04)}
+  .btn:hover{filter:brightness(1.05)}
   .btn.primary{background:
     linear-gradient(180deg, rgba(79,119,255,.15), rgba(79,119,255,0)),
     linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,0))
@@ -74,10 +68,9 @@
   .btn.danger{border-color:#7a2323}
   .btn.success{border-color:#226a45}
   .btn[disabled]{opacity:.6;cursor:not-allowed;filter:saturate(.7)}
-
   input[type="number"],input[type="text"],select,textarea{
-    background:var(--panel-soft);color:var(--ink);
-    border:1px solid var(--panel-br);border-radius:10px;padding:6px 8px;outline:none;min-height:40px
+    background:var(--panel-soft);color:var(--ink); border:1px solid var(--panel-br);
+    border-radius:10px;padding:6px 8px;outline:none;min-height:40px
   }
   textarea{width:100%;min-height:84px}
 
@@ -105,23 +98,18 @@
   .choice-wrapper.disabled{background:#1a2536; border-color:#213047}
   html[data-theme="light"] .choice-wrapper.disabled{background:#fff3da; border-color:#edd4a2}
 
-  /* ===== libro/passaggio (decorazioni fantasy) ===== */
+  /* ===== libro/passaggio ===== */
   .paper{
     background:radial-gradient(900px 500px at 20% -10%, rgba(216,180,103,.06), transparent 60%), var(--paper);
-    border:1px solid var(--paper-br);border-radius:16px;padding:16px 14px 14px;
-    box-shadow:var(--shadow)
-  }
-  .paper::after{
-    content:""; position:absolute; inset:6px; border-radius:12px; pointer-events:none;
-    border:1px solid rgba(216,180,103,.25);
+    border:1px solid var(--paper-br);border-radius:16px;padding:16px 14px 14px; box-shadow:var(--shadow)
   }
   .title-orn{height:6px;background:var(--ornament);border-radius:999px;margin:0 0 8px}
   .passage{
     max-width:78ch;
-    font:17px/1.68 "Georgia","Iowan Old Style","Palatino",serif;
-    color:#edf2ff; overflow-wrap:anywhere
+    font:17px/1.72 "Georgia","Iowan Old Style","Palatino",serif;
+    color:#f2f6ff; overflow-wrap:anywhere
   }
-  html[data-theme="light"] .passage{color:#101417}
+  html[data-theme="light"] .passage{color:#161615}
   .passage p{margin:12px 0}
   .passage p:first-of-type::first-letter{
     font-size:2.5em;float:left;line-height:0.92;margin:0 .15em 0 0;color:var(--gold);
@@ -148,7 +136,7 @@
   .glow{animation:glow-anim 1.2s ease-out}
   @keyframes glow-anim{0%{box-shadow:0 0 0 0 rgba(147,197,253,0);}40%{box-shadow:0 0 0 3px rgba(147,197,253,.28), 0 0 22px rgba(147,197,253,.14);}100%{box-shadow:0 0 0 0 rgba(147,197,253,0);}}
 
-  /* Riepilogo (Step 4) — responsive */
+  /* Riepilogo */
   .summary{display:grid;grid-template-columns:max-content 1fr;column-gap:10px;row-gap:8px;align-items:start}
   .summary dt{font-weight:700}
   .summary dd{margin:0;overflow-wrap:anywhere}
@@ -227,7 +215,7 @@
       </div>
 
       <div id="importHelp" class="banner">
-        <strong>1)</strong> Importa l’HTML Project Aon (<em>Flight from the Dark</em>) <em>oppure</em> lascia <code>01fftd.htm</code> nella root del repo: si carica da solo. <strong>2)</strong> Avvia il Wizard. <strong>3)</strong> Usa <em>🌐 Traduci (DeepL)</em> per il § corrente.
+        <strong>1)</strong> Lascia <code>01fftd.htm</code> nella root del repo <em>oppure</em> usa “Importa Libro”. <strong>2)</strong> Avvia il Wizard. <strong>3)</strong> Con <em>🌐 Traduci</em> apri il § corrente su DeepL.
       </div>
 
       <div id="passage" class="passage"></div>
@@ -248,8 +236,8 @@
           <div id="enemyList"></div>
           <div class="row">
             <button class="btn primary" id="startCombat">Inizia Combattimento</button>
-            <label class="small"><input type="checkbox" id="useMindblast"> Usa Psicolaser (+2 Combattività)</label>
-            <label class="small"><input type="checkbox" id="enemyMB"> Attacco Psichico nemico (−2 Combattività)</label>
+            <label class="small"><input type="checkbox" id="useMindblast"> Psicolaser (+2 CS)</label>
+            <label class="small"><input type="checkbox" id="enemyMB"> Attacco Psichico nemico (−2 CS)</label>
           </div>
           <div class="row">
             <label>Mod. Combattività (tu): <input id="youMod" type="number" value="0" style="width:60px"></label>
@@ -257,7 +245,7 @@
           </div>
           <div class="row small">
             <label><input type="checkbox" id="enemyImmuneMB"> Nemico immune a Psicolaser</label>
-            <label><input type="checkbox" id="evadeMode"> Fuggi (se il testo lo permette)</label>
+            <label><input type="checkbox" id="evadeMode"> Fuggi (se permesso)</label>
           </div>
         </div>
 
@@ -316,7 +304,7 @@
           <button class="btn" id="wsRoll">Tira (Numero 0–9)</button>
           <button class="btn" id="wsEquip">Equipaggia (se posseduta)</button>
         </div>
-        <div class="small muted">Numero→arma: 0 Pugnale, 1 Lancia, 2 Mazza, 3 Daga, 4 Martello da Guerra, 5 Spada, 6 Ascia, 7 Asta, 8 Spadone, 9 Arco.</div>
+        <div class="small muted">Numero→arma: 0 Pugnale, 1 Lancia, 2 Mazza, 3 Daga, 4 Martello, 5 Spada, 6 Ascia, 7 Asta, 8 Spadone, 9 Arco.</div>
       </div>
 
       <div class="divider"></div>
@@ -415,7 +403,7 @@
   <div class="wiz">
     <div class="header">
       <strong>✨ Creazione Personaggio</strong>
-      <span class="tag" id="wizStepTag">Passo 1 di 5</span>
+      <span class="tag" id="wizStepTag">Passo 1 di 6</span>
       <div class="spacer"></div>
       <button class="btn soft" id="wizSkip">Chiudi Wizard</button>
     </div>
@@ -435,8 +423,6 @@
     <div class="header">
       <strong>🎲 Dado (0–9)</strong>
       <span class="tag">Facoltativo – equivalente alla Tabella del Destino</span>
-      <div class="spacer"></div>
-      <button class="btn soft" id="diceClose">Chiudi</button>
     </div>
     <div class="body">
       <div class="row" style="align-items:flex-start;gap:16px">
@@ -446,6 +432,7 @@
     </div>
     <div class="footer">
       <button class="btn" id="diceRoll">Tira</button>
+      <button class="btn soft" id="diceClose">Chiudi</button>
     </div>
   </div>
 </div>
@@ -492,7 +479,7 @@ const DISC_DESC={
   "Telecinesi":"Muovi piccoli oggetti a distanza."
 };
 
-const AUTOSAVE_KEY='lw_book1_autosave_v5';
+const AUTOSAVE_KEY='lw_book1_autosave_v6';
 const AUTOSAVE_PREF='lw_book1_autosave_enabled';
 const MAX_DEEPL_FRAGMENT = 1200;
 
@@ -505,7 +492,7 @@ let state={
   navHistory:[],navFuture:[],
   player:{combattivitaBase:10,resistenzaBase:20,resistenzaCorrente:20,disciplines:new Set(),weapons:[],equipped:"",
           backpack:[],specials:[],meals:1,gold:0,weaponskillWeapon:null},
-  flags:{rngManual:false,rngManualVal:0,version:5,autosave:true,started:false},
+  flags:{rngManual:false,rngManualVal:0,version:6,autosave:true,started:false},
   enforceCond:true,
   _ranges:null,
   _choiceOk:new Map()
@@ -528,11 +515,14 @@ function toast(msg,kind){
   }
   bar.textContent=msg; toastTimeout=setTimeout(()=>bar.remove(),2400);
 }
-function immersion(text,title='Ordine Ramas'){
+function immersion(text,title='Ordine Ramas',ms=2000){
   const wrap=EL('immersive');
   EL('immTitle').textContent=`✦ ${title}`;
   EL('immTxt').textContent=text;
-  requestAnimationFrame(()=>{ wrap.classList.add('show'); setTimeout(()=>wrap.classList.remove('show'),1800); });
+  requestAnimationFrame(()=>{ 
+    wrap.classList.add('show'); 
+    setTimeout(()=>wrap.classList.remove('show'),ms);
+  });
 }
 
 /* ===== Armi ===== */
@@ -644,7 +634,7 @@ function renderInventoryLists(){
   if(state.player.backpack.length===0) bRoot.innerHTML='<div class="muted small">Zaino vuoto.</div>';
   else{
     bRoot.innerHTML=state.player.backpack.map((x,j)=>{
-      const useBtn=(/pozione magica/i.test(x))?`<button class="btn small success" data-i="${j}" data-type="b-use-potion">Usa (+4 Resistenza)</button>`:'';
+      const useBtn=(/pozione magica/i.test(x))?`<button class="btn small success" data-i="${j}" data-type="b-use-potion">Usa (+4 Res.)</button>`:'';
       return `<div class="row"><span>${x}</span><div class="spacer"></div>${useBtn}<button class="btn small" data-i="${j}" data-type="b-del">Rimuovi</button></div>`;
     }).join('');
   }
@@ -694,6 +684,8 @@ function renderWeaponskillPanel(){
   sel.innerHTML=WEAPON_LIST.map(w=>`<option${state.player.weaponskillWeapon===w?' selected':''}>${w}</option>`).join('');
   sel.disabled=!hasWS;
 }
+EL('wsRoll')?.addEventListener('click',()=>{ const r=estraiNumeroCasuale(); state.player.weaponskillWeapon=WEAPON_LIST[r]; EL('wsSelect').value=state.player.weaponskillWeapon; toast('Scherma → '+state.player.weaponskillWeapon,'success'); syncUIStats(); });
+EL('wsEquip')?.addEventListener('click',()=>{ const w=state.player.weaponskillWeapon; if(!w){toast('Nessuna specializzazione.','warn');return;} if(state.player.weapons.includes(w)){ state.player.equipped=w; syncUIStats(); toast('Equipaggiata: '+w,'success'); }else toast('Non possiedi: '+w,'warn'); });
 
 /* ===== Import libro ===== */
 function importBook(html){
@@ -799,16 +791,18 @@ function goToSection(n){
   });
   state._ranges=(asksRN && ranges.length)?ranges:null;
 
-  // Nemici
+  // Nemici: parser robusto
   state.enemies=[];
-  $$('p.combat',root).forEach(p=>{
+  const scanNodes=[...$$('p',root), ...$$('div',root), ...$$('li',root)];
+  scanNodes.forEach(p=>{
     const t=(p.textContent||"").replace(/\s+/g,' ').trim();
-    const nm=t.split(':')[0].trim();
-    const mcs = t.match(/COMBAT\s*SKILL\s*(\d+)/i) || t.match(/COMBATTIVIT[ÀA]?\s*(\d+)/i);
-    const mep = t.match(/ENDURANCE\s*(\d+)/i) || t.match(/RESISTENZA\s*(\d+)/i);
-    const cs = mcs? +mcs[1] : NaN;
-    const ep = mep? +mep[1] : NaN;
-    if(isFinite(cs) && isFinite(ep)) state.enemies.push({name:nm,cs:cs,ep:ep});
+    const mcs = t.match(/COMBAT[\s_-]*SKILL[:\s]*([0-9]+)/i) || t.match(/\bCS[:\s]*([0-9]+)/i) || t.match(/Combattivit[àa][:\s]*([0-9]+)/i);
+    const mep = t.match(/ENDURANCE[:\s]*([0-9]+)/i) || t.match(/\bEP[:\s]*([0-9]+)/i) || t.match(/Resistenza[:\s]*([0-9]+)/i);
+    if(mcs && mep){
+      let nm = t.split(/COMBAT|Combattivit|CS\b/i)[0].trim();
+      if(nm.length>60 || !nm) nm='Nemico';
+      state.enemies.push({name:nm,cs:+mcs[1],ep:+mep[1]});
+    }
   });
 
   // Modificatori auto
@@ -830,7 +824,7 @@ function goToSection(n){
   EL('detectedRN').classList.toggle('hidden',!(state._ranges));
   EL('detectedCombat').classList.toggle('hidden',state.enemies.length===0);
   EL('enemyCount').textContent=String(state.enemies.length);
-  EL('enemyList').innerHTML = state.enemies.map(e=>`<div class="enemy"><strong>${e.name}</strong> — Combattività ${e.cs}, Resistenza ${e.ep}</div>`).join('');
+  EL('enemyList').innerHTML = state.enemies.map(e=>`<div class="enemy"><strong>${e.name}</strong> — CS ${e.cs}, EP ${e.ep}</div>`).join('');
 
   syncUIStats();
   renderChoicesAssist();
@@ -861,7 +855,7 @@ function openInDeepL(){
   const url='https://www.deepl.com/translator#en/it/'+encoded;
 
   copyToClipboardBestEffort(text).finally(()=>{
-    immersion('Testo copiato negli appunti. Se DeepL non lo precompila, incolla con ⌘/Ctrl+V.','DeepL');
+    immersion('Testo copiato negli appunti. Se DeepL non lo precompila, incolla con ⌘/Ctrl+V.','DeepL',2300);
   });
 
   let win=null;
@@ -1003,15 +997,30 @@ function bandIndexFromCR(cr){
     if(cr===0)return 6; if(cr<=2)return 7; if(cr<=4)return 8; if(cr<=6)return 9; if(cr<=8)return 10; return 11;
   }
 }
+/* Fallback danni se CRT mancante: scala “sempre qualcosa” tipo Pokémon */
+function fallbackDamage(rn, cr){
+  const shift = clamp(Math.floor(cr/4), -2, 2);
+  const eff = clamp(rn + shift, 0, 9);
+  const scale = [
+    {E:0, LW:8},{E:0, LW:6},{E:2, LW:5},{E:2, LW:4},{E:3, LW:3},
+    {E:4, LW:2},{E:5, LW:2},{E:6, LW:1},{E:8, LW:0},{E:10,LW:0}
+  ];
+  return scale[eff];
+}
 function crtDamage(rn,bandIndex){
   if(state.crt && state.crt.table && (rn in state.crt.table)){
     const row=state.crt.table[rn]; const cell=row[bandIndex]||{E:0,LW:0}; return cell;
-  } return {E:0,LW:2};
+  }
+  return null; /* segnala che useremo fallback */
 }
-function startCombat(){ if(state.enemies.length===0){toast('Nessun nemico rilevato.','warn');return;}
+function startCombat(){
+  if(state.enemies.length===0){toast('Nessun nemico rilevato.','warn');return;}
   state.inCombat.active=true; state.inCombat.idx=0; state.inCombat.foe=JSON.parse(JSON.stringify(state.enemies[0])); state.current.lastHadCombat=true;
-  updateCombatInfo(); EL('combatPanel').classList.remove('hidden'); scheduleAutosave(); }
-function endCombat(){ state.inCombat.active=false; EL('combatPanel').classList.add('hidden'); scheduleAutosave(); }
+  updateCombatInfo(); EL('combatPanel').classList.remove('hidden'); scheduleAutosave();
+  const foe=state.inCombat.foe; const cr=computeCR(foe);
+  immersion(`Sei stato sfidato da ${foe.name}! CS ${foe.cs}, EP ${foe.ep}. Tuo RF: ${cr>0?'+':''}${cr}.`,'Inizio Combattimento',2500);
+}
+function endCombat(){ state.inCombat.active=false; EL('combatPanel').classList.add('hidden'); scheduleAutosave(); immersion('Il combattimento è terminato.','Fine',1600); }
 function updateCombatInfo(){
   const foe=state.inCombat.foe; if(!foe) return;
   const base=state.player.combattivitaBase;
@@ -1020,43 +1029,59 @@ function updateCombatInfo(){
   const pen = enemyMindblastPenalty();
   const youCS=base + wEff + (+EL('youMod').value) + mb + pen;
   const themCS=foe.cs+(+EL('foeMod').value);
-  EL('combatInfo').innerHTML=`<div><strong>${foe.name}</strong> — Combattività ${themCS} (base ${foe.cs}), Resistenza ${foe.ep}</div>
-  <div><strong>Tu</strong> — Combattività ${youCS} (base ${base}), Resistenza ${state.player.resistenzaCorrente}/${state.player.resistenzaBase}
+  EL('combatInfo').innerHTML=`<div><strong>${foe.name}</strong> — CS ${themCS} (base ${foe.cs}), EP ${foe.ep}</div>
+  <div><strong>Tu</strong> — CS ${youCS} (base ${base}), EP ${state.player.resistenzaCorrente}/${state.player.resistenzaBase}
   <span class="tag">arma: ${state.player.equipped||'nessuna'}</span><span class="tag">Scherma: ${state.player.weaponskillWeapon||'—'}</span></div>
   <div class="small muted">Dettaglio: base ${base} + arma ${(wEff>=0?('+'+wEff):wEff)} + mod ${( (+EL('youMod').value)>=0?('+'+(+EL('youMod').value)):(+EL('youMod').value) )}
   ${mb?(' + Psicolaser +'+mb):''} ${pen?('(pen. psichica '+pen+')'):''}.</div>`;
 }
+function showRoundPopup(rn, cr, dmg, foeEP, youEP){
+  const txt = `Numero ${rn} • RF ${cr>0?'+':''}${cr}\nDanni: Nemico −${dmg.E} • LS −${dmg.LW}\nStato: Nemico EP ${foeEP} • LS EP ${youEP}`;
+  immersion(txt,'Esito Round',2400);
+}
 function combatRound(){
-  const foe=state.inCombat.foe; if(!foe) return;
+  const foe=state.inCombat.foe; if(!foe){ toast('Nessun nemico attivo.','warn'); return; }
   const rn = estraiNumeroCasuale(); EL('rngVal').textContent = rn; EL('lastRN').textContent = rn;
   const cr = computeCR(foe); EL('lastCR').textContent = (cr>0?'+':'') + cr;
   const band = bandIndexFromCR(cr);
-  const dmg = crtDamage(rn, band);
-  if(EL('evadeMode').checked){
-    state.player.resistenzaCorrente = Math.max(0, state.player.resistenzaCorrente - Math.max(0,dmg.LW));
-    EL('lastResult').textContent = 'Fuga: LS −'+Math.max(0,dmg.LW)+', Nemico ignorato';
-    addLog('Round di fuga: Numero '+rn+', RF '+cr+' → LS −'+Math.max(0,dmg.LW)+'.');
+  let dmg = crtDamage(rn, band);
+  if(!dmg) dmg = fallbackDamage(rn, cr);
+  const evading = EL('evadeMode').checked;
+  if(evading){
+    const youLoss = Math.max(0, dmg.LW);
+    state.player.resistenzaCorrente = Math.max(0, state.player.resistenzaCorrente - youLoss);
+    EL('lastResult').textContent = 'Fuga: LS −'+youLoss+', Nemico ignorato';
+    addLog(`Fuga: Numero ${rn}, RF ${cr>0?'+':''}${cr} → LS −${youLoss}.`);
+    showRoundPopup(rn, cr, {E:0, LW:youLoss}, foe.ep, state.player.resistenzaCorrente);
     updateCombatInfo();
+    if(state.player.resistenzaCorrente<=0){ addLog('Sei esausto.'); immersion('Lupo Solitario va KO.','Sconfitta',2200); endCombat(); }
     return;
   }
   foe.ep = Math.max(0, foe.ep - Math.max(0,dmg.E));
   state.player.resistenzaCorrente = Math.max(0, state.player.resistenzaCorrente - Math.max(0,dmg.LW));
   EL('lastResult').textContent = 'N −'+Math.max(0,dmg.E)+', LS −'+Math.max(0,dmg.LW);
-  addLog('Round: Numero '+rn+', RF '+cr+' → Nemico −'+Math.max(0,dmg.E)+' EP, LS −'+Math.max(0,dmg.LW)+' EP.');
+  addLog(`Round: Numero ${rn}, RF ${cr>0?'+':''}${cr} → N −${Math.max(0,dmg.E)} EP, LS −${Math.max(0,dmg.LW)} EP.`);
+  showRoundPopup(rn, cr, dmg, foe.ep, state.player.resistenzaCorrente);
+
   if(foe.ep<=0){
     addLog('Hai sconfitto '+foe.name+'.');
+    immersion(`${foe.name} va KO!`,'Vittoria',2000);
     const nextIdx = state.inCombat.idx + 1;
     if(nextIdx < state.enemies.length){
       state.inCombat.idx = nextIdx;
       state.inCombat.foe = JSON.parse(JSON.stringify(state.enemies[nextIdx]));
-      addLog('Prossimo: '+state.inCombat.foe.name+'.');
+      addLog('Prossimo avversario: '+state.inCombat.foe.name+'.');
+      immersion(`Scende in campo ${state.inCombat.foe.name} (CS ${state.inCombat.foe.cs}, EP ${state.inCombat.foe.ep}).`,'Nuovo Avversario',2200);
     }else{
       addLog('Tutti i nemici sono stati sconfitti.');
+      immersion('Tutti i nemici sono sconfitti.','Vittoria!',2200);
       endCombat();
     }
   }
   if(state.player.resistenzaCorrente<=0){
-    addLog('Sei morto. (Resistenza ≤ 0)'); endCombat();
+    addLog('Sei esausto (EP 0).');
+    immersion('Lupo Solitario va KO.','Sconfitta',2200);
+    endCombat();
   }
   syncUIStats(); updateCombatInfo();
 }
@@ -1123,19 +1148,21 @@ function parseCRT(doc){
   }catch(e){ state.crt=null; }
 }
 
-/* ===================== WIZARD ===================== */
+/* ===================== WIZARD (6 passi, descrittivo) ===================== */
 let wizard=null;
 function wizardInit(){
   wizard={
-    step:0,total:5,
+    step:0,total:6,
     temp:{
+      loadMethod:'auto', /* auto | file | embedded */
       useManualRN:false,
       rolls:{cs:0,ep:0,gold:0},
       cs:10, ep:20, gold:0,
       discs:new Set(),
       ws:null,
       startWeapon:"Ascia",
-      extra:null
+      extra:null,
+      meals:1
     }
   };
   renderWizard();
@@ -1151,34 +1178,53 @@ function renderWizard(){
   EL('wizDots').innerHTML=Array(wizard.total).fill(0).map((_,i)=>`<div class="step-dot ${i===wizard.step?'active':''}"></div>`).join('');
   const body=EL('wizBody'); body.innerHTML="";
 
-  /* STEP 1: Impostazioni RNG & intro */
+  /* STEP 1: Sorgente libro + intro */
   if(wizard.step===0){
     body.innerHTML=`
       <div class="box">
         <h3>Benvenuto, Ramas</h3>
-        <p class="muted">Imposteremo le tue statistiche iniziali, sceglieremo le Arti e l'equipaggiamento di partenza.</p>
+        <p class="muted">Questo wizard imposta il tuo personaggio e carica il libro. Consiglio: tieni attivo l’<strong>Autosave</strong> nella topbar.</p>
       </div>
       <div class="box">
-        <h3>Estrazione numeri</h3>
-        <label class="row"><input type="checkbox" id="wizUseManual"> Usa numero manuale (invece dell'estrazione casuale)</label>
-        <p class="small muted">Se abilitato, potrai inserire tu i numeri (0–9). Altrimenti ogni statistica può essere rullata fino a 2 volte.</p>
+        <h3>Sorgente del Libro</h3>
+        <label class="row small"><input type="radio" name="booksrc" value="auto" checked> Carica automaticamente <code>01fftd.htm</code> dalla root (consigliato su GitHub)</label>
+        <label class="row small"><input type="radio" name="booksrc" value="file"> Importa manualmente (pulsante “Importa Libro”)</label>
+        <label class="row small"><input type="radio" name="booksrc" value="embedded"> Incolla l’HTML nel blocco “embedded” dentro questo file</label>
+        <p class="small muted">Se il libro è già caricato, prosegui pure.</p>
+      </div>`;
+    $$('input[name="booksrc"]').forEach(r=>{ r.onchange=e=> wizard.temp.loadMethod=e.target.value; });
+  }
+
+  /* STEP 2: Estrazione numeri (metodo) */
+  if(wizard.step===1){
+    body.innerHTML=`
+      <div class="box">
+        <h3>Metodo di Estrazione</h3>
+        <label class="row"><input type="checkbox" id="wizUseManual"> Inserimento manuale dei numeri (0–9)</label>
+        <p class="small muted">Se disattivato, ogni valore può essere rullato fino a <strong>2 volte</strong>.</p>
+      </div>
+      <div class="box">
+        <h3>Consiglio</h3>
+        <p class="small muted">Puoi sempre aprire il dado con <em>🎲 Dado</em> dal Diario; il risultato sincronizza il “Numero Casuale”.</p>
       </div>`;
     EL('wizUseManual').checked=wizard.temp.useManualRN;
     EL('wizUseManual').onchange=e=>{ wizard.temp.useManualRN=!!e.target.checked; };
   }
 
-  /* STEP 2: Statistiche */
-  if(wizard.step===1){
+  /* STEP 3: Statistiche */
+  if(wizard.step===2){
     body.innerHTML=`<div class="two">
       <div class="box"><h3>Combattività</h3>
         <div class="row"><button class="btn" id="wizRollCS">Estrai</button>
         <input id="wizCS" type="number" style="width:100px" min="10" max="19"/>
         <span class="muted">= 10 + Numero (0–9)</span><span class="tag" id="tryCS"></span></div>
+        <p class="small muted">Influenza l’esito dei combattimenti.</p>
       </div>
       <div class="box"><h3>Resistenza</h3>
         <div class="row"><button class="btn" id="wizRollEP">Estrai</button>
         <input id="wizEP" type="number" style="width:100px" min="20" max="29"/>
         <span class="muted">= 20 + Numero (0–9)</span><span class="tag" id="tryEP"></span></div>
+        <p class="small muted">Se scende a 0, sei esausto (KO).</p>
       </div>
     </div>
     <div class="box"><h3>Corone d’Oro</h3>
@@ -1186,7 +1232,7 @@ function renderWizard(){
       <input id="wizGold" type="number" style="width:100px" min="0" max="50"/>
       <span class="muted">Numero (0–9)</span><span class="tag" id="tryGold"></span></div>
     </div>
-    <div class="small muted">Con estrazione automatica: max <strong>2 tentativi</strong> per ciascun valore.</div>`;
+    <div class="small muted">Con estrazione automatica: max <strong>2 tentativi</strong> per valore.</div>`;
 
     const useManual = wizard.temp.useManualRN;
     EL('wizCS').value=wizard.temp.cs; EL('wizEP').value=wizard.temp.ep; EL('wizGold').value=wizard.temp.gold;
@@ -1228,8 +1274,8 @@ function renderWizard(){
     EL('wizGold').oninput=e=>wizard.temp.gold=clamp(+e.target.value,0,50);
   }
 
-  /* STEP 3: Arti Ramas + Scherma */
-  if(wizard.step===2){
+  /* STEP 4: Arti Ramas + Scherma */
+  if(wizard.step===3){
     const checked = s => wizard.temp.discs.has(s) ? 'checked' : '';
     body.innerHTML = `
       <div class="box">
@@ -1247,7 +1293,7 @@ function renderWizard(){
           <select id="wizWSel">${WEAPON_LIST.map(w=>`<option${wizard.temp.ws===w?' selected':''}>${w}</option>`).join('')}</select>
           <button class="btn" id="wizWSRoll">Tira (0–9)</button>
         </div>
-        <div class="small muted">Numero→arma: 0 Pugnale, 1 Lancia, 2 Mazza, 3 Daga, 4 Martello, 5 Spada, 6 Ascia, 7 Asta, 8 Spadone, 9 Arco.</div>
+        <p class="small muted">Numero→arma: 0 Pugnale • 1 Lancia • 2 Mazza • 3 Daga • 4 Martello • 5 Spada • 6 Ascia • 7 Asta • 8 Spadone • 9 Arco.</p>
       </div>
     `;
     $('#wizDiscGrid').addEventListener('change',(e)=>{
@@ -1262,14 +1308,12 @@ function renderWizard(){
       }
       $('#wizWSBox').style.display = wizard.temp.discs.has('Scherma') ? 'block':'none';
     });
-    const wsSel = $('#wizWSel');
-    if(wsSel){ wsSel.onchange=e=> wizard.temp.ws=e.target.value; }
-    const wsBtn = $('#wizWSRoll');
-    if(wsBtn){ wsBtn.onclick=()=>{ const r=estraiNumeroCasuale(); wizard.temp.ws=WEAPON_LIST[r]; if(wsSel){ wsSel.value=wizard.temp.ws; } immersion(`Numero ${r} → ${wizard.temp.ws}.`,'Scherma'); }; }
+    $('#wizWSel').onchange=e=> wizard.temp.ws=e.target.value;
+    $('#wizWSRoll').onclick=()=>{ const r=estraiNumeroCasuale(); wizard.temp.ws=WEAPON_LIST[r]; $('#wizWSel').value=wizard.temp.ws; immersion(`Numero ${r} → ${wizard.temp.ws}.`,'Scherma'); };
   }
 
-  /* STEP 4: Equipaggiamento iniziale */
-  if(wizard.step===3){
+  /* STEP 5: Equipaggiamento iniziale e regole opzionali */
+  if(wizard.step===4){
     body.innerHTML = `
       <div class="two">
         <div class="box">
@@ -1283,22 +1327,25 @@ function renderWizard(){
             <button class="btn" id="wizExtraRoll">Tira</button>
             <span id="wizExtra" class="pill">${wizard.temp.extra?wizard.temp.extra:'—'}</span>
           </div>
-          <p class="small muted">Equivalente all’estrazione casuale dell'equipaggiamento iniziale.</p>
+          <p class="small muted">Emula l’estrazione casuale dell'equipaggiamento iniziale.</p>
         </div>
       </div>
       <div class="box">
         <h3>Scorte iniziali</h3>
         <div class="row">
-          <label>Pasti: <input id="wizMeals" type="number" min="0" max="8" step="1" style="width:80px" value="1"></label>
+          <label>Pasti: <input id="wizMeals" type="number" min="0" max="8" step="1" style="width:80px" value="${wizard.temp.meals}"></label>
           <label>Monete: <input id="wizGold2" type="number" min="0" max="50" step="1" style="width:80px" value="${wizard.temp.gold}"></label>
         </div>
-        <div class="small muted">Lo zaino può contenere fino a 8 unità (Pasti inclusi).</div>
+      </div>
+      <div class="box">
+        <h3>Regole Opzionali</h3>
+        <label class="row small"><input id="wizForceCond" type="checkbox" ${state.enforceCond?'checked':''}> Forza condizioni nelle scelte (blocco link)</label>
+        <label class="row small"><input id="wizAutosave" type="checkbox" ${state.flags.autosave?'checked':''}> Autosave attivo</label>
       </div>
     `;
     $('#wizStartWeapon').onchange=e=> wizard.temp.startWeapon=e.target.value;
     $('#wizMeals').oninput=e=> wizard.temp.meals=clamp(+e.target.value,0,8);
-    $('#wizGold2').oninput=e=> { wizard.temp.gold=clamp(+e.target.value,0,50); $('#wizGold2').value=wizard.temp.gold; };
-
+    $('#wizGold2').oninput=e=> { wizard.temp.gold=clamp(+e.target.value,0,50); };
     $('#wizExtraRoll').onclick=()=>{
       const r=estraiNumeroCasuale();
       const map={0:"Spadone",1:"Spada",2:"Elmo",3:"Due Pasti",4:"Cotta di Maglia",5:"Mazza",6:"Pozione Magica",7:"Asta",8:"Lancia",9:"12 Corone d'Oro"};
@@ -1308,8 +1355,8 @@ function renderWizard(){
     };
   }
 
-  /* STEP 5: Riepilogo */
-  if(wizard.step===4){
+  /* STEP 6: Riepilogo */
+  if(wizard.step===5){
     const discs=[...wizard.temp.discs];
     const invPreview = (()=> {
       const extra = wizard.temp.extra || '—';
@@ -1330,8 +1377,8 @@ function renderWizard(){
           <dt>Scherma</dt><dd>${wizard.temp.discs.has('Scherma')?(wizard.temp.ws||'—'):'—'}</dd>
           <dt>Inventario</dt><dd>${invPreview}</dd>
         </dl>
+        <p class="small muted">“Inizia l’Avventura” applica le scelte e tenta di portarti al §1 (se il libro è caricato).</p>
       </div>
-      <div class="box small muted">Premi “Inizia l’Avventura” per applicare le scelte e andare al §1 (se il libro è caricato).</div>
     `;
   }
 
@@ -1369,6 +1416,13 @@ function wizardApply(){
     if(/12 Corone/i.test(ex)) state.player.gold = Math.min(50, state.player.gold + 12);
   }
 
+  // Regole opzionali dal passo 5
+  const forceCond = $('#wizForceCond')?.checked ?? state.enforceCond;
+  const autosv = $('#wizAutosave')?.checked ?? state.flags.autosave;
+  state.enforceCond = !!forceCond;
+  state.flags.autosave = !!autosv;
+  try{ localStorage.setItem(AUTOSAVE_PREF, state.flags.autosave?'1':'0'); }catch(_){}
+
   state.flags.started=true;
   syncUIStats();
   enforceCapacityInvariant(true);
@@ -1376,7 +1430,7 @@ function wizardApply(){
   updatePassageLinkEnforcement();
   if(state.index.size){ navGoTo(1,false); }
   wizardClose();
-  immersion('La via del Ramas è tracciata. Buona caccia!','Pronto');
+  immersion('La via del Ramas è tracciata. Buona caccia!','Pronto',2200);
 }
 
 /* ===== Bind UI ===== */
@@ -1416,7 +1470,7 @@ EL('quickStart').onclick=function(){
   if(/cotta di maglia/i.test(got)) state.player.specials.push("Cotta di Maglia");
   if(/12 Corone/i.test(got)) state.player.gold=Math.min(50,state.player.gold+12);
   state.player.weaponskillWeapon=null; state.flags.started=true;
-  enforceCapacityInvariant(true); toast('Inizio Rapido → Combattività '+state.player.combattivitaBase+', Resistenza '+state.player.resistenzaBase+'. Extra: '+got+'.','success');
+  enforceCapacityInvariant(true); toast('Inizio Rapido → CS '+state.player.combattivitaBase+', EP '+state.player.resistenzaBase+'. Extra: '+got+'.','success');
   syncUIStats(); if(state.index.size){navGoTo(1,false);}
 };
 
@@ -1461,15 +1515,15 @@ EL('themeToggle').onclick=function(){
   try{localStorage.setItem('lw_theme',next);}catch(_){}
 };
 
-/* Wizard bindings (FIX: mancavano) */
+/* Wizard bindings */
 EL('openWizard').onclick = () => { wizardInit(); };
 EL('wizPrev').onclick  = () => { if(wizard.step>0){ wizard.step--; renderWizard(); } };
 EL('wizNext').onclick  = () => {
-  // validazioni leggere per step
-  if(wizard.step===1){
-    if(!(wizard.temp.cs>=10&&wizard.temp.cs<=19) || !(wizard.temp.ep>=20&&wizard.temp.ep<=29)){ toast('Controlla i valori di CS/EP.','warn'); return; }
-  }
+  // Validazioni minime per step
   if(wizard.step===2){
+    if(!(wizard.temp.cs>=10&&wizard.temp.cs<=19) || !(wizard.temp.ep>=20&&wizard.temp.ep<=29)){ toast('Controlla CS/EP.','warn'); return; }
+  }
+  if(wizard.step===3){
     if(wizard.temp.discs.size!==5){ toast('Scegli esattamente 5 Arti.','warn'); return; }
     if(wizard.temp.discs.has('Scherma') && !wizard.temp.ws){ wizard.temp.ws='Spada'; }
   }
