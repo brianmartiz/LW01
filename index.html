@@ -3,50 +3,45 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lupo Solitario — Libro 1: Motore di Gioco</title>
+<title>Lupo Solitario — Libro 1 (Motore)</title>
 <style>
-/* ===== THEME TOKENS ===== */
+/* ============== THEME ============== */
 :root{
-  /* Dark */
+  /* Dark (default) */
   --bg:#0f1115; --panel:#151924; --panel-br:#232a3a; --ink:#e7ebf5; --muted:#9aa3b2;
   --paper:#171a1f; --paper-br:#2a3242; --br:#2b3446;
   --brand:#62e3b7; --accent:#7fb2ff; --danger:#fda4a4; --warn:#f7d063; --success:#86efac;
   --gold:#d6b05d; --kai:#64d1a5; --link:#93c5fd; --link-hover:#bcd6ff;
 }
 :root[data-theme="light"]{
-  --bg:#f7f9fc; --panel:#ffffff; --panel-br:#e5e9f2; --ink:#1f2937; --muted:#5b6472;
+  /* Light ad alta leggibilità */
+  --bg:#f6f8fc; --panel:#ffffff; --panel-br:#e7ecf5; --ink:#0f172a; --muted:#475569;
   --paper:#ffffff; --paper-br:#e6ebf4; --br:#d6dbe6;
-  --brand:#15803d; --accent:#1d4ed8; --danger:#b91c1c; --warn:#a16207; --success:#166534;
-  --gold:#a27b1c; --kai:#0f766e; --link:#1d4ed8; --link-hover:#1e40af;
+  --brand:#0f766e; --accent:#1d4ed8; --danger:#b91c1c; --warn:#a16207; --success:#166534;
+  --gold:#936c16; --kai:#0e7490; --link:#1d4ed8; --link-hover:#1e40af;
 }
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.47 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
 a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
 .hidden{display:none!important}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
-/* ===== APP LAYOUT ===== */
+/* ============== LAYOUT ============== */
 .app{display:grid;grid-template-rows:auto 1fr auto;min-height:100vh;min-height:100dvh}
-.topbar{position:sticky;top:0;z-index:50;display:flex;gap:8px;align-items:center;padding:10px 12px;background:linear-gradient(180deg,rgba(25,31,45,.85),rgba(18,22,33,.85));border-bottom:1px solid #1e2636;backdrop-filter:saturate(1.1) blur(10px)}
-:root[data-theme="light"] .topbar{background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(250,252,255,.9));border-bottom:1px solid var(--panel-br)}
+.topbar{position:sticky;top:0;z-index:50;display:flex;gap:8px;align-items:center;padding:10px 12px;background:linear-gradient(180deg,rgba(25,31,45,.88),rgba(18,22,33,.88));border-bottom:1px solid #1e2636;backdrop-filter:saturate(1.1) blur(10px)}
+:root[data-theme="light"] .topbar{background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(246,250,255,.9));border-bottom:1px solid var(--panel-br)}
 .topbar .spacer{flex:1}
 .btn{background:#1a2130;border:1px solid var(--br);color:var(--ink);padding:8px 10px;border-radius:10px;cursor:pointer}
-.btn:hover{filter:brightness(1.08)}
+.btn:hover{filter:brightness(1.07)}
 .btn.primary{background:linear-gradient(180deg,#1f2937,#171f2d);border-color:#2d3b53}
 .btn.soft{background:#121826;border-color:#243149}
 .btn.warn{background:#2f2615;border-color:#70561b;color:#ffe9ab}
 .btn.success{background:#0f2919;border-color:#1a5a3b;color:#c8f5dc}
 .btn.danger{background:#351111;border-color:#7a2323;color:#ffd3d3}
 .btn[disabled]{opacity:.55;cursor:not-allowed}
-
-input[type="number"],input[type="text"],select,textarea{
-  background:#0f131b;color:var(--ink);border:1px solid #2d3446;border-radius:10px;padding:6px 8px;outline:none;min-height:40px
-}
-:root[data-theme="light"] input[type="number"],:root[data-theme="light"] input[type="text"],:root[data-theme="light"] select,:root[data-theme="light"] textarea{
-  background:#ffffff;border-color:#d7dfec;color:#0f172a
-}
+input[type="number"],input[type="text"],select,textarea{background:#0f131b;color:var(--ink);border:1px solid #2d3446;border-radius:10px;padding:6px 8px;outline:none;min-height:40px}
+:root[data-theme="light"] input[type="number"],:root[data-theme="light"] input[type="text"],:root[data-theme="light"] select,:root[data-theme="light"] textarea{background:#fff;color:#0f172a;border-color:#d9e2f2}
 textarea{width:100%;min-height:84px}
-
 .grid{display:grid;gap:12px;grid-template-columns:1fr 420px;padding:12px;align-items:start}
 .panel{background:var(--panel);border:1px solid var(--panel-br);border-radius:12px;padding:12px}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -56,29 +51,22 @@ textarea{width:100%;min-height:84px}
 .tag{font-size:12px;color:var(--muted)}
 .small{font-size:12px}
 .pill{display:inline-flex;gap:6px;align-items:center;background:#0e1522;border:1px solid #263146;border-radius:999px;padding:4px 8px}
-:root[data-theme="light"] .pill{background:#f0f5ff;border-color:#d7e3ff;color:#1e293b}
-.banner{padding:8px 10px;border:1px solid #3a3e28;background:#191c0f;border-radius:10px;margin:8px 0}
-:root[data-theme="light"] .banner{background:#fff8e1;border-color:#f7d063;color:#3b2f0a}
-.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center}
-.choice-wrapper{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:8px;border:1px solid transparent;border-radius:10px}
-.choice-wrapper.disabled{background:rgba(42,49,66,.25);border-color:#212838}
-:root[data-theme="light"] .choice-wrapper.disabled{background:#f7f9fe;border-color:#e4ecff}
+:root[data-theme="light"] .pill{background:#eef5ff;border-color:#d6e4ff;color:#1e293b}
 
-/* ===== PASSAGE ===== */
+/* ============== PASSAGGIO TESTO ============== */
 .paper{background:radial-gradient(1200px 600px at 20% -10%, #222836 0%, #171a1f 60%), var(--paper);border:1px solid var(--paper-br);border-radius:14px;padding:14px}
-:root[data-theme="light"] .paper{background:var(--paper)}
-.passage{max-width:78ch;font:18px/1.58 "Iowan Old Style","Palatino","Georgia",serif;color:#eef2ff}
+:root[data-theme="light"] .paper{background:#fff}
+.passage{max-width:78ch;font:18px/1.62 "Iowan Old Style","Palatino","Georgia",serif;color:#eef2ff}
+:root[data-theme="light"] .passage{color:#0b1220}
 .passage p{margin:12px 0}
-.passage p:first-of-type::first-letter{font-size:2.3em;float:left;line-height:0.9;margin:0 .14em 0 0;color:var(--gold);text-shadow:0 0 12px rgba(214,176,93,.15)}
-.passage strong{color:#f0f4ff}
-:root[data-theme="light"] .passage{color:#0f172a}
-:root[data-theme="light"] .passage strong{color:#0b1220}
+.passage p:first-of-type::first-letter{font-size:2.3em;float:left;line-height:0.92;margin:0 .14em 0 0;color:var(--gold);text-shadow:0 0 12px rgba(214,176,93,.15)}
+.passage strong{color:#f5f8ff}
+:root[data-theme="light"] .passage strong{color:#09101d}
 a.choiceLink{padding:.06rem .35rem;border-radius:6px}
 a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-decoration:none;border:1px dashed #3b4968}
 :root[data-theme="light"] a.choiceLink.disabled{border-color:#b6c7ef}
 
-/* ===== MODALS ===== */
+/* ============== MODALS ============== */
 .modal{position:fixed;inset:0;padding:env(safe-area-inset-top) 16px calc(16px + env(safe-area-inset-bottom)) 16px;background:rgba(7,9,14,.7);display:flex;align-items:center;justify-content:center;z-index:10000;overflow:auto}
 .wiz{width:min(960px,96vw);max-height:88dvh;background:var(--panel);border:1px solid #2a3142;border-radius:14px;padding:14px 14px 12px;display:flex;flex-direction:column}
 .wiz .header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -91,17 +79,17 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
 .wiz .box{border:1px solid #2a3142;border-radius:10px;padding:10px;background:#0e1420}
 :root[data-theme="light"] .wiz .box{background:#f7fbff;border-color:#e4ecff}
 .wiz .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.glow{animation:glow-anim 1.5s ease-out}
-@keyframes glow-anim{0%{box-shadow:0 0 0 0 rgba(147,197,253,0)} 40%{box-shadow:0 0 0 3px rgba(147,197,253,.4),0 0 25px rgba(147,197,253,.2)} 100%{box-shadow:0 0 0 0 rgba(147,197,253,0)}}
+.glow{animation:glow-anim 1.3s ease-out}
+@keyframes glow-anim{0%{box-shadow:0 0 0 0 rgba(147,197,253,0)}40%{box-shadow:0 0 0 3px rgba(147,197,253,.4),0 0 25px rgba(147,197,253,.2)}100%{box-shadow:0 0 0 0 rgba(147,197,253,0)}}
 
-/* ===== IMMERSIVE POPUP ===== */
+/* ============== IMMERSIVE POPUP ============== */
 .immersion{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:11000;pointer-events:none}
 .immersion .card{background:linear-gradient(180deg,#121722,#0d121d);border:1px solid #31405a;border-radius:14px;padding:14px 18px;max-width:86vw;color:#e7ecff;box-shadow:0 14px 60px rgba(0,0,0,.55);opacity:0;transform:translateY(12px);transition:.35s}
 .immersion.show .card{opacity:1;transform:translateY(0)}
 .immersion .title{font-weight:700;margin-bottom:6px;color:var(--kai)}
 .immersion .txt{font-size:14px;color:#c9d4ee}
 
-/* ===== COMBAT PANEL (NEW) ===== */
+/* ============== COMBAT PANEL ============== */
 .enemyBox{border:1px dashed #3a4c6b;border-radius:10px;padding:8px;margin:6px 0}
 .combatGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .statCard{border:1px solid #2e3950;border-radius:10px;padding:10px;background:#0f1521}
@@ -112,17 +100,16 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
 .crBadge{display:inline-flex;align-items:center;gap:6px;border:1px solid #2d3b53;border-radius:999px;padding:4px 8px;background:#11192b}
 :root[data-theme="light"] .crBadge{background:#f2f7ff;border-color:#d7e3ff;color:#0f172a}
 
-/* ===== MOBILE ===== */
-@media (max-width: 980px){
+/* ============== MOBILE ============== */
+@media (max-width:980px){
   .grid{grid-template-columns:1fr}
-  input, select, textarea{font-size:16px}
-  .cols-2{grid-template-columns:1fr}
+  input,select,textarea{font-size:16px}
+  .cols-2,.wiz .two{grid-template-columns:1fr}
   .topbar{flex-wrap:wrap;gap:6px}
   .btn{padding:10px 12px}
   #bookPanel{order:1}
   #actionPanel{order:2}
   .choice-wrapper{grid-template-columns:1fr;gap:8px}
-  .wiz .two{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -133,7 +120,7 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
     <span class="tag">Libro 1 · Project Aon</span>
     <div class="spacer"></div>
     <label class="btn soft"><input id="fileInput" type="file" accept=".htm,.html,.xhtml,text/html" class="hidden"/>Importa libro</label>
-    <button id="openWizard" class="btn primary">Wizard</button>
+    <button id="openWizardBtn" class="btn primary">Wizard</button>
     <button id="quickStart" class="btn">Inizio rapido</button>
     <button id="newGame" class="btn">Nuova</button>
     <button id="exportSave" class="btn">Esporta</button>
@@ -147,7 +134,7 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
     <div id="bookPanel" class="panel paper">
       <h1 class="row">Capitolo &amp; Paragrafo
         <span id="bookStatus" class="tag"></span>
-        <span id="secTitle" class="pill">§ <strong id="secNo">—</strong></span>
+        <span class="pill">§ <strong id="secNo">—</strong></span>
         <button id="btnDeepL" class="btn soft">🌐 Traduci (DeepL)</button>
       </h1>
       <div class="row small" style="margin-bottom:8px">
@@ -159,7 +146,7 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
       </div>
 
       <div id="importHelp" class="banner">
-        <strong>Come iniziare:</strong> se nel repo è presente <code>01fftd.htm</code>, il libro viene caricato in automatico. In alternativa importa l’HTML Project Aon (<em>Flight from the Dark</em>) con il bottone qui sopra.
+        <strong>Come iniziare:</strong> se nel repo è presente <code>01fftd.htm</code>, il libro viene caricato in automatico. Altrimenti usa “Importa libro”.
       </div>
 
       <div id="passage" class="passage"></div>
@@ -167,12 +154,6 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
 
       <div id="autoDetections" class="hidden">
         <h2>Azioni rilevate</h2>
-        <div id="detectedRN" class="banner hidden">
-          Questo paragrafo richiede un Numero Casuale.
-          <button class="btn" id="btnResolveRN">Tira e vai</button>
-          <span class="muted small">Usa “Numero Casuale” nel Diario.</span>
-        </div>
-
         <div id="detectedCombat" class="list hidden" style="margin-top:6px">
           <div class="row"><strong>Nemici trovati:</strong> <span id="enemyCount" class="pill"></span></div>
           <div id="enemyList"></div>
@@ -226,7 +207,7 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
             </label>
           </div>
 
-          <div id="combatLog" class="mono small" style="margin-top:8px;white-space:pre-wrap;max-height:240px;overflow:auto;border:1px dashed #334; border-radius:10px; padding:8px;background:#0d121c"></div>
+          <div id="combatLog" class="mono small" style="margin-top:8px;white-space:pre-wrap;max-height:240px;overflow:auto;border:1px dashed #334;border-radius:10px;padding:8px;background:#0d121c"></div>
         </div>
       </div>
     </div>
@@ -309,12 +290,10 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
     </div>
   </div>
 
-  <div class="footer small" style="padding:10px 12px;color:var(--muted)">
-    Uso personale. Lone Wolf © Joe Dever / Project Aon (non redistribuire). Il contenuto del libro resta nel browser.
-  </div>
+  <div class="footer small" style="padding:10px 12px;color:var(--muted)">Uso personale. Lone Wolf © Joe Dever / Project Aon (non redistribuire). Il contenuto del libro resta nel browser.</div>
 </div>
 
-<!-- Embedded (opzionale) -->
+<!-- Embedded opzionale -->
 <script id="embeddedBook" type="text/plain"></script>
 
 <!-- Wizard -->
@@ -345,221 +324,200 @@ a.choiceLink.disabled{pointer-events:none;opacity:.45;filter:saturate(.6);text-d
   </div>
 </div>
 
-<!-- Immersive popup -->
+<!-- Popups -->
 <div id="immersive" class="immersion"><div class="card"><div class="title" id="immTitle"></div><div class="txt" id="immTxt"></div></div></div>
 
 <script>
 'use strict';
-
 /* ===== Shortcuts ===== */
-const EL = id => document.getElementById(id);
-const $ = (sel,root) => (root||document).querySelector(sel);
-const $$ = (sel,root) => Array.from((root||document).querySelectorAll(sel));
+const EL=id=>document.getElementById(id);
+const $=(sel,root)=> (root||document).querySelector(sel);
+const $$=(sel,root)=> Array.from((root||document).querySelectorAll(sel));
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-const escRx=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-function textOnly(node){return (node.textContent||'').replace(/\s+/g,' ').trim();}
+const escRx=s=>s.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&');
+const textOnly=n=>(n.textContent||'').replace(/\\s+/g,' ').trim();
 
 /* ===== Constants ===== */
-const AUTOSAVE_KEY='lw_book1_autosave_v3';
+const AUTOSAVE_KEY='lw_book1_autosave_v4';
 const AUTOSAVE_PREF='lw_book1_autosave_enabled';
 const THEME_PREF='lw_theme';
-const MAX_DEEPL_FRAGMENT=1200;
+const MAX_DEEPL_FRAGMENT=1600;
 const WEAPON_LIST=["Pugnale","Lancia","Mazza","Daga","Martello da Guerra","Spada","Ascia","Asta","Spadone","Arco"];
-const DISCIPLINES=[
-  "Mimetismo","Caccia","Sesto Senso","Orientamento","Guarigione",
-  "Scherma","Psicoschermo","Psicolaser","Affinità Animale","Telecinesi"
-];
+const DISCIPLINES=["Mimetismo","Caccia","Sesto Senso","Orientamento","Guarigione","Scherma","Psicoschermo","Psicolaser","Affinità Animale","Telecinesi"];
 const DISC_DESC={
   "Mimetismo":"Ti confondi con l’ambiente, eviti pericoli e osservi senza essere visto.",
-  "Caccia":"Trovi cibo e acqua nei territori selvaggi; spesso non consumi Pasti.",
-  "Sesto Senso":"Intuisci trappole, inganni e la scelta più sicura.",
+  "Caccia":"Trovi cibo e acqua; spesso non consumi Pasti.",
+  "Sesto Senso":"Intuisci trappole e la scelta più sicura.",
   "Orientamento":"Segui tracce e prendi la rotta migliore.",
   "Guarigione":"Recuperi 1 Resistenza all’inizio di paragrafi senza combattimento.",
   "Scherma":"+2 Combattività con l’arma di specializzazione.",
-  "Psicoschermo":"Protegge la mente dagli attacchi psichici.",
-  "Psicolaser":"Colpisci mentalmente (+2 Combattività contro nemici non immuni).",
+  "Psicoschermo":"Protegge dagli attacchi psichici.",
+  "Psicolaser":"+2 Combattività contro nemici non immuni.",
   "Affinità Animale":"Comprendi e influenzi gli animali.",
   "Telecinesi":"Muovi piccoli oggetti a distanza."
-};
-const WEAPON_INFO={
-  "Pugnale":{base:+0},"Lancia":{base:+0},"Mazza":{base:+0},"Daga":{base:+0},
-  "Martello da Guerra":{base:+0},"Spada":{base:+0},"Ascia":{base:+0},"Asta":{base:+0},"Spadone":{base:+0},"Arco":{base:+0,tags:["a distanza"]}
 };
 
 /* ===== Global State ===== */
 let state={
-  bookHTML:"",bookDoc:null,index:new Map(),crt:null, /* parsed Combat Results Table */
-  view:{logicRoot:null,displayRoot:null},
+  bookHTML:"",bookDoc:null,crt:null,
+  index:new Map(), view:{logicRoot:null,displayRoot:null},
   current:{section:null,lastHadCombat:false,allowEvade:false,psionicAttack:false,enemyImmuneMB:false},
-  enemies:[],inCombat:{active:false,foe:null,round:0},
-  navHistory:[],navFuture:[],
-  player:{
-    combattivitaBase:10,resistenzaBase:20,resistenzaCorrente:20,
-    disciplines:new Set(),weapons:[],equipped:"",
-    backpack:[],specials:[],meals:1,gold:0,weaponskillWeapon:null
-  },
-  flags:{rngManual:false,rngManualVal:0,version:3,autosave:true,started:false,enforceCond:true},
-  allowedTargets:new Map() /* targetSection -> bool */
+  enemies:[], inCombat:{active:false,foe:null,round:0},
+  navHistory:[], navFuture:[],
+  player:{combattivitaBase:10,resistenzaBase:20,resistenzaCorrente:20,disciplines:new Set(),weapons:[],equipped:"",backpack:[],specials:[],meals:1,gold:0,weaponskillWeapon:null},
+  flags:{rngManual:false,rngManualVal:0,version:4,autosave:true,started:false,enforceCond:true},
+  allowedTargets:new Map()
 };
 
 /* ===== Theme ===== */
 (function themeInit(){
-  const saved = localStorage.getItem(THEME_PREF);
+  const saved=localStorage.getItem(THEME_PREF);
   if(saved) document.documentElement.setAttribute('data-theme', saved);
   EL('themeToggle').checked = document.documentElement.getAttribute('data-theme')==='light';
   EL('themeToggle').addEventListener('change',()=>{
-    const mode = EL('themeToggle').checked ? 'light' : '';
-    if(mode) document.documentElement.setAttribute('data-theme','light');
-    else document.documentElement.removeAttribute('data-theme');
+    const mode=EL('themeToggle').checked ? 'light' : '';
+    if(mode) document.documentElement.setAttribute('data-theme','light'); else document.documentElement.removeAttribute('data-theme');
     localStorage.setItem(THEME_PREF, document.documentElement.getAttribute('data-theme')||'');
   });
 })();
 
-/* ===== Random Number ===== */
-function random0to9(){
-  if(state.flags.rngManual) return clamp(+EL('rngManualVal').value,0,9);
-  const b=new Uint8Array(1); crypto.getRandomValues(b); return b[0]%10;
-}
-function showRN(val){ EL('rngVal').textContent=String(val); EL('diceFace').textContent=String(val); }
-
-/* ===== Popups ===== */
+/* ===== Utility ===== */
 function immersion(text,title='Ordine Ramas'){
   const wrap=EL('immersive'); EL('immTitle').textContent=`✦ ${title}`; EL('immTxt').textContent=text;
   requestAnimationFrame(()=>{wrap.classList.add('show'); setTimeout(()=>wrap.classList.remove('show'),2200);});
 }
+function random0to9(){ if(state.flags.rngManual) return clamp(+EL('rngManualVal').value,0,9); const b=new Uint8Array(1); crypto.getRandomValues(b); return b[0]%10; }
 
 /* ===== Book Import & Index ===== */
 async function tryAutoLoad(){
-  // 1) embedded
+  // Embedded first
   const emb=EL('embeddedBook'); const txt=(emb?.textContent||'').trim();
   if(txt.length>200){ importBook(txt); return true; }
-  // 2) same-folder 01fftd.htm
+  // Fallback to same-folder file
   try{
-    const res=await fetch('01fftd.htm',{cache:'reload'}); if(res.ok){ const html=await res.text(); importBook(html); return true; }
-  }catch(e){/* ignore */}
+    const res=await fetch('01fftd.htm',{cache:'no-store'}); if(res.ok){ const html=await res.text(); importBook(html); return true; }
+  }catch(e){/* ignore */ }
+  EL('bookStatus').textContent='Nessun libro caricato';
   return false;
 }
 function importBook(html){
   state.bookHTML=html;
-  const dom=new DOMParser().parseFromString(html,'text/html');
-  state.bookDoc = dom;
-  buildIndex(dom);
-  parseCombatResultsTable(dom); // Build CRT from original table
+  const dom=new DOMParser().parseFromString(html,'text/html'); state.bookDoc=dom;
+  buildIndex(dom); parseCRT(dom);
   EL('bookStatus').textContent='Libro caricato';
-  // Jump to §1 if available
   const first = findSection(1) ? 1 : guessFirstSection(dom);
-  if(first) navGoTo(first);
-  renderAutoDetections();
+  if(first) navGoTo(first); else immersion('Non trovo il primo paragrafo. Prova “Importa libro”.','Libro');
 }
 function buildIndex(dom){
   state.index.clear();
-  $$('a[id^="sect"]',dom).forEach(a=>{
-    const id=a.id; const n=+id.replace('sect',''); if(!Number.isNaN(n)){
-      state.index.set(n, a.parentElement); /* AoN structure: <h2><a id="sectN">..</a></h2> then paragraphs after */
-    }
+  // id="sect1" oppure name="sect1"
+  const anchors = $$('a[id^="sect"], a[name^="sect"]', dom);
+  anchors.forEach(a=>{
+    const id = (a.id || a.name || '').toString();
+    const n = +id.replace(/[^0-9]/g,'');
+    if(Number.isInteger(n)) state.index.set(n, a);
   });
 }
-function findSection(n){
-  const h = state.index.get(n); if(!h) return null;
-  // displayRoot = content from this header until next section header
-  const parts=[];
-  let node=h.parentElement.nextSibling;
+function sectionContentFromAnchor(a){
+  // Include content from the H2 (or parent) until next sect anchor
+  let startNode = a.closest('h2') || a.parentElement;
+  const frag = document.createDocumentFragment();
+  let node = startNode.nextSibling;
   while(node){
-    if(node.nodeType===1 && node.querySelector('a[id^="sect"]')) break;
-    if(node.nodeType===1 || node.nodeType===3) parts.push(node.cloneNode(true));
-    node=node.nextSibling;
+    if(node.nodeType===1){
+      const sect = node.querySelector?.('a[id^="sect"], a[name^="sect"]');
+      if(sect) break;
+    }
+    frag.appendChild(node.cloneNode(true));
+    node = node.nextSibling;
   }
-  const wrap=document.createElement('div'); parts.forEach(p=>wrap.appendChild(p));
-  return {header:h.parentElement, root:wrap};
+  const wrap=document.createElement('div'); wrap.appendChild(frag); return {header:startNode, root:wrap};
+}
+function findSection(n){
+  const a = state.index.get(n); if(!a) return null;
+  return sectionContentFromAnchor(a);
 }
 function guessFirstSection(dom){
-  const a = $('a[id^="sect"]',dom); if(!a) return null;
-  return +a.id.replace('sect','');
+  const a = dom.querySelector('a[id^="sect"], a[name^="sect"]'); if(!a) return null;
+  return +((a.id||a.name||'').replace(/[^0-9]/g,'')||1);
 }
 
-/* ===== CRT (Combat Results Table) Parser ===== */
-function parseCombatResultsTable(dom){
-  // Robust parser: read the table under #crtable; tolerate various label formats.
+/* ===== CRT (Combat Results Table) ===== */
+function parseCRT(dom){
+  // Cerco la tabella in pagina; se non trovata, costruisco una fallback semplificata.
   try{
-    const anchor = dom.querySelector('#crtable'); if(!anchor){ state.crt=null; return; }
-    const table = anchor.closest('h2')?.nextElementSibling?.tagName==='TABLE' ? anchor.closest('h2').nextElementSibling
-                 : anchor.parentElement?.nextElementSibling?.tagName==='TABLE' ? anchor.parentElement.nextElementSibling
-                 : anchor.parentElement?.parentElement?.querySelector('table');
-    if(!table){ state.crt=null; return; }
+    const crAnchor = dom.querySelector('#crtable, a[name="crtable"]') || [...dom.querySelectorAll('h2')].find(h=>/combat results table/i.test(h.textContent||''));
+    const table = crAnchor ? (crAnchor.closest('h2')?.nextElementSibling) : null;
+    if(!table || table.tagName!=='TABLE') return fallbackCRT();
     const rows = Array.from(table.querySelectorAll('tr'));
-    // header rows: rows[0] and rows[1]
-    const header = rows[1] || rows[0];
-    const cols = Array.from(header.querySelectorAll('th')).slice(1).map(th => th.textContent.replace(/\s+/g,' ').trim());
-    // Convert column labels to numeric ranges
-    const ranges = cols.map(label=>{
-      // examples: "−11 or less", "−10 to −9", "−8 to −7", ..., "+10 to +11", "+12 or more"
-      const s=label.replace(/&minus;|−/g,'-').replace(/\u2212/g,'-');
-      const m1=s.match(/(-?\d+)\s*(?:to|–|-)\s*(-?\d+)/i);
-      if(m1){ return {min:+m1[1], max:+m1[2]}; }
-      const m2=s.match(/(-?\d+)\s*or\s*less/i);
-      if(m2){ return {min:-999, max:+m2[1]}; }
-      const m3=s.match(/(-?\d+)\s*or\s*more/i);
-      if(m3){ return {min:+m3[1], max:999}; }
-      // fallback guess by order
-      return {min:-999, max:999};
+    const head = rows[1] || rows[0];
+    const colLabels = Array.from(head.children).slice(1).map(th=>th.textContent.replace(/\\s+/g,' ').trim());
+    const ranges = colLabels.map(lab=>{
+      const s=lab.replace(/&minus;|−|\u2212/g,'-');
+      const m1=s.match(/(-?\\d+)\\s*(?:to|–|-)\\s*(-?\\d+)/i);
+      if(m1) return {min:+m1[1],max:+m1[2]};
+      const m2=s.match(/(-?\\d+)\\s*or\\s*less/i); if(m2) return {min:-999,max:+m2[1]};
+      const m3=s.match(/(-?\\d+)\\s*or\\s*more/i); if(m3) return {min:+m3[1],max:999};
+      return {min:-999,max:999};
     });
-    const bodyRows = rows.slice(2);
-    const rnRows = [];
-    bodyRows.forEach(tr=>{
+    const body = rows.slice(2);
+    const rnRows=[];
+    body.forEach(tr=>{
       const cells = Array.from(tr.children);
-      if(!cells.length) return;
-      const rnText = cells[0].textContent.trim();
-      const rn = parseInt(rnText,10); if(Number.isNaN(rn)) return;
+      const rn = parseInt(cells[0].textContent,10); if(Number.isNaN(rn)) return;
       const row=[];
       cells.slice(1).forEach(td=>{
-        const t = td.textContent.replace(/\s+/g,' ').trim();
-        // Try to read "E ... LW ..." possibly with 'K'
-        // Default
-        let eLoss=null,lwLoss=null,eKill=false,lwKill=false;
-        const hasE = /E\b/i.test(t), hasLW=/LW\b/i.test(t);
-        const nums = t.match(/(\d+)/g) || [];
-        if(/E[^A-Z]*K/i.test(t)) eKill=true;
-        if(/LW[^A-Z]*K/i.test(t)) lwKill=true;
-        if(nums.length>=2){ // assume first is E, second is LW if labelled unclear
-          if(hasE||hasLW){
-            // try specific
-            const mE=t.match(/E[^0-9]*([0-9]+)/i); const mLW=t.match(/LW[^0-9]*([0-9]+)/i);
-            eLoss = mE?+mE[1]:+nums[0];
-            lwLoss = mLW?+mLW[1]:+nums[mE?0:1];
-          }else{
-            eLoss=+nums[0]; lwLoss=+nums[1];
-          }
-        }else{
-          // some cells may be just "K" for one side at extreme columns; infer: at very high CR the enemy dies, at very low CR LW dies
-          if(/K/i.test(t)){
-            if(td.cellIndex > header.children.length/2){ eKill=true; lwLoss=0; eLoss=0; }
-            else { lwKill=true; eLoss=0; lwLoss=0; }
-          }else{
-            eLoss=0; lwLoss=0;
-          }
+        const t=td.textContent.replace(/\\s+/g,' ').trim();
+        let eLoss=0,lwLoss=0,eKill=false,lwKill=false;
+        if(/E[^0-9]*K/i.test(t)) eKill=true;
+        if(/LW[^0-9]*K/i.test(t)) lwKill=true;
+        const mE = t.match(/E[^0-9]*([0-9]+)/i);
+        const mLW = t.match(/LW[^0-9]*([0-9]+)/i);
+        if(mE) eLoss=+mE[1];
+        if(mLW) lwLoss=+mLW[1];
+        if(!mE && !mLW){
+          const nums=(t.match(/\\d+/g)||[]).map(Number);
+          if(nums.length===2){ eLoss=nums[0]; lwLoss=nums[1]; }
+          else if(/\\bK\\b/i.test(t)){ /* già gestito */ }
         }
         row.push({eLoss,lwLoss,eKill,lwKill});
       });
       rnRows[rn]=row;
     });
-    state.crt={ranges, rows:rnRows};
-  }catch(e){ console.warn('CRT parse failed',e); state.crt=null; }
+    state.crt={ranges,rows:rnRows};
+  }catch(e){ fallbackCRT(); }
+}
+function fallbackCRT(){
+  // Tabella semplificata ma coerente: più CR alto ⇒ più danni al nemico, estremi possono uccidere.
+  const bands=[{min:-999,max:-11},{min:-10,max:-9},{min:-8,max:-7},{min:-6,max:-5},{min:-4,max:-3},{min:-2,max:-1},{min:0,max:0},{min:1,max:2},{min:3,max:4},{min:5,max:6},{min:7,max:8},{min:9,max:10},{min:11,max:999}];
+  const rows=[];
+  for(let rn=0; rn<=9; rn++){
+    rows[rn]=bands.map((b,i)=>{
+      const bias=i-6; // negativo => sfavorevole, positivo => favorevole
+      let eLoss = Math.max(0, 2 + rn/3 + Math.max(0,bias));
+      let lwLoss= Math.max(0, 2 + (9-rn)/3 + Math.max(0,-bias));
+      eLoss=Math.round(eLoss); lwLoss=Math.round(lwLoss);
+      let eKill=false,lwKill=false;
+      if(i<=0 && rn<=1){ lwKill=true; lwLoss=0; eLoss=0; }
+      if(i>=12 && rn>=8){ eKill=true; eLoss=0; lwLoss=0; }
+      return {eLoss,lwLoss,eKill,lwKill};
+    });
+  }
+  state.crt={ranges:bands,rows};
 }
 
 /* ===== Navigation & Rendering ===== */
-function navGoTo(n, pushHistory=true){
+function navGoTo(n,pushHistory=true){
   const found=findSection(n);
   if(!found){ immersion(`Il paragrafo §${n} non è stato trovato.`,'Navigazione'); return; }
   if(pushHistory && state.current.section){ state.navHistory.push(state.current.section); state.navFuture.length=0; }
-  state.current.section = n;
-  // Display
+  state.current.section=n;
   EL('secNo').textContent=String(n);
-  const pass=EL('passage'); pass.innerHTML = ''; pass.appendChild(found.root);
-  state.view.displayRoot = found.root;
-  state.view.logicRoot = found.root.cloneNode(true);
+  const pass=EL('passage'); pass.innerHTML=''; pass.appendChild(found.root);
+  state.view.displayRoot=found.root; state.view.logicRoot=found.root.cloneNode(true);
   EL('deadend').style.display='none';
   analyzeSection(found.root);
-  renderChoicesAssist(true); // also apply blocking to anchors
+  renderChoicesAssist(true);
   updateNavButtons();
   scheduleAutosave();
 }
@@ -567,116 +525,47 @@ function updateNavButtons(){
   EL('navBack').disabled = state.navHistory.length===0;
   EL('navForward').disabled = state.navFuture.length===0;
 }
-EL('navBack').addEventListener('click',()=>{ const prev=state.navHistory.pop(); if(prev){ state.navFuture.push(state.current.section); navGoTo(prev,false); }});
+EL('navBack').addEventListener('click',()=>{ const prev=state.navHistory.pop(); if(prev){ state.navFuture.push(state.current.section); navGoTo(prev,false);} });
 EL('navForward').addEventListener('click',()=>{ const next=state.navFuture.pop(); if(next){ state.navHistory.push(state.current.section); navGoTo(next,false);} });
-EL('jumpGo').addEventListener('click',()=>{ const n=+EL('jumpInput').value; if(Number.isInteger(n)) navGoTo(n);});
+EL('jumpGo').addEventListener('click',()=>{ const n=+EL('jumpInput').value; if(Number.isInteger(n)) navGoTo(n); });
 
-/* Block/override in-paragraph choices when enforceCond is on */
-EL('passage').addEventListener('click', (ev)=>{
-  const a = ev.target.closest('a[href^="#sect"]'); if(!a) return;
-  const target=+(a.getAttribute('href').match(/#sect(\d+)/)?.[1]||NaN);
+/* Blocca i link nel paragrafo se la scelta non è consentita */
+EL('passage').addEventListener('click',(ev)=>{
+  const a=ev.target.closest('a[href^="#sect"]'); if(!a) return;
+  const target=+(a.getAttribute('href').match(/#sect(\\d+)/)?.[1]||NaN);
   if(!Number.isFinite(target)) return;
   if(state.flags.enforceCond && state.allowedTargets.size){
-    const ok = !!state.allowedTargets.get(target);
-    if(!ok){ ev.preventDefault(); ev.stopPropagation(); immersion('Questa scelta è bloccata dalle condizioni.', 'Scelta non disponibile'); return; }
+    const ok=!!state.allowedTargets.get(target);
+    if(!ok){ ev.preventDefault(); ev.stopPropagation(); immersion('Questa scelta è bloccata dalle condizioni.','Scelta non disponibile'); return; }
   }
   ev.preventDefault(); navGoTo(target);
 });
 
-/* ===== Section Analysis (enemies, psionics, evade) ===== */
+/* ===== Section Analysis ===== */
 function analyzeSection(root){
-  // Reset
   state.enemies=[]; state.current.allowEvade=false; state.current.psionicAttack=false; state.current.enemyImmuneMB=false;
-  // Detect enemies in paragraphs with class .combat or containing "COMBAT SKILL"
-  const txt = textOnly(root);
-  const pCombat = $$('p.combat', root);
-  if(pCombat.length===0){
-    // fallback: regex "COMBAT SKILL xx ENDURANCE yy"
-    const m = txt.match(/([A-Za-z][A-Za-z '\-]+)\s*\(?.*?COMBAT SKILL[^0-9]*([0-9]+).*?ENDURANCE[^0-9]*([0-9]+)/i);
-    if(m){ state.enemies.push({name:m[1].trim(), cs:+m[2], ep:+m[3]}); }
-  }else{
-    pCombat.forEach(p=>{
-      const t=textOnly(p);
-      const m = t.match(/^(.*?):\s*COMBAT SKILL[^0-9]*([0-9]+).*?ENDURANCE[^0-9]*([0-9]+)/i);
-      if(m){ state.enemies.push({name:m[1].trim(), cs:+m[2], ep:+m[3]}); }
-    });
-  }
-  // Mindblast immunity / psionic attack hints
-  if(/immune\s+to\s+mindblast/i.test(txt)) state.current.enemyImmuneMB=true;
-  if(/mindblast/i.test(txt) && /cannot|won'?t|does\s+not\s+affect/i.test(txt)) state.current.enemyImmuneMB=true;
-  if(/deduct\s*2\s*points.*mindshield/i.test(txt)) state.current.psionicAttack=true;
+  const txt=textOnly(root);
+  // Rilevazione nemici: pattern tipici AoN
+  const m = txt.match(/([A-Za-z][A-Za-z '\\-]+)\\s*[:\\-]?\\s*COMBAT\\s*SKILL[^0-9]*([0-9]+).*?ENDURANCE[^0-9]*([0-9]+)/i);
+  if(m) state.enemies.push({name:m[1].trim(), cs:+m[2], ep:+m[3]});
+  // Psionico / immunità
+  if(/immune\\s+to\\s+mindblast/i.test(txt) || /mindblast\\s+has\\s+no\\s+effect/i.test(txt)) state.current.enemyImmuneMB=true;
+  if(/psionic|mind\\s*attack|mindblast\\s+attack/i.test(txt) || /deduct\\s*2\\s*points.*mindshield/i.test(txt)) state.current.psionicAttack=true;
+  // Evade
+  if(/\\bevade\\b/i.test(txt)) state.current.allowEvade=true;
 
-  // Evade opportunity (look for “evade” choice)
-  if(/\bevade\b/i.test(txt) || $$('a[href^="#sect"]', root).some(a=>/evade/i.test(textOnly(a.parentElement)))) state.current.allowEvade=true;
-
-  // Show detections
   renderAutoDetections();
 }
 
-/* ===== Choices Assistant & Enforcement ===== */
-function renderChoicesAssist(applyToAnchors){
-  const out=EL('choicesAssist'); out.innerHTML="";
-  state.allowedTargets.clear();
-  const root=state.view.logicRoot; if(!root){ out.innerHTML='<div class="small muted">Nessuna scelta.</div>'; return; }
-
-  // gather paragraph choices
-  let blocks=$$('p.choice',root);
-  if(blocks.length===0) blocks=$$('p a[href^="#sect"]',root).map(a=>a.parentElement);
-  if(blocks.length===0){ out.innerHTML='<div class="small muted">Nessuna scelta esplicita in questo paragrafo.</div>'; return; }
-
-  blocks.forEach(p=>{
-    const a=$('a[href^="#sect"]',p); if(!a) return;
-    const href=a.getAttribute('href')||''; const target=+(href.match(/#sect(\d+)/)?.[1]||NaN);
-    const txt=(p.textContent||"").replace(/\s+/g,' ').trim();
-    const conds=parseChoiceConditions(txt);
-    const unmet=conds.filter(c=>!meetsCondition(c));
-    const isOk = unmet.length===0;
-
-    state.allowedTargets.set(target, isOk);
-
-    const wrap=document.createElement('div');
-    wrap.className=`choice-wrapper ${!isOk && state.flags.enforceCond ? 'disabled':''}`;
-
-    const helper = conds.length ? `<div class="small muted">${conds.map(c=>descCond(c)).join(' • ')}</div>` : '';
-    wrap.innerHTML = `<div><div>${txt}</div>${helper}</div>`;
-
-    const goBtn=document.createElement('button');
-    goBtn.className='btn primary'; goBtn.textContent=`Vai → §${target}`; goBtn.disabled = !isOk && state.flags.enforceCond;
-    goBtn.onclick=()=>{ navGoTo(target); };
-
-    const right=document.createElement('div'); right.className='row buttons'; right.appendChild(goBtn);
-
-    if(!isOk && state.flags.enforceCond){
-      const override=document.createElement('button'); override.className='btn soft'; override.textContent='Ignora vincoli'; override.onclick=()=>navGoTo(target);
-      right.appendChild(override);
-    }
-    wrap.appendChild(right);
-    out.appendChild(wrap);
-  });
-
-  if(applyToAnchors){
-    // Apply disabled class to passage links
-    $$('a[href^="#sect"]', EL('passage')).forEach(a=>{
-      const target=+(a.getAttribute('href').match(/#sect(\d+)/)?.[1]||NaN);
-      a.classList.add('choiceLink');
-      const ok = state.allowedTargets.get(target)!==false;
-      if(!ok && state.flags.enforceCond) a.classList.add('disabled');
-      else a.classList.remove('disabled');
-    });
-  }
-}
-EL('enforceCond').addEventListener('change', (e)=>{ state.flags.enforceCond=e.target.checked; renderChoicesAssist(true); });
-
+/* ===== Choices Assist & Enforcement ===== */
 function parseChoiceConditions(txt){
   const conds=[];
-  // Simple detectors (you can extend): have Discipline, item names, gold/meals thresholds
-  if(/if you have the kai discipline of mindblast/i.test(txt)) conds.push({type:'discipline', name:'Psicolaser'});
-  if(/if you have the kai discipline of mindshield/i.test(txt)) conds.push({type:'discipline', name:'Psicoschermo'});
-  if(/if you have the kai discipline of hunting/i.test(txt)) conds.push({type:'discipline', name:'Caccia'});
-  if(/pay\s+(\d+)\s+gold/i.test(txt)) conds.push({type:'goldAtLeast', amount:+RegExp.$1, consume:true});
-  if(/eat\s+(a|one|1)\s+meal/i.test(txt)) conds.push({type:'mealAtLeast', amount:1, consume:true});
-  // Items (very light-weight)
-  if(/if you possess an? (backpack|rope|potion|spear|sword|dagger)/i.test(txt)) conds.push({type:'item', name:RegExp.$2||RegExp.$1});
+  if(/if you have the kai discipline of mindblast/i.test(txt)) conds.push({type:'discipline',name:'Psicolaser'});
+  if(/if you have the kai discipline of mindshield/i.test(txt)) conds.push({type:'discipline',name:'Psicoschermo'});
+  if(/if you have the kai discipline of hunting/i.test(txt)) conds.push({type:'discipline',name:'Caccia'});
+  if(/pay\\s+(\\d+)\\s+gold/i.test(txt)) conds.push({type:'goldAtLeast',amount:+RegExp.$1,consume:true});
+  if(/eat\\s+(a|one|1)\\s+meal/i.test(txt)) conds.push({type:'mealAtLeast',amount:1,consume:true});
+  if(/if you possess an? (backpack|rope|potion|spear|sword|dagger)/i.test(txt)) conds.push({type:'item',name:RegExp.$2||RegExp.$1});
   return conds;
 }
 function descCond(c){
@@ -696,253 +585,236 @@ function meetsCondition(c){
   if(c.type==='mealAtLeast') return state.player.meals>=c.amount;
   return true;
 }
+function renderChoicesAssist(applyToAnchors){
+  const out=EL('choicesAssist'); out.innerHTML="";
+  state.allowedTargets.clear();
+  const root=state.view.logicRoot; if(!root){ out.innerHTML='<div class="small muted">Nessuna scelta.</div>'; return; }
+
+  let blocks=$$('p.choice',root);
+  if(blocks.length===0) blocks=$$('p a[href^="#sect"]',root).map(a=>a.parentElement);
+  if(blocks.length===0){ out.innerHTML='<div class="small muted">Nessuna scelta esplicita in questo paragrafo.</div>'; return; }
+
+  blocks.forEach(p=>{
+    const a=$('a[href^="#sect"]',p); if(!a) return;
+    const href=a.getAttribute('href')||''; const target=+(href.match(/#sect(\\d+)/)?.[1]||NaN);
+    const txt=(p.textContent||"").replace(/\\s+/g,' ').trim();
+    const conds=parseChoiceConditions(txt);
+    const unmet=conds.filter(c=>!meetsCondition(c));
+    const isOk=unmet.length===0;
+    state.allowedTargets.set(target, isOk);
+
+    const wrap=document.createElement('div');
+    wrap.className=`choice-wrapper ${!isOk && state.flags.enforceCond ? 'disabled' : ''}`;
+
+    const helper = conds.length ? `<div class="small muted">${conds.map(c=>descCond(c)).join(' • ')}</div>` : '';
+    wrap.innerHTML = `<div><div>${txt}</div>${helper}</div>`;
+
+    const goBtn=document.createElement('button');
+    goBtn.className='btn primary'; goBtn.textContent=`Vai → §${target}`; goBtn.disabled=!isOk && state.flags.enforceCond;
+    goBtn.onclick=()=>navGoTo(target);
+
+    const right=document.createElement('div'); right.className='row buttons'; right.appendChild(goBtn);
+    if(!isOk && state.flags.enforceCond){
+      const override=document.createElement('button'); override.className='btn soft'; override.textContent='Ignora vincoli'; override.onclick=()=>navGoTo(target);
+      right.appendChild(override);
+    }
+    wrap.appendChild(right);
+    out.appendChild(wrap);
+  });
+
+  if(applyToAnchors){
+    $$('a[href^="#sect"]', EL('passage')).forEach(a=>{
+      const target=+(a.getAttribute('href').match(/#sect(\\d+)/)?.[1]||NaN);
+      a.classList.add('choiceLink');
+      const ok = state.allowedTargets.get(target)!==false;
+      if(!ok && state.flags.enforceCond) a.classList.add('disabled'); else a.classList.remove('disabled');
+    });
+  }
+}
+EL('enforceCond').addEventListener('change', e=>{ state.flags.enforceCond=e.target.checked; renderChoicesAssist(true); });
 
 /* ===== Auto-detections UI ===== */
 function renderAutoDetections(){
-  // RN
-  EL('detectedRN').classList.add('hidden');
-  // Combat
   const dc=EL('detectedCombat'); const eList=EL('enemyList'); const eCount=EL('enemyCount');
   if(state.enemies.length){
+    EL('autoDetections').classList.remove('hidden');
     dc.classList.remove('hidden');
     eCount.textContent=String(state.enemies.length);
-    eList.innerHTML = state.enemies.map((e,i)=>`<div class="enemyBox"><strong>${e.name||'Nemico'}</strong> — Combattività <strong>${e.cs}</strong>, Resistenza <strong>${e.ep}</strong></div>`).join('');
+    eList.innerHTML = state.enemies.map(e=>`<div class="enemyBox"><strong>${e.name||'Nemico'}</strong> — Combattività <strong>${e.cs}</strong>, Resistenza <strong>${e.ep}</strong></div>`).join('');
   }else{
     dc.classList.add('hidden'); eList.innerHTML=''; eCount.textContent='0';
   }
-  // Psionics hints
-  const hints=EL('psionHints');
-  const parts=[];
+  const hints=EL('psionHints'); const parts=[];
   if(state.current.enemyImmuneMB) parts.push('Nemico <strong>immune a Psicolaser</strong>.');
   if(state.current.psionicAttack) parts.push('Il nemico usa <strong>attacchi psichici</strong> (−2 se non hai Psicoschermo).');
   if(parts.length){ hints.style.display='block'; hints.innerHTML=parts.map(p=>`<span class="tag">${p}</span>`).join(' '); } else { hints.style.display='none'; }
 
-  // Combat panel present if enemies
   if(state.enemies.length){ prepareCombatPanel(state.enemies[0]); } else { EL('combatPanel').classList.add('hidden'); }
 }
 
-/* ===== Combat System (Guided) ===== */
+/* ===== Combat System ===== */
 function effectiveWeaponBonus(name){
   if(!name) return -4;
-  let b = (WEAPON_INFO[name]?.base??0);
-  const spec=state.player.weaponskillWeapon;
-  if(state.player.disciplines.has('Scherma') && spec && new RegExp(`\\b${escRx(spec)}\\b`,'i').test(name)) b+=2;
+  let b=0;
+  if(WEAPON_LIST.includes(name)) b=0;
+  if(state.player.disciplines.has('Scherma') && state.player.weaponskillWeapon && new RegExp(`\\b${escRx(state.player.weaponskillWeapon)}\\b`,'i').test(name)) b+=2;
   return b;
 }
 function playerCurrentCS(){
   let cs = state.player.combattivitaBase + effectiveWeaponBonus(state.player.equipped||"");
-  if(EL('useMindblast').checked && state.player.disciplines.has('Psicolaser') && !state.current.enemyImmuneMB) cs += 2;
-  // Enemy psionic attack applies -2 unless Mindshield
+  if(EL('useMindblast')?.checked && state.player.disciplines.has('Psicolaser') && !state.current.enemyImmuneMB) cs += 2;
   if(state.current.psionicAttack && !state.player.disciplines.has('Psicoschermo')) cs -= 2;
   cs += (+EL('youMod').value||0);
   return cs;
 }
-function enemyCurrentCS(base){
-  return base + (+EL('foeMod').value||0);
-}
-function computeCR(){
-  if(!state.inCombat.foe) return 0;
-  const you=playerCurrentCS(); const foe=enemyCurrentCS(state.inCombat.foe.cs);
-  return you-foe;
-}
+function enemyCurrentCS(base){ return base + (+EL('foeMod').value||0); }
+function computeCR(){ if(!state.inCombat.foe) return 0; return playerCurrentCS() - enemyCurrentCS(state.inCombat.foe.cs); }
 function prepareCombatPanel(foe){
-  state.inCombat={active:false,foe:{...foe, epNow:foe.ep, cs:foe.cs}, round:0};
-  const c=EL('combatPanel'); c.classList.remove('hidden');
+  state.inCombat={active:false,foe:{...foe,epNow:foe.ep,cs:foe.cs},round:0};
+  EL('combatPanel').classList.remove('hidden');
   EL('foeName').textContent=foe.name||'Nemico';
-  EL('foeCS').textContent=String(foe.cs);
-  EL('foeEP').textContent=String(foe.ep); EL('foeEPmax').textContent=`/ ${foe.ep}`;
-  EL('youCS').textContent=String(state.player.combattivitaBase); // will be recalculated live
+  EL('foeCS').textContent=String(foe.cs); EL('foeEP').textContent=String(foe.ep); EL('foeEPmax').textContent=`/ ${foe.ep}`;
+  EL('youCS').textContent=String(state.player.combattivitaBase);
   EL('youEP').textContent=String(state.player.resistenzaCorrente); EL('youEPmax').textContent=`/ ${state.player.resistenzaBase}`;
-  EL('youNotes').textContent = state.player.equipped ? `Arma: ${state.player.equipped}`:'Senza arma (−4 Combattività)';
+  EL('youNotes').textContent = state.player.equipped ? `Arma: ${state.player.equipped}` : 'Senza arma (−4 Combattività)';
   EL('foeNotes').textContent = state.current.enemyImmuneMB ? 'Immune a Psicolaser' : '';
-  EL('crNow').textContent='—'; EL('lastRN').textContent='–'; EL('lastResult').textContent='–';
-  EL('combatLog').textContent='';
-
-  // Options visibility
-  $('#mbWrap').classList.toggle('hidden', !(state.player.disciplines.has('Psicolaser')));
+  EL('crNow').textContent='—'; EL('lastRN').textContent='–'; EL('lastResult').textContent='–'; EL('combatLog').textContent='';
+  $('#mbWrap').classList.toggle('hidden', !state.player.disciplines.has('Psicolaser'));
   $('#mbImmune').classList.toggle('hidden', !state.current.enemyImmuneMB);
   $('#msInfo').classList.toggle('hidden', !state.current.psionicAttack);
   EL('evadeBtn').style.display = state.current.allowEvade ? '' : 'none';
-
-  // Buttons
   EL('startCombat').disabled=false; EL('combatRound').disabled=true; EL('endCombat').disabled=true;
 }
+function consultCRT(cr, rn){
+  const col = state.crt.ranges.findIndex(r=>cr>=r.min && cr<=r.max);
+  const idx = col===-1 ? (cr<0?0:state.crt.ranges.length-1) : col;
+  return state.crt.rows[rn]?.[idx] || {eLoss:0,lwLoss:0,eKill:false,lwKill:false};
+}
+function logLine(s){ const el=EL('combatLog'); el.textContent+=s+'\\n'; el.scrollTop=el.scrollHeight; }
 function startCombat(){
   if(!state.inCombat.foe) return;
   state.inCombat.active=true; state.inCombat.round=0;
   EL('startCombat').disabled=true; EL('combatRound').disabled=false; EL('endCombat').disabled=false;
-  const cr=computeCR(); EL('crNow').textContent=String(cr);
-  immersion(`Inizia il combattimento contro ${state.inCombat.foe.name}. CR: ${cr>=0?'+':''}${cr}.`, 'Combattimento');
+  const cr=computeCR(); EL('crNow').textContent=cr>=0?`+${cr}`:String(cr);
+  immersion(`Inizia il combattimento contro ${state.inCombat.foe.name}. CR: ${cr>=0?'+':''}${cr}.`,'Combattimento');
   logLine(`— Inizia combattimento con ${state.inCombat.foe.name} —`);
-  logLine(`Tu: CS ${playerCurrentCS()} (base ${state.player.combattivitaBase}, arma ${state.player.equipped||'nessuna'}), EP ${state.player.resistenzaCorrente}/${state.player.resistenzaBase}`);
-  logLine(`Nemico: CS ${enemyCurrentCS(state.inCombat.foe.cs)} (base ${state.inCombat.foe.cs}), EP ${state.inCombat.foe.epNow}/${state.inCombat.foe.ep}`);
+  logLine(`Tu: CS ${playerCurrentCS()}, EP ${state.player.resistenzaCorrente}/${state.player.resistenzaBase}`);
+  logLine(`Nemico: CS ${enemyCurrentCS(state.inCombat.foe.cs)}, EP ${state.inCombat.foe.epNow}/${state.inCombat.foe.ep}`);
 }
 function endCombat(msg){
   EL('startCombat').disabled=true; EL('combatRound').disabled=true; EL('endCombat').disabled=true;
-  state.inCombat.active=false;
-  if(msg) immersion(msg,'Combattimento');
+  state.inCombat.active=false; if(msg) immersion(msg,'Combattimento');
 }
 function resolveRound(evading=false){
-  if(!state.inCombat.active || !state.crt){ immersion('Tabella dei risultati non disponibile.','Errore'); return; }
-  const rn = random0to9(); EL('lastRN').textContent=String(rn);
-  const cr = computeCR(); EL('crNow').textContent = cr>=0?`+${cr}`:String(cr);
-  const cell = consultCRT(cr, rn);
-  let yourLoss = cell.lwKill? state.player.resistenzaCorrente : (cell.lwLoss||0);
-  let foeLoss = cell.eKill? state.inCombat.foe.epNow : (cell.eLoss||0);
-
-  // Evade rule: you still take LW loss; enemy loss is ignored
-  if(evading){ foeLoss=0; }
-
-  // Apply
+  if(!state.inCombat.active || !state.crt){ immersion('Tabella risultati non disponibile.','Errore'); return; }
+  const rn=random0to9(); EL('rngVal').textContent=rn; EL('lastRN').textContent=String(rn);
+  const cr=computeCR(); EL('crNow').textContent=cr>=0?`+${cr}`:String(cr);
+  const cell=consultCRT(cr,rn);
+  let yourLoss = cell.lwKill ? state.player.resistenzaCorrente : (cell.lwLoss||0);
+  let foeLoss  = cell.eKill ? state.inCombat.foe.epNow : (cell.eLoss||0);
+  if(evading) foeLoss=0; // evadere: subisci danno ma non infliggi
   state.player.resistenzaCorrente = Math.max(0, state.player.resistenzaCorrente - yourLoss);
   state.inCombat.foe.epNow = Math.max(0, state.inCombat.foe.epNow - foeLoss);
-
   EL('youEP').textContent=String(state.player.resistenzaCorrente);
   EL('foeEP').textContent=String(state.inCombat.foe.epNow);
-
   const resultTxt = `${evading?'(Evasione) ':''}RN ${rn} → Tu −${yourLoss}, Nemico −${foeLoss}`;
   EL('lastResult').textContent=resultTxt;
   logLine(`Round ${++state.inCombat.round}: ${resultTxt} (CR ${cr>=0?'+':''}${cr})`);
   immersion(resultTxt + `. Stato: Tu ${state.player.resistenzaCorrente}/${state.player.resistenzaBase} • Nemico ${state.inCombat.foe.epNow}/${state.inCombat.foe.ep}`, 'Esito round');
 
-  // Death checks
-  if(state.player.resistenzaCorrente<=0){
-    logLine(`✖ Sei caduto in combattimento.`);
-    EL('deadend').style.display='block';
-    endCombat('Sei stato sconfitto.');
-    return;
-  }
-  if(state.inCombat.foe.epNow<=0){
-    logLine(`✔ ${state.inCombat.foe.name} è stato sconfitto.`);
-    endCombat(`${state.inCombat.foe.name} è stato sconfitto!`);
-    state.current.lastHadCombat=true;
-    return;
-  }
-  // continue
+  if(state.player.resistenzaCorrente<=0){ logLine('✖ Sei caduto in combattimento.'); EL('deadend').style.display='block'; endCombat('Sei stato sconfitto.'); return; }
+  if(state.inCombat.foe.epNow<=0){ logLine(`✔ ${state.inCombat.foe.name} è stato sconfitto.`); state.current.lastHadCombat=true; endCombat(`${state.inCombat.foe.name} è stato sconfitto!`); return; }
 }
-function consultCRT(cr, rn){
-  // Pick column by CR range
-  const col = state.crt.ranges.findIndex(r=>cr>=r.min && cr<=r.max);
-  const idx = col===-1 ? (cr<0?0:state.crt.ranges.length-1) : col;
-  let cell = state.crt.rows[rn]?.[idx];
-  if(!cell){ cell={eLoss:0,lwLoss:0,eKill:false,lwKill:false}; }
-  return cell;
-}
-function logLine(s){ const el=EL('combatLog'); el.textContent += s + '\n'; el.scrollTop = el.scrollHeight; }
-
-/* Buttons wiring for combat */
-EL('startCombat').addEventListener('click', startCombat);
-EL('combatRound').addEventListener('click', ()=> resolveRound(false));
-EL('evadeBtn').addEventListener('click', ()=> resolveRound(true));
-EL('endCombat').addEventListener('click', ()=> endCombat('Combattimento terminato.'));
-
+EL('startCombat').addEventListener('click',startCombat);
+EL('combatRound').addEventListener('click',()=>resolveRound(false));
+EL('evadeBtn').addEventListener('click',()=>resolveRound(true));
+EL('endCombat').addEventListener('click',()=>endCombat('Combattimento terminato.'));
 ['useMindblast','youMod','foeMod','equippedWeapon'].forEach(id=>{
-  document.addEventListener('change', (e)=>{ if(e.target.id===id && state.inCombat.foe){ EL('crNow').textContent=String(computeCR()); EL('youCS').textContent=String(playerCurrentCS()); EL('foeCS').textContent=String(enemyCurrentCS(state.inCombat.foe.cs)); }});
+  document.addEventListener('change',e=>{ if(e.target.id===id && state.inCombat.foe){ EL('crNow').textContent=String(computeCR()); EL('youCS').textContent=String(playerCurrentCS()); EL('foeCS').textContent=String(enemyCurrentCS(state.inCombat.foe.cs)); }});
 });
 
-/* ===== Inventory/UI Sync ===== */
+/* ===== Inventory & Stats ===== */
 function weaponInfoLabel(name){
   if(!name) return "(nessuna) — eff. −4 (disarmato)";
-  const base=WEAPON_INFO[name]?.base??0;
+  const eff=effectiveWeaponBonus(name);
   const spec = state.player.disciplines.has("Scherma") ? `; +2 con Scherma: ${state.player.weaponskillWeapon||"—"}` : "";
-  const eff = effectiveWeaponBonus(name);
-  const tags=WEAPON_INFO[name]?.tags?.join(', ')||'';
-  const extra=tags?` • ${tags}`:'';
-  return `${name} — base ${base>=0?`+${base}`:base}${spec} • eff. ${eff>=0?`+${eff}`:eff}${extra}`;
+  return `${name} — eff. ${eff>=0?`+${eff}`:eff}${spec}`;
 }
-function enforceCapacityInvariant(showToast){
-  const backpackItems=state.player.backpack.length;
-  const maxMealsAllowed=Math.max(0,8-backpackItems);
-  if(state.player.meals>maxMealsAllowed){ state.player.meals=maxMealsAllowed; }
+function enforceCapacityInvariant(){
+  const maxMealsAllowed=Math.max(0,8-state.player.backpack.length);
+  if(state.player.meals>maxMealsAllowed) state.player.meals=maxMealsAllowed;
   EL('meals').value=state.player.meals; EL('meals').max=String(maxMealsAllowed);
   const cap=state.player.backpack.length+state.player.meals;
   EL('capInfo').textContent=`capienza: ${cap}/8`;
   EL('addBackpack').disabled = cap>=8;
 }
 function renderDisciplinesList(){
-  const root=EL('disciplinesList'); root.innerHTML="";
-  const note=EL('discNote');
+  const root=EL('disciplinesList'); root.innerHTML=""; const note=EL('discNote');
   if(!state.flags.started){
-    note.textContent="selezionane 5";
+    note.textContent="seleziona 5";
     DISCIPLINES.forEach(name=>{
-      const id=`disc_${name.replace(/\s+/g,'_')}`;
+      const id=`disc_${name.replace(/\\s+/g,'_')}`;
       root.insertAdjacentHTML('beforeend', `<label class="row small"><input type="checkbox" id="${id}"> <strong>${name}</strong> <span class="tag">— ${DISC_DESC[name]}</span></label>`);
       const cb=EL(id); cb.checked=state.player.disciplines.has(name);
-      cb.addEventListener('change',(e)=>{
+      cb.addEventListener('change',e=>{
         if(e.target.checked){
           if(state.player.disciplines.size>=5){ e.target.checked=false; immersion('Massimo 5 arti.','Wizard'); return; }
           state.player.disciplines.add(name);
-          if(name==="Scherma" && !state.player.weaponskillWeapon){
-            const rn=random0to9(); state.player.weaponskillWeapon=WEAPON_LIST[rn];
-            immersion(`Maestro di Scherma in: ${state.player.weaponskillWeapon} (Numero ${rn}).`,'Scherma');
-          }
-        }else{
-          state.player.disciplines.delete(name);
-          if(name==="Scherma") state.player.weaponskillWeapon=null;
-        }
+          if(name==='Scherma' && !state.player.weaponskillWeapon){ const rn=random0to9(); state.player.weaponskillWeapon=WEAPON_LIST[rn]; immersion(`Scherma: ${state.player.weaponskillWeapon} (Numero ${rn}).`,'Scherma'); }
+        }else{ state.player.disciplines.delete(name); if(name==='Scherma') state.player.weaponskillWeapon=null; }
         syncUIStats(); renderChoicesAssist(true);
       });
     });
+    EL('wsPanel').classList.toggle('hidden', !state.player.disciplines.has('Scherma'));
+    if(state.player.disciplines.has('Scherma')){
+      EL('wsSelect').innerHTML = WEAPON_LIST.map(w=>`<option>${w}</option>`).join('');
+      EL('wsRoll').onclick=()=>{ const rn=random0to9(); state.player.weaponskillWeapon=WEAPON_LIST[rn]; immersion(`Scherma specializzata: ${state.player.weaponskillWeapon}.`,'Scherma'); };
+      EL('wsEquip').onclick=()=>{ if(state.player.weapons.includes(state.player.weaponskillWeapon)){ state.player.equipped=state.player.weaponskillWeapon; syncUIStats(); immersion(`Equipaggiata: ${state.player.equipped}.`,'Armi'); } else immersion('Non possiedi ancora quell’arma.','Armi'); };
+    }
   }else{
     note.textContent="(bloccate: avventura in corso)";
-    const sel=Array.from(state.player.disciplines);
+    const sel=[...state.player.disciplines];
     root.innerHTML = sel.length? sel.map(s=>`<div class="row small"><strong>${s}</strong> <span class="tag">— ${DISC_DESC[s]}</span></div>`).join('') : '<div class="small muted">Nessuna arte selezionata.</div>';
+    EL('wsPanel').classList.add('hidden');
   }
 }
 function renderInventoryLists(){
-  // Weapons
   const wRoot=EL('weaponsList'); wRoot.innerHTML = state.player.weapons.length? state.player.weapons.map((w,i)=>`<div class="row small"><span>${weaponInfoLabel(w)}</span><button class="btn soft" data-delw="${i}">Rimuovi</button></div>`).join('') : '<div class="small muted">Nessuna arma.</div>';
-  wRoot.querySelectorAll('button[data-delw]').forEach(b=>b.onclick=()=>{ const idx=+b.dataset.delw; state.player.weapons.splice(idx,1); if(state.player.equipped && !state.player.weapons.includes(state.player.equipped)) state.player.equipped=""; syncUIStats(); });
-
-  // Equipped select
-  const eq=EL('equippedWeapon'); eq.innerHTML=`<option value="">(nessuna) — eff. −4</option>` + state.player.weapons.map(w=>`<option>${weaponInfoLabel(w)}</option>`).join('');
-  if(state.player.equipped){
-    const i = $$('option',eq).findIndex(opt=>opt.text.startsWith(`${state.player.equipped} —`));
-    eq.selectedIndex = i!==-1 ? i : 0;
-  }else eq.selectedIndex=0;
-  eq.onchange=()=>{ const text=eq.selectedOptions[0].text; const name=text.split(' — ')[0]; state.player.equipped = name.startsWith('(nessuna)')?'':name; syncUIStats(); };
-
-  // Backpack
+  wRoot.querySelectorAll('button[data-delw]').forEach(b=>b.onclick=()=>{ state.player.weapons.splice(+b.dataset.delw,1); if(state.player.equipped && !state.player.weapons.includes(state.player.equipped)) state.player.equipped=""; syncUIStats();});
+  const eq=EL('equippedWeapon'); eq.innerHTML=`<option value="">(nessuna) — eff. −4</option>`+state.player.weapons.map(w=>`<option>${weaponInfoLabel(w)}</option>`).join('');
+  if(state.player.equipped){ const i=$$('option',eq).findIndex(opt=>opt.text.startsWith(`${state.player.equipped} —`)); eq.selectedIndex=i!==-1?i:0; } else eq.selectedIndex=0;
+  eq.onchange=()=>{ const txt=eq.selectedOptions[0].text; const name=txt.split(' — ')[0]; state.player.equipped = name.startsWith('(nessuna)')?'':name; syncUIStats(); };
   const bRoot=EL('backpackList'); bRoot.innerHTML = state.player.backpack.length? state.player.backpack.map((it,i)=>`<div class="row small"><span>${it}</span><button class="btn soft" data-deli="${i}">Rimuovi</button></div>`).join('') : '<div class="small muted">Zaino vuoto.</div>';
   bRoot.querySelectorAll('button[data-deli]').forEach(b=>b.onclick=()=>{ state.player.backpack.splice(+b.dataset.deli,1); syncUIStats(); });
-
-  // Specials
   const sRoot=EL('specialsList'); sRoot.innerHTML = state.player.specials.length? state.player.specials.map((it,i)=>`<div class="row small"><span>${it}</span><button class="btn soft" data-dels="${i}">Rimuovi</button></div>`).join('') : '<div class="small muted">Nessuno.</div>';
   sRoot.querySelectorAll('button[data-dels]').forEach(b=>b.onclick=()=>{ state.player.specials.splice(+b.dataset.dels,1); syncUIStats(); });
-
-  // Bonuses: Helmet +2, Chainmail +4
-  const base=state.player.resistenzaBase;
+  // Bonus equip difensivi
   const helm = state.player.specials.some(x=>/^elmo$/i.test(x))?2:0;
   const mail = state.player.specials.some(x=>/cotta di maglia/i.test(x))?4:0;
-  const bonus=helm+mail;
-  const newBase = Math.max(1, 20 + (base-20 - (state._lastSpecBonus||0)) + bonus);
-  state._lastSpecBonus=bonus; state.player.resistenzaBase=newBase;
-  if(state.player.resistenzaCorrente>newBase) state.player.resistenzaCorrente=newBase;
-
-  EL('resistenzaBase').value=state.player.resistenzaBase;
-  EL('resistenzaCorrente').value=state.player.resistenzaCorrente;
-
-  enforceCapacityInvariant(false);
+  const bonus = helm+mail;
+  const baseNoBonus = 20 + ((state.player.resistenzaBase-20) - (state._lastSpecBonus||0));
+  state._lastSpecBonus=bonus;
+  state.player.resistenzaBase = Math.max(1, baseNoBonus + bonus);
+  if(state.player.resistenzaCorrente>state.player.resistenzaBase) state.player.resistenzaCorrente=state.player.resistenzaBase;
+  EL('resistenzaBase').value=state.player.resistenzaBase; EL('resistenzaCorrente').value=state.player.resistenzaCorrente;
+  enforceCapacityInvariant();
 }
 function syncUIStats(){
   EL('combattivitaBase').value=state.player.combattivitaBase;
   EL('resistenzaBase').value=state.player.resistenzaBase;
   EL('resistenzaCorrente').value=state.player.resistenzaCorrente;
-  EL('meals').value=state.player.meals;
-  EL('gold').value=state.player.gold;
-  renderDisciplinesList();
-  renderInventoryLists();
-  scheduleAutosave();
+  EL('meals').value=state.player.meals; EL('gold').value=state.player.gold;
+  renderDisciplinesList(); renderInventoryLists(); scheduleAutosave();
 }
 
 /* ===== Save/Load ===== */
-function hasAutosave(){ try{ return !!localStorage.getItem(AUTOSAVE_KEY);}catch{ return false; } }
+function hasAutosave(){ try{ return !!localStorage.getItem(AUTOSAVE_KEY);}catch{return false;} }
 function scheduleAutosave(){ if(!state.flags.autosave) return; try{ localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({state})); EL('btnResume').disabled=false; }catch(e){} }
 function restoreAutosave(){ try{ const raw=localStorage.getItem(AUTOSAVE_KEY); if(!raw) return false; const obj=JSON.parse(raw); if(obj?.state){ state=obj.state; syncUIStats(); if(state.current?.section) navGoTo(state.current.section,false); return true; } }catch(e){} return false; }
 
-/* ===== Wizard (Narrative & Mobile-safe) ===== */
-const wizard = {step:0,total:5,temp:{useManualRN:false,rolls:{cs:0,ep:0,gold:0},cs:null,ep:null,gold:0}};
-function openWizard(){ EL('wizard').classList.remove('hidden'); wizard.step=0; wizard.temp={useManualRN:false,rolls:{cs:0,ep:0,gold:0},cs:null,ep:null,gold:0}; renderWizard(); }
+/* ===== Wizard ===== */
+const wizard={step:0,total:5,temp:{useManualRN:false,rolls:{cs:0,ep:0,gold:0},cs:null,ep:null,gold:0}};
+function openWizardModal(){ EL('wizard').classList.remove('hidden'); wizard.step=0; wizard.temp={useManualRN:false,rolls:{cs:0,ep:0,gold:0},cs:null,ep:null,gold:0}; renderWizard(); }
 function closeWizard(){ EL('wizard').classList.add('hidden'); }
 function renderWizard(){
   EL('wizStepTag').textContent=`Passo ${wizard.step+1} di ${wizard.total}`;
@@ -953,15 +825,15 @@ function renderWizard(){
     body.innerHTML = `
       <div class="box">
         <h3>Benvenuto, Ramas</h3>
-        <p>In pochi passi definiremo il tuo eroe: statistiche, 5 Arti, equipaggiamento e oro iniziale.</p>
-        <label class="row small"><input type="checkbox" id="wizManual"> Tiri manuali (userai il selettore 0–9 invece dell’estrazione casuale)</label>
+        <p>Definiamo il tuo eroe: statistiche, 5 Arti, equipaggiamento e oro iniziale.</p>
+        <label class="row small"><input type="checkbox" id="wizManual"> Tiri manuali (inserirai tu il numero 0–9)</label>
       </div>
       <div class="box">
         <h3>Consigli</h3>
         <ul class="small">
-          <li><strong>Guarigione</strong> è utile nelle sezioni senza combattimento.</li>
-          <li><strong>Scherma</strong> sblocca +2 con un’arma casuale (o scelta se già posseduta).</li>
-          <li><strong>Psicoschermo</strong> evita il malus contro attacchi psichici.</li>
+          <li><strong>Guarigione</strong> fa recuperare Resistenza nel tempo.</li>
+          <li><strong>Scherma</strong> dà +2 con un’arma specializzata.</li>
+          <li><strong>Psicoschermo</strong> evita il −2 contro attacchi psichici.</li>
         </ul>
       </div>`;
     EL('wizManual').checked=wizard.temp.useManualRN;
@@ -987,32 +859,28 @@ function renderWizard(){
         <div class="row"><button class="btn" id="wizRollGold">Estrai</button><input id="wizGold" type="number" style="width:100px"/><span class="muted">Corone (0–9)</span><span class="tag" id="tryGold"></span></div>
       </div>`;
     const useMan=wizard.temp.useManualRN;
-    const upd=()=>{ EL('wizCS').value=wizard.temp.cs??10; EL('wizEP').value=wizard.temp.ep??20; EL('wizGold').value=wizard.temp.gold??0;
-      EL('tryCS').textContent=`tentativi: ${wizard.temp.rolls.cs}/2`; EL('tryEP').textContent=`tentativi: ${wizard.temp.rolls.ep}/2`; EL('tryGold').textContent=`tentativi: ${wizard.temp.rolls.gold}/2`;};
+    const upd=()=>{ EL('wizCS').value=wizard.temp.cs??10; EL('wizEP').value=wizard.temp.ep??20; EL('wizGold').value=wizard.temp.gold??0; EL('tryCS').textContent=`tentativi: ${wizard.temp.rolls.cs}/2`; EL('tryEP').textContent=`tentativi: ${wizard.temp.rolls.ep}/2`; EL('tryGold').textContent=`tentativi: ${wizard.temp.rolls.gold}/2`; };
     upd();
-    EL('wizRollCS').onclick=()=>{ if(wizard.temp.rolls.cs>=2 && !useMan){immersion('Tentativi esauriti.','Wizard');return;}
-      const r= useMan? (+prompt('Inserisci numero 0–9', '0')||0) : random0to9(); if(!useMan) wizard.temp.rolls.cs++; wizard.temp.cs=10+r; upd(); immersion(`Numero ${r}. Combattività = 10 + ${r} = ${wizard.temp.cs}.`,'Tiro'); };
-    EL('wizRollEP').onclick=()=>{ if(wizard.temp.rolls.ep>=2 && !useMan){immersion('Tentativi esauriti.','Wizard');return;}
-      const r= useMan? (+prompt('Inserisci numero 0–9', '0')||0) : random0to9(); if(!useMan) wizard.temp.rolls.ep++; wizard.temp.ep=20+r; upd(); immersion(`Numero ${r}. Resistenza = 20 + ${r} = ${wizard.temp.ep}.`,'Tiro'); };
-    EL('wizRollGold').onclick=()=>{ if(wizard.temp.rolls.gold>=2 && !useMan){immersion('Tentativi esauriti.','Wizard');return;}
-      const r= useMan? (+prompt('Inserisci numero 0–9', '0')||0) : random0to9(); if(!useMan) wizard.temp.rolls.gold++; wizard.temp.gold=r; upd(); immersion(`Inizi con ${r} Corone d’Oro.`,'Tiro'); };
-    EL('wizCS').oninput=e=>wizard.temp.cs=+e.target.value||10; EL('wizEP').oninput=e=>wizard.temp.ep=+e.target.value||20; EL('wizGold').oninput=e=>wizard.temp.gold=+e.target.value||0;
+    EL('wizRollCS').onclick=()=>{ if(wizard.temp.rolls.cs>=2 && !useMan){immersion('Tentativi esauriti.','Wizard');return;} const r= useMan? (+prompt('Inserisci numero 0–9','0')||0) : random0to9(); if(!useMan) wizard.temp.rolls.cs++; wizard.temp.cs=10+r; upd(); immersion(`Numero ${r}. Combattività = 10 + ${r} = ${wizard.temp.cs}.`,'Tiro'); };
+    EL('wizRollEP').onclick=()=>{ if(wizard.temp.rolls.ep>=2 && !useMan){immersion('Tentativi esauriti.','Wizard');return;} const r= useMan? (+prompt('Inserisci numero 0–9','0')||0) : random0to9(); if(!useMan) wizard.temp.rolls.ep++; wizard.temp.ep=20+r; upd(); immersion(`Numero ${r}. Resistenza = 20 + ${r} = ${wizard.temp.ep}.`,'Tiro'); };
+    EL('wizRollGold').onclick=()=>{ if(wizard.temp.rolls.gold>=2 && !useMan){immersion('Tentativi esauriti.','Wizard');return;} const r= useMan? (+prompt('Inserisci numero 0–9','0')||0) : random0to9(); if(!useMan) wizard.temp.rolls.gold++; wizard.temp.gold=r; upd(); immersion(`Inizi con ${r} Corone d’Oro.`,'Tiro'); };
+    EL('wizCS').oninput=e=>wizard.temp.cs=+e.target.value||10;
+    EL('wizEP').oninput=e=>wizard.temp.ep=+e.target.value||20;
+    EL('wizGold').oninput=e=>wizard.temp.gold=+e.target.value||0;
   }
 
   if(wizard.step===2){
     body.innerHTML = `<div class="box"><h3>Scegli 5 Arti Ramas</h3><div id="wizDiscList" class="list"></div></div>`;
     const list=EL('wizDiscList');
     DISCIPLINES.forEach(name=>{
-      const id=`wd_${name.replace(/\s+/g,'_')}`;
+      const id=`wd_${name.replace(/\\s+/g,'_')}`;
       list.insertAdjacentHTML('beforeend', `<label class="row small"><input type="checkbox" id="${id}"> <strong>${name}</strong> <span class="tag">— ${DISC_DESC[name]}</span></label>`);
-      const cb=EL(id); cb.checked = state.player.disciplines.has(name);
+      const cb=EL(id); cb.checked=state.player.disciplines.has(name);
       cb.onchange=(e)=>{
         if(e.target.checked){
           if(state.player.disciplines.size>=5){ e.target.checked=false; immersion('Massimo 5 arti.','Wizard'); return; }
           state.player.disciplines.add(name);
-          if(name==='Scherma' && !state.player.weaponskillWeapon){
-            const rn=random0to9(); state.player.weaponskillWeapon=WEAPON_LIST[rn]; immersion(`Scherma: ${state.player.weaponskillWeapon} (Numero ${rn}).`,'Scherma');
-          }
+          if(name==='Scherma' && !state.player.weaponskillWeapon){ const rn=random0to9(); state.player.weaponskillWeapon=WEAPON_LIST[rn]; immersion(`Scherma: ${state.player.weaponskillWeapon} (Numero ${rn}).`,'Scherma'); }
         }else{ state.player.disciplines.delete(name); if(name==='Scherma') state.player.weaponskillWeapon=null; }
       };
     });
@@ -1028,4 +896,125 @@ function renderWizard(){
         </div>
         <div class="box">
           <h3>Oggetti &amp; Pasti</h3>
-          <div class="row small"><label>Pasti: <input id="wizMeals" type="number" min="0"
+          <div class="row small"><label>Pasti: <input id="wizMeals" type="number" min="0" max="8" step="1" value="1" style="width:90px"></label> <label>Oro: <input id="wizGold2" type="number" min="0" max="50" step="1" style="width:90px"></label></div>
+        </div>
+      </div>`;
+    EL('wizGold2').value = wizard.temp.gold ?? 0;
+  }
+
+  if(wizard.step===4){
+    const arts=[...state.player.disciplines].join(', ')||'—';
+    body.innerHTML = `
+      <div class="box">
+        <h3>Riepilogo</h3>
+        <div class="list small">
+          <div><strong>Combattività</strong>: ${wizard.temp.cs??10}</div>
+          <div><strong>Resistenza</strong>: ${wizard.temp.ep??20}</div>
+          <div><strong>Arti</strong>: ${arts}</div>
+          <div><strong>Armi</strong>: ${state.player.weapons.join(', ')||'—'} (equip: ${state.player.equipped||'—'})</div>
+          <div><strong>Pasti</strong>: ${state.player.meals} • <strong>Oro</strong>: ${state.player.gold}</div>
+        </div>
+      </div>`;
+  }
+
+  // Footer buttons state
+  EL('wizPrev').disabled = wizard.step===0;
+  EL('wizNext').classList.toggle('hidden', wizard.step===wizard.total-1);
+  EL('wizFinish').classList.toggle('hidden', wizard.step!==wizard.total-1);
+}
+
+/* Wizard controls */
+EL('openWizardBtn').addEventListener('click', openWizardModal);
+EL('wizSkip').addEventListener('click', closeWizard);
+EL('wizPrev').addEventListener('click', ()=>{ wizard.step=Math.max(0, wizard.step-1); renderWizard(); });
+EL('wizNext').addEventListener('click', ()=>{
+  if(wizard.step===1){
+    // applica cs/ep/gold
+    state.player.combattivitaBase = clamp(+EL('wizCS').value||10,0,99);
+    const ep=clamp(+EL('wizEP').value||20,1,99);
+    state.player.resistenzaBase=ep; state.player.resistenzaCorrente=ep;
+    state.player.gold = clamp(+EL('wizGold').value||0,0,50);
+    syncUIStats();
+  }
+  if(wizard.step===3){
+    const w1=EL('wizW1').value, w2=EL('wizW2').value;
+    state.player.weapons = Array.from(new Set([w1,w2])).slice(0,2);
+    state.player.equipped = state.player.weapons[0]||"";
+    state.player.meals = clamp(+EL('wizMeals').value||1,0,8);
+    state.player.gold = clamp(+EL('wizGold2').value||state.player.gold,0,50);
+    syncUIStats();
+  }
+  wizard.step=Math.min(wizard.total-1, wizard.step+1);
+  renderWizard();
+});
+EL('wizFinish').addEventListener('click', ()=>{
+  state.flags.started=true; closeWizard(); syncUIStats(); immersion('Il tuo viaggio ha inizio…','Avventura');
+});
+
+/* ===== Inputs & Buttons ===== */
+EL('fileInput').addEventListener('change', async (e)=>{
+  const file=e.target.files?.[0]; if(!file) return;
+  const txt=await file.text(); importBook(txt);
+});
+EL('quickStart').addEventListener('click', async ()=>{
+  const ok=await tryAutoLoad(); if(!ok) immersion('Aggiungi 01fftd.htm accanto a index.html o usa “Importa libro”.','Avvio');
+  openWizardModal();
+});
+EL('newGame').addEventListener('click', ()=>{ if(confirm('Nuova partita? Perderai i progressi non salvati.')){ localStorage.removeItem(AUTOSAVE_KEY); location.reload(); }});
+EL('exportSave').addEventListener('click', ()=>{ EL('saveCode').value = btoa(unescape(encodeURIComponent(JSON.stringify({state})))); immersion('Codice di salvataggio generato in basso.','Salvataggio'); });
+EL('importSave').addEventListener('click', ()=>{ const raw=prompt('Incolla il codice di salvataggio:',''); if(!raw) return; try{ const obj=JSON.parse(decodeURIComponent(escape(atob(raw)))); if(obj?.state){ state=obj.state; syncUIStats(); if(state.current?.section) navGoTo(state.current.section,false); immersion('Salvataggio caricato.','Import'); } }catch(e){ alert('Codice non valido.'); }});
+EL('btnExport').addEventListener('click', ()=>EL('exportSave').click());
+EL('btnImport').addEventListener('click', ()=>EL('importSave').click());
+EL('btnReset').addEventListener('click', ()=>{ if(confirm('Reset totale?')){ localStorage.removeItem(AUTOSAVE_KEY); location.reload(); }});
+EL('btnResume').addEventListener('click', ()=>{ if(!restoreAutosave()) immersion('Nessun salvataggio trovato.','Riprendi'); });
+EL('toggleAutosave').addEventListener('change', e=>{ state.flags.autosave=e.target.checked; try{ localStorage.setItem(AUTOSAVE_PREF, e.target.checked?'1':'0'); }catch{} });
+
+['combattivitaBase','resistenzaBase','resistenzaCorrente','meals','gold'].forEach(id=>{
+  EL(id).addEventListener('input',()=>{ state.player.combattivitaBase=+EL('combattivitaBase').value||0; state.player.resistenzaBase=+EL('resistenzaBase').value||1; state.player.resistenzaCorrente=clamp(+EL('resistenzaCorrente').value||0,0,state.player.resistenzaBase); state.player.meals=+EL('meals').value||0; state.player.gold=clamp(+EL('gold').value||0,0,50); scheduleAutosave(); });
+});
+EL('goldPlus1').addEventListener('click',()=>{ EL('gold').value=clamp((+EL('gold').value||0)+1,0,50); EL('gold').dispatchEvent(new Event('input')); });
+EL('goldMinus1').addEventListener('click',()=>{ EL('gold').value=clamp((+EL('gold').value||0)-1,0,50); EL('gold').dispatchEvent(new Event('input')); });
+
+EL('addWeapon').addEventListener('click',()=>{ const val=(EL('weaponInput').value||'').trim(); if(!val) return; if(state.player.weapons.includes(val)) return; if(state.player.weapons.length>=2){ alert('Puoi portare al massimo 2 armi.'); return; } state.player.weapons.push(val); if(!state.player.equipped) state.player.equipped=val; EL('weaponInput').value=''; syncUIStats(); });
+EL('addBackpack').addEventListener('click',()=>{ const val=(EL('backpackInput').value||'').trim(); if(!val) return; const cap=state.player.backpack.length+state.player.meals; if(cap>=8){ alert('Zaino pieno (max 8 fra oggetti + pasti)'); return; } state.player.backpack.push(val); EL('backpackInput').value=''; syncUIStats(); });
+EL('addSpecial').addEventListener('click',()=>{ const val=(EL('specialInput').value||'').trim(); if(!val) return; state.player.specials.push(val); EL('specialInput').value=''; syncUIStats(); });
+EL('eatMeal').addEventListener('click',()=>{ if(state.player.meals>0){ state.player.meals--; state.player.resistenzaCorrente=Math.min(state.player.resistenzaBase, state.player.resistenzaCorrente+3); syncUIStats(); } else alert('Nessun Pasto disponibile.'); });
+
+EL('rng0to9').addEventListener('click',()=>{ const v=random0to9(); EL('rngVal').textContent=String(v); });
+EL('btnDice').addEventListener('click',()=>EL('diceModal').classList.remove('hidden'));
+EL('diceClose').addEventListener('click',()=>EL('diceModal').classList.add('hidden'));
+EL('diceRoll').addEventListener('click',()=>{ const v=random0to9(); EL('diceFace').textContent=String(v); EL('rngVal').textContent=String(v); immersion(`Numero Casuale: ${v}`,'Dado'); });
+
+/* ===== DeepL translation ===== */
+EL('btnDeepL').addEventListener('click', async ()=>{
+  if(!state.view.displayRoot){ immersion('Nessun testo da tradurre.','DeepL'); return; }
+  let txt=textOnly(state.view.displayRoot);
+  if(!txt){ immersion('Nessun testo da tradurre.','DeepL'); return; }
+  if(txt.length>MAX_DEEPL_FRAGMENT) txt=txt.slice(0,MAX_DEEPL_FRAGMENT)+' …';
+  const enc=encodeURIComponent(txt);
+  const urlBase='https://www.deepl.com/translator#en/it/';
+  // Deep link funziona entro limiti; se troppo lungo, copia in clipboard e apri pagina base
+  if((urlBase+enc).length<1900){
+    window.open(urlBase+enc,'_blank','noopener');
+  }else{
+    try{ await navigator.clipboard.writeText(txt); }catch(e){}
+    window.open('https://www.deepl.com/translator#en/it/','_blank','noopener');
+    immersion('Testo copiato negli appunti. Incollalo in DeepL.','DeepL');
+  }
+});
+
+/* ===== Init ===== */
+(async function init(){
+  try{ const pref=localStorage.getItem(AUTOSAVE_PREF); if(pref!==null){ state.flags.autosave=(pref==='1'); EL('toggleAutosave').checked=state.flags.autosave; } EL('btnResume').disabled=!hasAutosave(); }catch{}
+  EL('enforceCond').checked=state.flags.enforceCond;
+
+  // Prova caricamento automatico del libro
+  await tryAutoLoad();
+
+  // Sincronizza UI
+  syncUIStats();
+  updateNavButtons();
+})();
+</script>
+</body>
+</html>
