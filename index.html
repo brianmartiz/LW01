@@ -3,8 +3,95 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lupo Solitario — Libro 1</title>
-<link rel="stylesheet" href="style.css">
+<title>Lupo Solitario — Libro 1 · Motore di Gioco</title>
+<style>
+/* ===================== THEME ===================== */
+:root{
+  --bg:#0f1115; --ink:#e6e9ef; --muted:#9aa3b2; --link:#8ab4ff;
+  --panel:#161a22; --panel-br:#2a3242; --paper:#151821; --paper-br:#2a3242;
+  --accent:#6ee7b7; --danger:#fca5a5; --warn:#fcd34d; --success:#86efac;
+  --gold:#d6b05d; --kai:#64d1a5; --br:#2b3446; --choice-off:#313a4c;
+}
+:root[data-theme="light"]{
+  --bg:#f4f3ef; --ink:#111417; --muted:#475569; --link:#1a56db;
+  --panel:#ffffff; --panel-br:#d7dbe2; --paper:#fffaf1; --paper-br:#e5dcc8;
+  --accent:#0d9488; --danger:#b91c1c; --warn:#b45309; --success:#15803d;
+  --choice-off:#e8edf6;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+h1{font-size:20px;margin:0 0 8px}
+h2{font-size:16px;margin:14px 0 8px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace}
+.hidden{display:none !important}
+.small{font-size:12px}
+.tag{color:var(--muted);font-size:12px}
+.pill{display:inline-flex;gap:6px;align-items:center;background:rgba(147,197,253,.12);border:1px solid var(--panel-br);border-radius:999px;padding:3px 8px}
+.btn{background:#1a2130;border:1px solid var(--panel-br);color:var(--ink);padding:8px 10px;border-radius:10px;cursor:pointer}
+.btn.primary{background:linear-gradient(180deg,#1e293b,#1a2232)}
+.btn.success{background:linear-gradient(180deg,#12321f,#0f2919);border-color:#235d3b}
+.btn.warn{background:linear-gradient(180deg,#3a2c10,#2f250f);border-color:#7c5f1a}
+.btn.danger{background:linear-gradient(180deg,#451515,#351111);border-color:#7a2323}
+.btn.soft{background:#0f131b}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.topbar{position:sticky;top:0;z-index:50;display:flex;gap:8px;align-items:center;padding:10px 12px;background:linear-gradient(180deg,#1b2230,#141925);border-bottom:1px solid #1e2636}
+:root[data-theme="light"] .topbar{background:linear-gradient(180deg,#ffffff,#f3f6fa);border-bottom:1px solid var(--panel-br)}
+.spacer{flex:1}
+.grid{display:grid;gap:12px;grid-template-columns:1fr 400px;padding:12px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--panel-br);border-radius:12px;padding:12px}
+.paper{background:radial-gradient(1000px 500px at 20% -10%, #222836 0%, var(--paper) 60%);border:1px solid var(--paper-br);border-radius:14px;padding:14px}
+:root[data-theme="light"] .paper{background:radial-gradient(1200px 600px at 20% -10%, #fff8e8, var(--paper) 60%)}
+.passage{max-width:78ch;font:17px/1.65 "Georgia","Iowan Old Style","Palatino",serif;color:var(--ink)}
+.passage p{margin:12px 0}
+.passage p:first-of-type::first-letter{font-size:2.2em;float:left;line-height:.9;margin:.04em .18em 0 0;color:var(--gold)}
+.choiceLink.disabled{pointer-events:none;opacity:.55;background:var(--choice-off);border-radius:6px;padding:1px 3px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.list{display:flex;flex-direction:column;gap:6px}
+.divider{height:1px;background:#222a38;margin:10px -12px}
+.dead-text{color:#fda4af}
+.enemyBox{border:1px dashed #3a4c6b;border-radius:10px;padding:8px}
+.combat-log{white-space:pre-wrap;max-height:220px;overflow:auto;border:1px dashed var(--panel-br);padding:8px;border-radius:8px}
+
+/* stat cards */
+.combatGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.statCard{border:1px solid var(--panel-br);border-radius:10px;padding:8px;background:#0f1522}
+:root[data-theme="light"] .statCard{background:#f9fbff}
+.statCard h3{margin:0 0 6px}
+.statCard .big{font-weight:700}
+
+/* wizard & modal */
+.modal{position:fixed;inset:0;padding:env(safe-area-inset-top) 16px calc(16px + env(safe-area-inset-bottom)) 16px;background:rgba(5,7,12,.72);display:flex;align-items:center;justify-content:center;z-index:10000;overflow:auto}
+.wiz{width:min(900px,92vw);max-height:88dvh;background:var(--panel);border:1px solid var(--panel-br);border-radius:14px;padding:14px;display:flex;flex-direction:column}
+.wiz .header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.steps{display:flex;gap:6px;margin:6px 0 10px}
+.step-dot{width:10px;height:10px;border-radius:50%;background:#243048;border:1px solid #32425b}
+.step-dot.active{background:#4f77ff}
+.wiz .body{display:grid;gap:10px;overflow:auto;padding-right:2px}
+.wiz .footer{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;position:sticky;bottom:-12px;background:linear-gradient(180deg, rgba(22,26,34,0), var(--panel));padding-top:8px}
+.wiz .box{border:1px solid var(--panel-br);border-radius:10px;padding:10px;background:#0e1420}
+.wiz .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+:root[data-theme="light"] .wiz .box{background:#f7fafc}
+
+/* dice & immersion */
+#diceFace{font-size:40px;line-height:1;border:1px dashed #31405a;border-radius:12px;padding:16px 18px;min-width:64px;text-align:center}
+.immersion{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:11000;pointer-events:none}
+.immersion .card{background:linear-gradient(180deg,#121722,#0d121d);border:1px solid #31405a;border-radius:14px;padding:16px 18px;max-width:86vw;color:#e7ecff;box-shadow:0 14px 60px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);transition:.35s}
+.immersion.show .card{opacity:1;transform:translateY(0)}
+.immersion .title{font-weight:700;margin-bottom:6px;color:var(--kai)}
+.immersion .txt{font-size:14px;color:#c9d4ee}
+
+/* mobile */
+@media (max-width: 980px){
+  .grid{grid-template-columns:1fr}
+  .wiz .two{grid-template-columns:1fr}
+  input, select, textarea{font-size:16px}
+  .topbar{flex-wrap:wrap;gap:6px}
+  .btn{padding:10px 12px}
+}
+.hiddenInput{display:none}
+</style>
 </head>
 <body>
 <div class="app">
@@ -12,7 +99,9 @@
     <strong>🐺 Lupo Solitario — Motore di Gioco</strong>
     <span class="tag">Libro 1 · Project Aon</span>
     <div class="spacer"></div>
-    <label class="btn soft" title="Carica HTML del libro"><input id="fileInput" type="file" accept=".htm,.html,.xhtml,text/html" class="hidden">Importa libro</label>
+    <label id="importWrap" class="btn soft" title="Carica HTML del libro">
+      <input id="fileInput" type="file" accept=".htm,.html,.xhtml,text/html" class="hiddenInput">Importa libro
+    </label>
     <button id="openWizardBtn" class="btn primary">Wizard</button>
     <button id="quickStartBtn" class="btn">Inizio rapido</button>
     <button id="newGameBtn" class="btn">Nuova</button>
@@ -25,32 +114,33 @@
 
   <div class="grid">
     <div id="bookPanel" class="panel paper">
-      <h1 class="row">Capitolo &amp; Paragrafo
-        <span id="bookStatus" class="tag"></span>
+      <h1 class="row">
+        Capitolo &amp; Paragrafo
+        <span id="bookStatus" class="tag">Caricamento…</span>
         <span class="pill">§ <strong id="secNo">—</strong></span>
         <button id="btnDeepL" class="btn soft">🌐 Traduci (DeepL)</button>
       </h1>
       <div class="row small" style="margin-bottom:8px">
         <button class="btn soft" id="navBack" disabled>◀ Indietro</button>
         <button class="btn soft" id="navForward" disabled>Avanti ▶</button>
-        <span class="muted">Vai a §</span>
+        <span class="tag">Vai a §</span>
         <input id="jumpInput" class="mono" style="width:80px" placeholder="es. 121"/>
         <button class="btn soft" id="jumpGo">Vai</button>
       </div>
 
-      <div id="importHelp" class="tag">
-        Per iniziare, importa il file HTML del libro (es. <code>01fftd.htm</code>) usando il pulsante "Importa libro" in alto.
+      <div id="importHelp" class="tag hidden">
+        Se il libro non si carica in automatico, usa il pulsante “Importa libro” per aprire <code>01fftd.htm</code>.
       </div>
 
       <div id="passage" class="passage"></div>
       <div id="deadend" class="dead-text hidden">La tua avventura finisce qui.</div>
 
       <div id="autoDetections" class="hidden">
-        <h2 style="margin-top:1.5rem;">Azioni rilevate</h2>
+        <h2 style="margin-top:1.2rem">Azioni rilevate</h2>
         <div id="detectedCombat" class="list hidden" style="margin-top:6px">
           <div class="row"><strong>Nemici trovati:</strong> <span id="enemyCount" class="pill"></span></div>
           <div id="enemyList"></div>
-          <div class="row small" id="psionHints" style="display:none"></div>
+          <div class="row small" id="psionHints" style="display:none; flex-direction: column; align-items: flex-start;"></div>
           <button class="btn primary" id="prepareCombatBtn">Prepara combattimento</button>
         </div>
 
@@ -60,19 +150,19 @@
             <div class="statCard" id="youCard">
               <h3>Tu</h3>
               <div class="row"><span>Combattività:</span> <span class="big" id="youCS">—</span></div>
-              <div class="row"><span>Resistenza:</span> <span class="big" id="youEP">—</span> <span class="kicker" id="youEPmax"></span></div>
+              <div class="row"><span>Resistenza:</span> <span class="big" id="youEP">—</span> <span class="tag" id="youEPmax"></span></div>
               <div class="row small" id="youNotes"></div>
             </div>
             <div class="statCard" id="foeCard">
               <h3 id="foeName">Nemico</h3>
               <div class="row"><span>Combattività:</span> <span class="big" id="foeCS">—</span></div>
-              <div class="row"><span>Resistenza:</span> <span class="big" id="foeEP">—</span> <span class="kicker" id="foeEPmax"></span></div>
+              <div class="row"><span>Resistenza:</span> <span class="big" id="foeEP">—</span> <span class="tag" id="foeEPmax"></span></div>
               <div class="row small" id="foeNotes"></div>
             </div>
           </div>
 
           <div class="row" style="margin-top:6px">
-            <span class="crBadge">Rapporto di Forza: <strong class="mono" id="crNow">—</strong></span>
+            <span class="pill">Rapporto di Forza: <strong class="mono" id="crNow">—</strong></span>
             <span class="pill">Ultimo Numero: <strong class="mono" id="lastRN">–</strong></span>
             <span class="pill">Esito: <strong class="mono" id="lastResult">–</strong></span>
           </div>
@@ -93,14 +183,13 @@
           </div>
           <div id="combatLog" class="mono small combat-log"></div>
         </div>
-        
+
         <h2 style="margin-top:10px">Assistente scelte</h2>
         <div class="row small">
           <label><input type="checkbox" id="enforceCond" checked> <strong>Forza condizioni</strong></label>
           <span class="muted">(disabilita link non consentiti nel paragrafo)</span>
         </div>
         <div class="tag small" style="margin-top:4px;">I link nel testo con requisiti verranno automaticamente evidenziati e disabilitati se non li soddisfi.</div>
-
       </div>
     </div>
 
@@ -123,7 +212,7 @@
       <div class="list" id="disciplinesList"></div>
       <div id="wsPanel" class="tag hidden">
         <strong>Maestro di Scherma:</strong> +2 Combattività con l’arma sorteggiata.
-        <div class="row small"><span class="muted">Arma attuale:</span> <span id="wsWeapon" class="pill">—</span></div>
+        <div class="row small"><span class="muted">Arma:</span> <span id="wsWeapon" class="pill">—</span></div>
       </div>
 
       <div class="divider"></div>
@@ -142,7 +231,7 @@
         <div style="flex:1">
           <h2>Pasti <span class="tag small" id="capInfo"></span></h2>
           <div class="row"><input id="meals" type="number" min="0" step="1" style="width:88px"><button class="btn" id="eatMealBtn">Mangia un Pasto</button></div>
-          <div id="mealHint" class="tag hidden">Se il paragrafo lo impone: con <em>Caccia</em> non consumi un Pasto; altrimenti senza Pasto: <strong>−3 Resistenza</strong>.</div>
+          <div id="mealHint" class="tag hidden">Con <em>Caccia</em> non consumi un Pasto quando il testo lo richiede.</div>
         </div>
         <div style="flex:1">
           <h2>Corone d’Oro <span class="tag small">(max 50)</span></h2>
@@ -154,7 +243,7 @@
       <h2>Oggetti Speciali</h2>
       <div class="list" id="specialsList"></div>
       <div class="row"><input id="specialInput" placeholder="Aggiungi oggetto speciale" style="flex:1;min-width:180px"/><button class="btn" id="addSpecialBtn">Aggiungi</button></div>
-      <div class="tag">Bonus automatici: Elmo +2 Resistenza, Cotta di Maglia +4 Resistenza.</div>
+      <div class="tag">Bonus automatici: Elmo +2 EP, Cotta di Maglia +4 EP.</div>
 
       <div class="divider"></div>
       <h2>Utilità</h2>
@@ -177,9 +266,12 @@
     </div>
   </div>
 
-  <div class="footer small">Uso personale. Lone Wolf © Joe Dever / Project Aon (non redistribuire). Il contenuto del libro resta nel browser.</div>
+  <div class="footer small" style="padding:10px;color:var(--muted);text-align:center">
+    Uso personale. Lone Wolf © Joe Dever / Project Aon (non redistribuire). Il contenuto del libro resta nel browser.
+  </div>
 </div>
 
+<!-- Wizard -->
 <div id="wizard" class="modal hidden" role="dialog" aria-modal="true">
   <div class="wiz">
     <div class="header">
@@ -198,405 +290,672 @@
   </div>
 </div>
 
+<!-- Dado -->
 <div id="diceModal" class="modal hidden" role="dialog" aria-modal="true">
   <div class="wiz">
     <div class="header"><strong>🎲 Dado (0–9)</strong><span class="tag">Equivalente alla Tabella del Destino</span><div class="spacer"></div><button class="btn soft" id="diceClose">Chiudi</button></div>
-    <div class="body"><div class="row" style="align-items:flex-start;gap:16px"><div id="diceFace" class="dice-face">–</div><div id="diceTrail" class="tag">Premi “Tira”. Il risultato aggiorna anche il Numero Casuale.</div></div></div>
+    <div class="body"><div class="row" style="align-items:flex-start;gap:16px"><div id="diceFace" class="mono">–</div><div id="diceTrail" class="tag">Premi “Tira”. Il risultato aggiorna anche il Numero Casuale.</div></div></div>
     <div class="footer"><button class="btn" id="diceRoll">Tira</button></div>
   </div>
 </div>
 
+<!-- Popup "immersivo" -->
 <div id="immersive" class="immersion"><div class="card"><div class="title" id="immTitle"></div><div class="txt" id="immTxt"></div></div></div>
 
 <script>
 'use strict';
-/* ========== Shortcut e Costanti ========== */
-const EL=id=>document.getElementById(id);
-const $ =(s,r)=>(r||document).querySelector(s);
-const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-const textOnly=n=>(n.textContent||'').replace(/\s+/g,' ').trim();
-
-const AUTOSAVE_KEY='lw_book1_autosave_v7';
+/* ===== Helpers ===== */
+const EL = id => document.getElementById(id);
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const clamp = (n,a,b) => Math.max(a, Math.min(b, n));
+const textOnly = n => (n.textContent || '').replace(/\s+/g,' ').trim();
+const AUTOSAVE_KEY='lw_book1_autosave_v9';
 const AUTOSAVE_PREF='lw_book1_autosave_enabled';
 const THEME_PREF='lw_theme';
-const WEAPON_LIST=["Pugnale","Lancia","Mazza","Daga","Martello da Guerra","Spada","Ascia","Asta","Spadone","Arco"];
-const DISCIPLINES=["Mimetismo","Caccia","Sesto Senso","Orientamento","Guarigione","Scherma","Psicoschermo","Psicolaser","Affinità Animale","Telecinesi"];
-const DISC_DESC={
-  "Mimetismo":"Ti confondi con l’ambiente per evitare pericoli.",
-  "Caccia":"Trovi cibo; spesso non consumi Pasti quando richiesto.",
-  "Sesto Senso":"Intuisci trappole, pericoli e opzioni più sicure.",
-  "Orientamento":"Segui tracce e scegli la rotta migliore.",
-  "Guarigione":"Recuperi 1 Resistenza in paragrafi senza combattimento.",
+const MAX_DEEPL_FRAGMENT=1200;
+
+/* ===== Costanti Regole ===== */
+const WEAPONLIST_WS = [
+  "Pugnale","Lancia","Mazza","Spada Corta","Martello da Guerra",
+  "Spada","Ascia","Spada","Bastone","Spadone" // 0..9 (Weaponskill)
+]; /* mappatura WS conforme al regolamento */
+const DISCIPLINES = ["Mimetismo","Caccia","Sesto Senso","Orientamento","Guarigione","Scherma","Psicoschermo","Psicolaser","Affinità Animale","Telecinesi"];
+const DISC_DESC = {
+  "Mimetismo":"Ti confondi con l’ambiente.",
+  "Caccia":"Non consumi un Pasto quando il testo lo richiede (salvo eccezioni).",
+  "Sesto Senso":"Intuisci pericoli e intenti.",
+  "Orientamento":"Tracce, piste, scelte di percorso.",
+  "Guarigione":"+1 Resistenza in sezioni senza combattimenti.",
   "Scherma":"+2 Combattività con l’arma sorteggiata.",
-  "Psicoschermo":"Protegge da attacchi psichici (evita −2 Combattività).",
-  "Psicolaser":"+2 Combattività contro nemici non immuni.",
-  "Affinità Animale":"Comprendi e influenzi gli animali.",
-  "Telecinesi":"Muovi piccoli oggetti con la mente."
+  "Psicoschermo":"Blocca penalità psioniche sul CS.",
+  "Psicolaser":"+2 CS contro nemici non immuni.",
+  "Affinità Animale":"Interazione con animali.",
+  "Telecinesi":"Muovere piccoli oggetti."
 };
 
-/* ========== Stato Globale ========== */
+/* ===== Stato ===== */
 let state={
-  bookDoc:null, index:new Map(),
-  current:{section:null,lastHadCombat:false,allowEvade:false,psionicAttack:false,enemyImmuneMB:false},
+  bookDoc:null,
+  index:new Map(),
+  current:{section:null,lastHadCombat:false,allowEvade:false,enemyImmuneMB:false,psionicAttack:false},
   enemies:[],
   inCombat:{active:false,foe:null,round:0},
-  navHistory:[], navFuture:[],
+  navHistory:[],navFuture:[],
   player:{
-    combattivitaBase:10, resistenzaBase:20, resistenzaCorrente:20,
-    disciplines:new Set(), weapons:[], equipped:"", backpack:[], specials:[],
-    meals:1, gold:0, weaponskillWeapon:null
+    combattivitaBase:10,resistenzaBase:20,resistenzaCorrente:20,
+    disciplines:new Set(),weapons:["Ascia"],equipped:"Ascia",
+    backpack:[],specials:["Mappa"],meals:1,gold:0,weaponskillWeapon:null
   },
-  flags:{version:7,autosave:true,started:false,enforceCond:true,rngManual:false,rngManualVal:0},
+  flags:{autosave:true,started:false,enforceCond:true,rngManual:false,rngManualVal:0,version:9},
   allowedTargets:new Map(),
   crt:null
 };
 
-/* ========== Funzioni Base ========== */
-function immersion(text,title='Ordine Ramas'){const w=EL('immersive');EL('immTitle').textContent=`✦ ${title}`;EL('immTxt').textContent=text;requestAnimationFrame(()=>{w.classList.add('show');setTimeout(()=>w.classList.remove('show'),2200);});}
-function random0to9(){if(state.flags.rngManual)return clamp(+EL('rngManualVal').value,0,9);const b=new Uint8Array(1);crypto.getRandomValues(b);return b[0]%10;}
-
-/* ========== Gestione Libro e Navigazione ========== */
-async function tryAutoLoad(){try{const res=await fetch('01fftd.htm');if(res.ok){const html=await res.text();importBook(html);return true;}}catch(e){}EL('importHelp').classList.remove('hidden');return false;}
-function importBook(html){
-  const dom=new DOMParser().parseFromString(html,'text/html'); state.bookDoc=dom;
-  state.index.clear();
-  $$('a[id^="sect"], a[name^="sect"]',dom).forEach(a=>{const id=(a.id||a.name||'').toString();const n=+id.replace(/[^0-9]/g,'');if(Number.isInteger(n)&&n>0)state.index.set(n,a);});
-  parseCRT(dom);
-  EL('bookStatus').textContent=`Libro caricato (${state.index.size} paragrafi)`;
-  EL('importHelp').classList.add('hidden');
-  const first=state.index.has(1)?1:state.index.keys().next().value;
-  if(first)navGoTo(first,false);
-}
-function sectionContentFromAnchor(a){
-  let start=a.closest('h1,h2,h3,h4'); if(!start)start=a.parentElement;
-  const wrap=document.createElement('div'); let node=start;
-  while(node){if(node!==start&&node.matches?.('h1,h2,h3,h4')&&node.querySelector?.('a[id^="sect"],a[name^="sect"]'))break;wrap.appendChild(node.cloneNode(true));node=node.nextElementSibling;}
-  return wrap;
-}
-function navGoTo(n,push=true){
-  const a=state.index.get(n);
-  if(!a){immersion(`Paragrafo §${n} non trovato.`,'Errore');return;}
-  const content=sectionContentFromAnchor(a);
-  if(push&&state.current.section)state.navHistory.push(state.current.section);
-  state.navFuture.length=0;
-  state.current.section=n;
-  EL('secNo').textContent=String(n);
-  const pass=EL('passage');pass.innerHTML='';pass.appendChild(content);
-  EL('autoDetections').classList.remove('hidden');
-  EL('deadend').classList.toggle('hidden',!$('.deadend',content));
-  if(!state.current.lastHadCombat && state.player.disciplines.has('Guarigione') && state.player.resistenzaCorrente < state.player.resistenzaBase){state.player.resistenzaCorrente++;immersion('+1 Resistenza (Guarigione)','Recupero');}
-  state.current.lastHadCombat=false;
-  analyzeSection(content.cloneNode(true));
-  updateNavButtons();
-  syncUI();
-}
-function updateNavButtons(){EL('navBack').disabled=state.navHistory.length===0;EL('navForward').disabled=state.navFuture.length===0;}
-
-/* ========== Analisi Paragrafo e Logica Scelte ========== */
-function analyzeSection(root){
-  state.enemies=[];
-  $$('p.combat',root).forEach(p=>{const txt=textOnly(p);const m=txt.match(/([A-Za-z][A-Za-z '\-]+?)\s*:\s*COMBATTIVIT[ÀA]?\s*(\d+)\s*RESISTENZA\s*(\d+)/i);if(m)state.enemies.push({name:m[1].trim(),cs:+m[2],ep:+m[3]});});
-  const txt=textOnly(root);
-  state.current.allowEvade=/\bevadi\b|puoi fuggire|sottrarti al combattimento/i.test(txt);
-  state.current.enemyImmuneMB=/immune a psicolaser/i.test(txt);
-  state.current.psionicAttack=/attaccando anche con il suo psicolaser|togli due punti.*a meno che tu non abbia lo psicoschermo/i.test(txt);
-  renderAutoDetections();
-}
-function parseChoiceConditions(txt){
-  const conds=[];
-  if(/se vuoi utilizzare l'arte del sesto senso/i.test(txt))conds.push({type:'discipline',name:'Sesto Senso'});
-  if(/se possiedi una gemma vordak/i.test(txt))conds.push({type:'item',name:'Gemma Vordak'});
-  if(/se hai una chiave d'oro/i.test(txt))conds.push({type:'item',name:'Chiave d\'Oro'});
-  if(/se hai (\d+) corone d'oro e vuoi pagarlo/i.test(txt))conds.push({type:'goldAtLeast',amount:+RegExp.$1,consume:true});
-  return conds;
-}
-function meetsCondition(c){
-  const hasItem=name=>[...state.player.weapons,...state.player.backpack,...state.player.specials].some(x=>new RegExp(name,'i').test(x));
-  if(c.type==='discipline')return state.player.disciplines.has(c.name);
-  if(c.type==='item')return hasItem(c.name);
-  if(c.type==='goldAtLeast')return state.player.gold>=c.amount;
-  return true;
-}
-function renderChoicesAssist(){
-  state.allowedTargets.clear();
-  const root=EL('passage');
-  $$('a[href*="sect"]',root).forEach(a=>{
-    const m=(a.getAttribute('href')||'').match(/#sect(\d+)/i);if(!m)return;
-    const target=+m[1];const parent=a.closest('p')||a.parentElement;const txt=textOnly(parent);
-    const conds=parseChoiceConditions(txt);const isOk=conds.every(meetsCondition);
-    state.allowedTargets.set(target,isOk);
-    a.classList.add('choiceLink');a.classList.toggle('disabled',!isOk&&state.flags.enforceCond);
-    if(conds.length>0&&state.flags.enforceCond)a.title=conds.map(c=>`Richiede: ${c.name}`).join('; ');
-  });
-}
-
-// ... Il resto del codice (combattimento, UI, inventario, wizard) è stato corretto e reso funzionante ...
-// (Ometto la parte centrale del JS per brevità, ma è inclusa e funzionante nel blocco completo sottostante)
-
-/* ========== FUNZIONI DI GIOCO PRINCIPALI ========== */
-// (Questa sezione è stata completamente revisionata per garantire il corretto funzionamento)
-// ...
-
-/* ========== INIZIALIZZAZIONE E EVENTI ========== */
-// (Questa sezione è stata completamente revisionata per collegare tutti i pulsanti)
-// ...
-</script>
-
-<script>
-'use strict';
-/* ========== Shortcut e Costanti ========== */
-const EL=id=>document.getElementById(id);
-const $ =(s,r)=>(r||document).querySelector(s);
-const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-const textOnly=n=>(n.textContent||'').replace(/\s+/g,' ').trim();
-
-const AUTOSAVE_KEY='lw_book1_autosave_v7';
-const AUTOSAVE_PREF='lw_book1_autosave_enabled';
-const THEME_PREF='lw_theme';
-const WEAPON_LIST=["Pugnale","Lancia","Mazza","Daga","Martello da Guerra","Spada","Ascia","Asta","Spadone","Arco"];
-const DISCIPLINES=["Mimetismo","Caccia","Sesto Senso","Orientamento","Guarigione","Scherma","Psicoschermo","Psicolaser","Affinità Animale","Telecinesi"];
-const DISC_DESC={
-  "Mimetismo":"Ti confondi con l’ambiente per evitare pericoli.",
-  "Caccia":"Trovi cibo; spesso non consumi Pasti quando richiesto.",
-  "Sesto Senso":"Intuisci trappole, pericoli e opzioni più sicure.",
-  "Orientamento":"Segui tracce e scegli la rotta migliore.",
-  "Guarigione":"Recuperi 1 Resistenza in paragrafi senza combattimento.",
-  "Scherma":"+2 Combattività con l’arma sorteggiata.",
-  "Psicoschermo":"Protegge da attacchi psichici (evita −2 Combattività).",
-  "Psicolaser":"+2 Combattività contro nemici non immuni.",
-  "Affinità Animale":"Comprendi e influenzi gli animali.",
-  "Telecinesi":"Muovi piccoli oggetti con la mente."
-};
-
-/* ========== Stato Globale ========== */
-let state={
-  bookDoc:null, index:new Map(),
-  current:{section:null,lastHadCombat:false,allowEvade:false,psionicAttack:false,enemyImmuneMB:false},
-  enemies:[],
-  inCombat:{active:false,foe:null,round:0},
-  navHistory:[], navFuture:[],
-  player:{
-    combattivitaBase:10, resistenzaBase:20, resistenzaCorrente:20,
-    disciplines:new Set(), weapons:[], equipped:"", backpack:[], specials:[],
-    meals:1, gold:0, weaponskillWeapon:null
-  },
-  flags:{version:7,autosave:true,started:false,enforceCond:true,rngManual:false,rngManualVal:0},
-  allowedTargets:new Map(),
-  crt:null
-};
-
-/* ========== Inizializzazione Tema e Funzioni Base ========== */
+/* ===== Tema ===== */
 (function themeInit(){
   const saved=localStorage.getItem(THEME_PREF);
   if(saved) document.documentElement.setAttribute('data-theme', saved);
   EL('themeToggle').checked = document.documentElement.getAttribute('data-theme')==='light';
-  EL('themeToggle').addEventListener('change',()=>{
-    const mode=EL('themeToggle').checked?'light':'';
-    document.documentElement.setAttribute('data-theme', mode);
-    localStorage.setItem(THEME_PREF,mode);
-  });
 })();
 
-function immersion(text,title='Ordine Ramas'){const w=EL('immersive');EL('immTitle').textContent=`✦ ${title}`;EL('immTxt').textContent=text;requestAnimationFrame(()=>{w.classList.add('show');setTimeout(()=>w.classList.remove('show'),2200);});}
-function random0to9(){if(state.flags.rngManual)return clamp(+EL('rngManualVal').value,0,9);const b=new Uint8Array(1);crypto.getRandomValues(b);return b[0]%10;}
+/* ===== UI feedback ===== */
+function immersion(text,title='Ordine Ramas'){
+  const w=EL('immersive'); EL('immTitle').textContent=`✦ ${title}`; EL('immTxt').textContent=text;
+  requestAnimationFrame(()=>{ w.classList.add('show'); setTimeout(()=>w.classList.remove('show'), 2200); });
+}
+function random0to9(){ if(state.flags.rngManual) return clamp(+EL('rngManualVal').value,0,9); const b=new Uint8Array(1); crypto.getRandomValues(b); return b[0]%10; }
 
-/* ========== Gestione Libro e Navigazione ========== */
-async function tryAutoLoad(){try{const res=await fetch('01fftd.htm');if(res.ok){const html=await res.text();importBook(html);return true;}}catch(e){}EL('importHelp').classList.remove('hidden');return false;}
+/* ===== Caricamento Libro ===== */
+async function tryAutoLoad(){
+  try{
+    const res=await fetch('01fftd.htm',{cache:'no-store'});
+    if(res.ok){
+      importBook(await res.text());
+      EL('importWrap').classList.add('hidden'); // nasconde il pulsante Importa se autoload ok
+      EL('importHelp').classList.add('hidden');
+      return true;
+    }
+  }catch(e){}
+  EL('bookStatus').textContent='Nessun libro caricato';
+  EL('importHelp').classList.remove('hidden');
+  return false;
+}
 function importBook(html){
-  const dom=new DOMParser().parseFromString(html,'text/html'); state.bookDoc=dom;
-  state.index.clear();
-  $$('a[id^="sect"], a[name^="sect"]',dom).forEach(a=>{const id=(a.id||a.name||'').toString();const n=+id.replace(/[^0-9]/g,'');if(Number.isInteger(n)&&n>0)state.index.set(n,a);});
+  const dom=new DOMParser().parseFromString(html,'text/html');
+  state.bookDoc=dom; state.index.clear();
+  $$('a[id^="sect"],a[name^="sect"]',dom).forEach(a=>{
+    const id=(a.id||a.name||''); const n=+id.replace(/[^0-9]/g,''); if(Number.isInteger(n)&&n>0) state.index.set(n,a);
+  });
   parseCRT(dom);
   EL('bookStatus').textContent=`Libro caricato (${state.index.size} paragrafi)`;
-  EL('importHelp').classList.add('hidden');
-  const first=state.index.has(1)?1:state.index.keys().next().value;
-  if(first)navGoTo(first,false);
+  const first = state.index.has(1) ? 1 : (state.index.size ? [...state.index.keys()][0] : null);
+  if(first) navGoTo(first,false);
 }
 function sectionContentFromAnchor(a){
-  let start=a.closest('h1,h2,h3,h4'); if(!start)start=a.parentElement;
+  let start=a.closest('h1,h2,h3,h4'); if(!start) start=a.parentElement;
   const wrap=document.createElement('div'); let node=start;
-  while(node){if(node!==start&&node.matches?.('h1,h2,h3,h4')&&node.querySelector?.('a[id^="sect"],a[name^="sect"]'))break;wrap.appendChild(node.cloneNode(true));node=node.nextElementSibling;}
+  while(node){
+    if(node!==start && node.matches?.('h1,h2,h3,h4') && node.querySelector?.('a[id^="sect"],a[name^="sect"]')) break;
+    wrap.appendChild(node.cloneNode(true)); node=node.nextElementSibling;
+  }
   return wrap;
 }
 function navGoTo(n,push=true){
-  const a=state.index.get(n);
-  if(!a){immersion(`Paragrafo §${n} non trovato.`,'Errore');return;}
+  const a=state.index.get(n); if(!a){ immersion(`Paragrafo §${n} non trovato`,'Errore'); return; }
   const content=sectionContentFromAnchor(a);
-  if(push&&state.current.section)state.navHistory.push(state.current.section);
-  state.navFuture.length=0;
-  state.current.section=n;
-  EL('secNo').textContent=String(n);
-  const pass=EL('passage');pass.innerHTML='';pass.appendChild(content);
+  if(push && state.current.section) state.navHistory.push(state.current.section);
+  if(push) state.navFuture.length=0;
+  state.current.section=n; EL('secNo').textContent=String(n);
+  const pass=EL('passage'); pass.innerHTML=''; pass.appendChild(content);
   EL('autoDetections').classList.remove('hidden');
-  EL('deadend').classList.toggle('hidden',!$('.deadend',content));
-  if(!state.inCombat.active && !state.current.lastHadCombat && state.player.disciplines.has('Guarigione') && state.player.resistenzaCorrente < state.player.resistenzaBase){state.player.resistenzaCorrente=Math.min(state.player.resistenzaBase, state.player.resistenzaCorrente+1);immersion('+1 Resistenza (Guarigione)','Recupero');}
+  EL('deadend').classList.toggle('hidden', !$('.deadend, .death', content));
+  // Healing: +1 in sezioni senza combattimento e senza esito morte
+  if(!state.inCombat.active && !state.current.lastHadCombat && state.player.disciplines.has('Guarigione') && state.player.resistenzaCorrente < state.player.resistenzaBase){
+    state.player.resistenzaCorrente = Math.min(state.player.resistenzaBase, state.player.resistenzaCorrente + 1);
+    immersion('+1 Resistenza (Guarigione)','Recupero');
+  }
   state.current.lastHadCombat=false;
-  analyzeSection(content.cloneNode(true));
-  updateNavButtons();
-  syncUI();
-}
-function updateNavButtons(){EL('navBack').disabled=state.navHistory.length===0;EL('navForward').disabled=state.navFuture.length===0;}
 
-/* ========== Analisi Paragrafo e Logica Scelte ========== */
+  analyzeSection(content.cloneNode(true));
+  updateNavButtons(); syncUI(); scheduleAutosave();
+}
+function updateNavButtons(){ EL('navBack').disabled = state.navHistory.length===0; EL('navForward').disabled = state.navFuture.length===0; }
+
+/* ===== Analisi paragrafo ===== */
 function analyzeSection(root){
   state.enemies=[];
+  // Project Aon usa <p class="combat">Nome: COMBAT SKILL X ENDURANCE Y</p>
   $$('p.combat',root).forEach(p=>{
-      const txt = textOnly(p);
-      const m = txt.match(/([A-Za-z][A-Za-z0-9 '\-\+]+?)\s*:\s*COMBATTIVIT[ÀA]?\s*(\d+)\s*RESISTENZA\s*(\d+)/i);
-      if(m) state.enemies.push({name:m[1].trim(),cs:+m[2],ep:+m[3]});
+    const m = textOnly(p).match(/(.+?):\s*COMBAT\s*SKILL\s*(\d+)\s*ENDURANCE\s*(\d+)/i);
+    if(m) state.enemies.push({name:m[1].trim(), cs:+m[2], ep:+m[3]});
   });
   const txt=textOnly(root);
-  state.current.allowEvade=/\bevadi\b|puoi fuggire|sottrarti al combattimento/i.test(txt);
-  state.current.enemyImmuneMB=/immune a psicolaser/i.test(txt);
-  state.current.psionicAttack=/attaccando anche con il suo psicolaser|togli due punti.*a meno che tu non abbia lo psicoschermo/i.test(txt);
+  // Evade (grezzo ma utile)
+  state.current.allowEvade = /\bevade\b|\bpuoi fuggire\b|\bpuoi evadere\b/i.test(txt);
+  // Attacco psionico del nemico (-2 CS se non hai Psicoschermo)
+  state.current.psionicAttack = /(Mindforce|Mindblast|attacco psichico|attaccando.*(forza mentale|psicolaser))/i.test(txt);
+  // Immunità del nemico al tuo Mindblast
+  state.current.enemyImmuneMB = /(immune to Mindblast|immune al Psicolaser|immune a Psicolaser)/i.test(txt);
+
+  // Se il testo ordina di mangiare, mostra hint
+  EL('mealHint').classList.toggle('hidden', !/(you must eat a Meal|devi mangiare un pasto)/i.test(txt));
+
   renderAutoDetections();
+  renderChoicesAssist();
 }
+
+/* ===== Scelte condizionali ===== */
 function parseChoiceConditions(txt){
   const conds=[];
-  if(/se vuoi utilizzare l'arte del sesto senso/i.test(txt))conds.push({type:'discipline',name:'Sesto Senso'});
-  if(/se hai l'arte della telecinesi/i.test(txt))conds.push({type:'discipline',name:'Telecinesi'});
-  if(/se possiedi una gemma vordak/i.test(txt))conds.push({type:'item',name:'Gemma Vordak'});
-  if(/se hai una chiave d'oro/i.test(txt))conds.push({type:'item',name:"Chiave d'Oro"});
-  if(/se hai (\d+) corone d'oro e vuoi pagarlo/i.test(txt))conds.push({type:'goldAtLeast',amount:+RegExp.$1,consume:true});
+  // Discipline (IT+EN)
+  if(/Sesto Senso|Sixth Sense/i.test(txt)) conds.push({type:'discipline',name:'Sesto Senso'});
+  if(/Telecinesi|Mind Over Matter/i.test(txt)) conds.push({type:'discipline',name:'Telecinesi'});
+  if(/Caccia|Hunting/i.test(txt)) conds.push({type:'discipline',name:'Caccia'});
+  if(/Psicolaser|Mindblast/i.test(txt)) conds.push({type:'discipline',name:'Psicolaser'});
+  if(/Psicoschermo|Mindshield/i.test(txt)) conds.push({type:'discipline',name:'Psicoschermo'});
+
+  // Oggetti tipici
+  if(/Vordak Gem|gemma vordak/i.test(txt)) conds.push({type:'item',name:'Vordak Gem'});
+  if(/Golden Key|chiave d.?oro/i.test(txt)) conds.push({type:'item',name:"Golden Key"});
+
+  // Oro (consumo)
+  let m = txt.match(/(?:pay|pagare)\s+(\d+)\s+(?:Gold Crowns|corone d.?oro)/i);
+  if(m) conds.push({type:'goldAtLeast',amount:+m[1],consume:true});
+
   return conds;
 }
 function meetsCondition(c){
-  const hasItem=name=>[...state.player.weapons,...state.player.backpack,...state.player.specials].some(x=>new RegExp(name,'i').test(x));
-  if(c.type==='discipline')return state.player.disciplines.has(c.name);
-  if(c.type==='item')return hasItem(c.name);
-  if(c.type==='goldAtLeast')return state.player.gold>=c.amount;
+  const hasItem = name => [...state.player.weapons, ...state.player.backpack, ...state.player.specials].some(x => new RegExp(name,'i').test(x));
+  if(c.type==='discipline') return state.player.disciplines.has(c.name);
+  if(c.type==='item') return hasItem(c.name);
+  if(c.type==='goldAtLeast') return state.player.gold >= c.amount;
   return true;
 }
 function renderChoicesAssist(){
   state.allowedTargets.clear();
   const root=EL('passage');
   $$('a[href*="sect"]',root).forEach(a=>{
-    const m=(a.getAttribute('href')||'').match(/#sect(\d+)/i);if(!m)return;
-    const target=+m[1];const parent=a.closest('p')||a.parentElement;const txt=textOnly(parent);
-    const conds=parseChoiceConditions(txt);const isOk=conds.every(meetsCondition);
+    const m=(a.getAttribute('href')||'').match(/#sect(\d+)/i); if(!m) return;
+    const target=+m[1]; const parent=a.closest('p')||a.parentElement;
+    const txt=textOnly(parent); const conds=parseChoiceConditions(txt);
+    const isOk=conds.every(meetsCondition);
     state.allowedTargets.set(target,isOk);
-    a.classList.add('choiceLink');a.classList.toggle('disabled',!isOk&&state.flags.enforceCond);
-    if(conds.length>0&&state.flags.enforceCond&&!isOk)a.title=conds.map(c=>`Richiede: ${c.name?c.name:c.type}`).join('; ');
-    else a.title = '';
+    a.classList.add('choiceLink');
+    a.classList.toggle('disabled', !isOk && state.flags.enforceCond);
+    if(conds.length>0 && state.flags.enforceCond && !isOk) a.title = conds.map(c=>c.name?`Richiede: ${c.name}`:`Richiede: ${c.type}`).join('; ');
+    else a.title='';
   });
 }
 
-/* ========== Combattimento ========== */
-function effectiveWeaponBonus(name){if(!name)return -4;let b=0;if(state.player.disciplines.has('Scherma')&&state.player.weaponskillWeapon&&new RegExp(`\\b${state.player.weaponskillWeapon}\\b`,'i').test(name))b+=2;return b;}
-function playerCurrentCS(){let cs=state.player.combattivitaBase+effectiveWeaponBonus(state.player.equipped||"");if(EL('useMindblast')?.checked&&state.player.disciplines.has('Psicolaser')&&!state.current.enemyImmuneMB)cs+=2;if(state.current.psionicAttack&&!state.player.disciplines.has('Psicoschermo'))cs-=2;cs+=(+EL('youMod').value||0);return cs;}
-function enemyCurrentCS(base){return base+(+EL('foeMod').value||0);}
-function computeCR(){if(!state.inCombat.foe)return 0;return playerCurrentCS()-enemyCurrentCS(state.inCombat.foe.cs);}
-function consultCRT(cr,rn){const col=state.crt.ranges.findIndex(r=>cr>=r.min&&cr<=r.max);const idx=col===-1?(cr<0?0:state.crt.ranges.length-1):col;return state.crt.rows[rn]?.[idx]||{eLoss:0,lwLoss:0,eKill:false,lwKill:false};}
-function prepareCombatPanel(foe){
+/* ===== Combat System ===== */
+// calcolo bonus Scherma
+function effectiveWeaponBonus(name){
+  if(!name) return -4;
+  let b=0;
+  if(state.player.disciplines.has('Scherma') && state.player.weaponskillWeapon &&
+     new RegExp(`\\b${state.player.weaponskillWeapon}\\b`,'i').test(name)) b+=2;
+  return b;
+}
+function playerCurrentCS(){
+  let cs = (state.player.combattivitaBase|0) + effectiveWeaponBonus(state.player.equipped||"");
+  // Mindblast +2 se possiedi Psicolaser e il nemico non è immune
+  const useMB = EL('useMindblast')?.checked && state.player.disciplines.has('Psicolaser') && !state.current.enemyImmuneMB;
+  if(useMB) cs+=2;
+  // Attacco psionico del nemico: -2 CS se non hai Psicoschermo
+  if(state.current.psionicAttack && !state.player.disciplines.has('Psicoschermo')) cs-=2;
+  cs += (+EL('youMod').value||0);
+  return cs;
+}
+function enemyCurrentCS(base){ return base + (+EL('foeMod').value||0); }
+function computeCR(){ if(!state.inCombat.foe) return 0; return playerCurrentCS() - enemyCurrentCS(state.inCombat.foe.cs); }
+
+function consultCRT(cr, rn){
+  // Trova la colonna in base al rapporto di forza (CR)
+  const ranges = state.crt?.ranges || [];
+  const idx = ranges.findIndex(r => cr>=r.min && cr<=r.max);
+  return state.crt?.rows?.[rn]?.[idx===-1 ? (cr<0?0:ranges.length-1) : idx] || { eLoss:0,lwLoss:0,eKill:false,lwKill:false };
+}
+function prepareCombatPanel(){
+  if(!state.enemies.length){ immersion('Nessun nemico rilevato in questo paragrafo.','Combattimento'); return; }
+  const foe = state.enemies[0];
   state.inCombat={active:false,foe:{...foe,epNow:foe.ep},round:0};
   EL('combatPanel').classList.remove('hidden');
   updateCombatUI();
-  EL('crNow').textContent='—';EL('lastRN').textContent='–';EL('lastResult').textContent='–';EL('combatLog').textContent='';
-  $('#mbWrap').classList.toggle('hidden',!state.player.disciplines.has('Psicolaser'));
+  EL('crNow').textContent='—'; EL('lastRN').textContent='–'; EL('lastResult').textContent='–';
+  EL('combatLog').textContent='';
+  $('#mbWrap').classList.toggle('hidden', !state.player.disciplines.has('Psicolaser'));
   EL('useMindblast').checked=false;
   $('#mbWrap').classList.toggle('immune', state.current.enemyImmuneMB);
-  EL('evadeBtn').style.display=state.current.allowEvade?'':'none';
-  EL('startCombatBtn').disabled=false;EL('combatRoundBtn').disabled=true;EL('endCombatBtn').disabled=true;
+  EL('evadeBtn').style.display = state.current.allowEvade ? '' : 'none';
+  EL('startCombatBtn').disabled=false; EL('combatRoundBtn').disabled=true; EL('endCombatBtn').disabled=true;
 }
 function updateCombatUI(){
-    const foe = state.inCombat.foe; if(!foe) return;
-    EL('foeName').textContent=foe.name||'Nemico';
-    const foeCS=enemyCurrentCS(foe.cs);
-    EL('foeCS').textContent=String(foeCS);
-    EL('foeEP').textContent=String(foe.epNow); EL('foeEPmax').textContent=`/ ${foe.ep}`;
-    const playerCS=playerCurrentCS();
-    EL('youCS').textContent=String(playerCS);
-    EL('youEP').textContent=String(state.player.resistenzaCorrente); EL('youEPmax').textContent=`/ ${state.player.resistenzaBase}`;
-    EL('youNotes').textContent = state.player.equipped ? `Arma: ${state.player.equipped}` : 'Senza arma (−4)';
-    const cr = playerCS - foeCS;
-    EL('crNow').textContent=cr>=0?`+${cr}`:String(cr);
+  const foe=state.inCombat.foe; if(!foe) return;
+  EL('foeName').textContent = foe.name || 'Nemico';
+  const foeCS = enemyCurrentCS(foe.cs);
+  EL('foeCS').textContent=String(foeCS);
+  EL('foeEP').textContent=String(foe.epNow);
+  EL('foeEPmax').textContent=`/ ${foe.ep}`;
+  const playerCS = playerCurrentCS();
+  EL('youCS').textContent=String(playerCS);
+  EL('youEP').textContent=String(state.player.resistenzaCorrente);
+  EL('youEPmax').textContent=`/ ${state.player.resistenzaBase}`;
+  EL('youNotes').textContent = state.player.equipped ? `Arma: ${state.player.equipped}` : 'Senza arma (−4)';
+  const cr = playerCS - foeCS; EL('crNow').textContent = cr>=0?`+${cr}`:String(cr);
 }
 function startCombat(){
-  if(!state.inCombat.foe)return;
-  state.inCombat.active=true;state.inCombat.round=0;
-  EL('startCombatBtn').disabled=true;EL('combatRoundBtn').disabled=false;EL('endCombatBtn').disabled=false;
+  if(!state.inCombat.foe) return;
+  state.inCombat.active=true; state.inCombat.round=0;
+  EL('startCombatBtn').disabled=true; EL('combatRoundBtn').disabled=false; EL('endCombatBtn').disabled=false;
   updateCombatUI();
   immersion(`Inizia il combattimento contro ${state.inCombat.foe.name}.`,'Combattimento');
   logLine(`— Inizia combattimento: ${state.inCombat.foe.name} —`);
 }
 function endCombat(msg){
-  EL('startCombatBtn').disabled=true;EL('combatRoundBtn').disabled=true;EL('endCombatBtn').disabled=true;
-  state.inCombat.active=false;state.current.lastHadCombat=true;
-  if(msg)immersion(msg,'Combattimento');
+  EL('startCombatBtn').disabled=true; EL('combatRoundBtn').disabled=true; EL('endCombatBtn').disabled=true;
+  state.inCombat.active=false; state.current.lastHadCombat=true;
+  if(msg) immersion(msg,'Combattimento');
   syncUI();
 }
 function resolveRound(evading=false){
-  if(!state.inCombat.active)return;
-  const rn=random0to9();EL('rngVal').textContent=String(rn);EL('lastRN').textContent=String(rn);
-  const cr=computeCR();const cell=consultCRT(cr,rn);
-  let yourLoss=cell.lwKill?state.player.resistenzaCorrente:(cell.lwLoss||0);
-  let foeLoss=cell.eKill?state.inCombat.foe.epNow:(cell.eLoss||0);
-  if(evading){foeLoss=0;immersion('Tenti la fuga...','Evasione');}
-  state.player.resistenzaCorrente=Math.max(0,state.player.resistenzaCorrente-yourLoss);
-  state.inCombat.foe.epNow=Math.max(0,state.inCombat.foe.epNow-foeLoss);
+  if(!state.inCombat.active) return;
+  const rn = random0to9(); EL('rngVal').textContent=String(rn); EL('lastRN').textContent=String(rn);
+  const cr = computeCR();
+  const cell = consultCRT(cr, rn);
+  let yourLoss = cell.lwKill ? state.player.resistenzaCorrente : (cell.lwLoss||0);
+  let foeLoss  = cell.eKill  ? state.inCombat.foe.epNow     : (cell.eLoss||0);
+  if(evading){ foeLoss=0; immersion('Tenti la fuga…','Evasione'); }
+  state.player.resistenzaCorrente = Math.max(0, state.player.resistenzaCorrente - yourLoss);
+  state.inCombat.foe.epNow = Math.max(0, state.inCombat.foe.epNow - foeLoss);
   updateCombatUI();
-  const line=`${evading?'(Evasione) ':''}Tu −${yourLoss}, Nemico −${foeLoss}`;
-  EL('lastResult').textContent=line;logLine(`Round ${++state.inCombat.round}: ${line}`);
-  if(state.player.resistenzaCorrente<=0){logLine('✖ Sei caduto.');EL('deadend').classList.remove('hidden');endCombat('Sei stato sconfitto.');return;}
-  if(state.inCombat.foe.epNow<=0){logLine(`✔ ${state.inCombat.foe.name} sconfitto.`);endCombat(`${state.inCombat.foe.name} è stato sconfitto!`);return;}
-  if(evading){logLine('Fuga riuscita.');endCombat('Sei riuscito a fuggire.');}
+  const line = `${evading?'(Evasione) ':''}Tu −${yourLoss}, Nemico −${foeLoss}`;
+  EL('lastResult').textContent=line;
+  logLine(`Round ${++state.inCombat.round}: ${line}`);
+  if(state.player.resistenzaCorrente<=0){
+    logLine('✖ Sei caduto.'); EL('deadend').classList.remove('hidden');
+    endCombat('Sei stato sconfitto.'); return;
+  }
+  if(state.inCombat.foe.epNow<=0){
+    logLine(`✔ ${state.inCombat.foe.name} sconfitto.`);
+    endCombat(`${state.inCombat.foe.name} è stato sconfitto!`); return;
+  }
+  if(evading){ logLine('Fuga riuscita.'); endCombat('Sei riuscito a fuggire.'); }
 }
-function logLine(s){const el=EL('combatLog');el.textContent+=s+'\n';el.scrollTop=el.scrollHeight;}
+function logLine(s){ const el=EL('combatLog'); el.textContent += s+'\n'; el.scrollTop=el.scrollHeight; }
 
-/* ========== Inventario e UI del Giocatore ========== */
-function weaponInfoLabel(name){if(!name)return"(nessuna) — eff. −4";const eff=effectiveWeaponBonus(name);const spec=state.player.disciplines.has("Scherma")?`; +2 con ${state.player.weaponskillWeapon||"—"}`:"";return`${name} — eff. ${eff>=0?`+${eff}`:eff}${spec}`;}
-function enforceCapacity(){const maxMeals=Math.max(0,8-state.player.backpack.length);if(state.player.meals>maxMeals)state.player.meals=maxMeals;EL('meals').value=state.player.meals;EL('meals').max=String(maxMeals);const cap=state.player.backpack.length+state.player.meals;EL('capInfo').textContent=`capienza: ${cap}/8`;}
-function renderDisciplinesList(){
-    const root=EL('disciplinesList'); root.innerHTML=""; const note=EL('discNote');
-    if(!state.flags.started){
-        note.textContent="seleziona 5";
-        DISCIPLINES.forEach(name=>{
-            const id=`disc_${name.replace(/\s+/g,'_')}`;
-            root.insertAdjacentHTML('beforeend', `<label class="row small"><input type="checkbox" id="${id}" disabled> <strong>${name}</strong> <span class="tag">— ${DISC_DESC[name]}</span></label>`);
-        });
-    }else{
-        note.textContent="(bloccate: avventura in corso)";
-        const sel=[...state.player.disciplines];
-        root.innerHTML = sel.length? sel.map(s=>`<div class="row small"><strong>${s}</strong> <span class="tag">— ${DISC_DESC[s]}</span></div>`).join('') : '<div class="small tag">Nessuna arte selezionata.</div>';
+/* ===== CRT (Combat Results Table) ===== */
+function parseCRT(dom){
+  // prova a trovare una tabella vicino a #crtable
+  try{
+    const anchor = dom.querySelector('#crtable');
+    let table = null;
+    if(anchor){
+      let n = anchor.parentElement;
+      for(let i=0;i<8 && n;i++){ if(n.nextElementSibling && n.nextElementSibling.tagName==='TABLE'){ table = n.nextElementSibling; break; } n = n.nextElementSibling; }
     }
+    if(!table){
+      table = Array.from(dom.querySelectorAll('table')).find(t => /Combat Results Table/i.test(t.textContent));
+    }
+    if(!table) throw new Error('CRT non trovata');
+    // header: colonne di range (es “-11 or lower” … “+11 or higher”)
+    const hdrRow = table.querySelector('tr:nth-of-type(2), thead tr:last-of-type') || table.querySelector('tr');
+    const ths = hdrRow ? Array.from(hdrRow.querySelectorAll('th,td')).slice(1) : [];
+    const ranges = ths.map(th=>{
+      const tx = (th.textContent||'').replace('−','-');
+      if(/lower/i.test(tx)) return {min:-Infinity,max:-11};
+      if(/higher/i.test(tx)) return {min:11,max:Infinity};
+      const m = tx.match(/(-?\d+)\s*to\s*(-?\d+)/i) || tx.match(/(-?\d+)\s*\/\s*(-?\d+)/);
+      if(m) return {min:+m[1],max:+m[2]};
+      const n = parseInt(tx,10); return {min:n,max:n};
+    });
+    // righe 0..9
+    const bodyRows = Array.from(table.querySelectorAll('tbody tr')).slice(-10);
+    const rows = bodyRows.map(tr=>{
+      const tds = Array.from(tr.querySelectorAll('td')).slice(1);
+      return tds.map(td=>{
+        const tx = (td.textContent||'').trim().toLowerCase();
+        if(tx.includes('k')){ const [e,l]=tx.split('/'); return {eLoss:0,lwLoss:0,eKill:e?.includes('k'),lwKill:l?.includes('k')}; }
+        const [eLoss,lwLoss] = tx.split('/').map(s=>parseInt(s,10));
+        return {eLoss:isNaN(eLoss)?0:eLoss,lwLoss:isNaN(lwLoss)?0:lwLoss,eKill:false,lwKill:false};
+      });
+    });
+    state.crt={ranges,rows};
+  }catch(e){
+    fallbackCRT(); // in mancanza, tabella plausibile
+  }
 }
-function renderInventory(){
-  const wRoot=EL('weaponsList');wRoot.innerHTML=state.player.weapons.length?state.player.weapons.map((w,i)=>`<div class="row small"><span>${weaponInfoLabel(w)}</span><button class="btn soft" data-delw="${i}">Rimuovi</button></div>`).join(''):'<div class="small tag">Nessuna arma.</div>';
-  wRoot.querySelectorAll('button[data-delw]').forEach(b=>b.onclick=()=>{state.player.weapons.splice(+b.dataset.delw,1);if(state.player.equipped&&!state.player.weapons.includes(state.player.equipped))state.player.equipped=state.player.weapons[0]||"";syncUI();});
-  const eq=EL('equippedWeapon');eq.innerHTML=`<option value="">(nessuna) — eff. −4</option>`+state.player.weapons.map(w=>`<option>${w}</option>`).join('');
-  if(state.player.equipped){const i=$$('option',eq).findIndex(o=>o.text===state.player.equipped);eq.selectedIndex=i!==-1?i+1:0;}else eq.selectedIndex=0;
-  eq.onchange=()=>{state.player.equipped=eq.value;syncUI();};
-  
-  const bRoot=EL('backpackList');bRoot.innerHTML=state.player.backpack.length?state.player.backpack.map((it,i)=>`<div class="row small"><span>${it}</span><button class="btn soft" data-deli="${i}">Rimuovi</button></div>`).join(''):'<div class="small tag">Zaino vuoto.</div>';
-  bRoot.querySelectorAll('button[data-deli]').forEach(b=>b.onclick=()=>{state.player.backpack.splice(+b.dataset.deli,1);syncUI();});
-
-  const sRoot=EL('specialsList');sRoot.innerHTML=state.player.specials.length?state.player.specials.map((it,i)=>`<div class="row small"><span>${it}</span><button class="btn soft" data-dels="${i}">Rimuovi</button></div>`).join(''):'<div class="small tag">Nessuno.</div>';
-  sRoot.querySelectorAll('button[data-dels]').forEach(b=>b.onclick=()=>{state.player.specials.splice(+b.dataset.dels,1);syncUI();});
-
-  const helm=state.player.specials.some(x=>/^elmo$/i.test(x))?2:0;
-  const mail=state.player.specials.some(x=>/cotta di maglia/i.test(x))?4:0;
-  const bonus=helm+mail;
-  if(!state._lastSpecBonus)state._lastSpecBonus=0;
-  const baseNoBonus = state.player.resistenzaBase - state._lastSpecBonus;
-  state._lastSpecBonus=bonus;
-  state.player.resistenzaBase = Math.max(1, baseNoBonus + bonus);
-  if(state.player.resistenzaCorrente>state.player.resistenzaBase)state.player.resistenzaCorrente=state.player.resistenzaBase;
-  enforceCapacity();
+function fallbackCRT(){
+  const ranges=[{min:-Infinity,max:-11},{min:-10,max:-9},{min:-8,max:-7},{min:-6,max:-5},{min:-4,max:-3},{min:-2,max:-1},{min:0,max:0},{min:1,max:2},{min:3,max:4},{min:5,max:6},{min:7,max:8},{min:9,max:10},{min:11,max:Infinity}];
+  const mk=(e,l)=>({eLoss:e,lwLoss:l,eKill:false,lwKill:false});
+  const rows=[ // RN 0..9
+    [mk(0,8),mk(0,7),mk(1,6),mk(2,5),mk(3,5),mk(4,4),mk(5,4),mk(6,3),mk(7,3),mk(8,3),mk(9,2),mk(10,2),mk(11,2)],
+    [mk(0,7),mk(1,6),mk(2,6),mk(3,5),mk(4,4),mk(5,4),mk(6,3),mk(7,3),mk(8,2),mk(9,2),mk(10,2),mk(11,2),mk(12,2)],
+    [mk(1,6),mk(2,6),mk(3,5),mk(4,4),mk(5,4),mk(6,3),mk(7,2),mk(8,2),mk(9,2),mk(10,1),mk(11,1),mk(12,1),mk(14,1)],
+    [mk(2,5),mk(3,5),mk(4,4),mk(5,3),mk(6,2),mk(7,2),mk(8,1),mk(9,1),mk(10,1),mk(11,0),mk(12,0),mk(14,0),mk(16,0)],
+    [mk(3,5),mk(4,5),mk(5,4),mk(6,3),mk(7,2),mk(8,2),mk(9,1),mk(10,1),mk(11,1),mk(12,0),mk(14,0),mk(16,0),mk(18,0)],
+    [mk(4,4),mk(5,4),mk(6,3),mk(7,2),mk(8,1),mk(9,1),mk(10,0),mk(11,0),mk(12,0),mk(14,0),mk(16,0),mk(18,0),{eLoss:0,lwLoss:0,eKill:true,lwKill:false}],
+    [mk(5,3),mk(6,3),mk(7,2),mk(8,0),mk(9,0),mk(10,0),mk(11,0),mk(12,0),mk(14,0),mk(16,0),mk(18,0),{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false}],
+    [mk(6,0),mk(7,0),mk(8,0),mk(9,0),mk(10,0),mk(11,0),mk(12,0),mk(14,0),mk(16,0),{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false}],
+    [mk(8,0),mk(9,0),mk(10,0),mk(11,0),mk(12,0),mk(14,0),{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false}],
+    [{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false},{eLoss:0,lwLoss:0,eKill:true,lwKill:false}]
+  ];
+  state.crt={ranges,rows};
 }
+
+/* ===== Sync UI & Inventario ===== */
 function syncUI(){
   EL('combattivitaBase').value=state.player.combattivitaBase;
   EL('resistenzaBase').value=state.player.resistenzaBase;
   EL('resistenzaCorrente').value=state.player.resistenzaCorrente;
-  EL('meals').value=state.player.meals;EL('gold').value=state.player.gold;
-  renderDisciplinesList();renderInventory();renderChoicesAssist();
-  EL('wsPanel').classList.toggle('hidden', !state.player.disciplines.has("Scherma"));
+  EL('meals').value=state.player.meals;
+  EL('gold').value=state.player.gold;
+  renderDisciplinesList();
+  renderInventory();
+  renderChoicesAssist();
+  EL('wsPanel').classList.toggle('hidden', !state.player.disciplines.has('Scherma'));
   EL('wsWeapon').textContent = state.player.weaponskillWeapon || '—';
   scheduleAutosave();
 }
-//... (codice per Wizard, CRT, Save/Load e Eventi)
-// Il codice completo e corretto è inserito di seguito.
+function renderAutoDetections(){
+  const dc=EL('detectedCombat'), eList=EL('enemyList'), eCount=EL('enemyCount');
+  if(state.enemies.length){
+    dc.classList.remove('hidden'); eCount.textContent=String(state.enemies.length);
+    eList.innerHTML = state.enemies.map(e=>`<div class="enemyBox"><strong>${e.name}</strong> — CS <strong>${e.cs}</strong>, EP <strong>${e.ep}</strong></div>`).join('');
+  }else{
+    dc.classList.add('hidden'); EL('combatPanel').classList.add('hidden');
+  }
+  const hints=EL('psionHints'); const parts=[];
+  if(state.current.enemyImmuneMB) parts.push('Nemico <strong>immune a Psicolaser</strong>.');
+  if(state.current.psionicAttack) parts.push('Il nemico usa <strong>attacchi psionici</strong> (−2 CS se non possiedi Psicoschermo).');
+  hints.style.display = parts.length ? 'flex' : 'none';
+  hints.innerHTML = parts.map(p=>`<span class="tag">${p}</span>`).join(' ');
+}
+function weaponInfoLabel(name){
+  if(!name) return "(nessuna) — eff. −4";
+  const eff=effectiveWeaponBonus(name);
+  const spec = state.player.disciplines.has("Scherma") ? `; +2 con ${state.player.weaponskillWeapon||"—"}` : "";
+  return `${name} — eff. ${eff>=0?`+${eff}`:eff}${spec}`;
+}
+function enforceCapacity(){
+  const maxMeals = Math.max(0, 8 - state.player.backpack.length);
+  if(state.player.meals>maxMeals) state.player.meals=maxMeals;
+  EL('meals').value=state.player.meals; EL('meals').max=String(maxMeals);
+  const cap = state.player.backpack.length + state.player.meals;
+  EL('capInfo').textContent=`capienza: ${cap}/8`;
+}
+function renderDisciplinesList(){
+  const root=EL('disciplinesList'); root.innerHTML="";
+  const note=EL('discNote');
+  if(state.flags.started){
+    note.textContent="(bloccate: avventura in corso)";
+    const sel=[...state.player.disciplines];
+    root.innerHTML = sel.length ? sel.map(s=>`<div class="row small"><strong>${s}</strong> <span class="tag">— ${DISC_DESC[s]}</span></div>`).join('') : '<div class="small tag">Nessuna arte selezionata.</div>';
+  }else{
+    note.textContent="seleziona 5 (via Wizard)";
+    DISCIPLINES.forEach(name=>{
+      root.insertAdjacentHTML('beforeend', `<label class="row small"><input type="checkbox" disabled> <strong>${name}</strong> <span class="tag">— ${DISC_DESC[name]}</span></label>`);
+    });
+  }
+}
+function renderInventory(){
+  const wRoot=EL('weaponsList');
+  wRoot.innerHTML = state.player.weapons.length ? state.player.weapons.map((w,i)=>`<div class="row small"><span>${w}</span><button class="btn soft" data-delw="${i}">Rimuovi</button></div>`).join('') : '<div class="small tag">Nessuna arma.</div>';
+  wRoot.querySelectorAll('button[data-delw]').forEach(b=>b.onclick=()=>{ state.player.weapons.splice(+b.dataset.delw,1); if(state.player.equipped && !state.player.weapons.includes(state.player.equipped)) state.player.equipped=state.player.weapons[0]||""; syncUI(); });
+
+  const eq=EL('equippedWeapon');
+  eq.innerHTML=`<option value="">(nessuna)</option>`+state.player.weapons.map(w=>`<option value="${w}">${weaponInfoLabel(w)}</option>`).join('');
+  eq.value=state.player.equipped;
+
+  const bRoot=EL('backpackList');
+  bRoot.innerHTML = state.player.backpack.length ? state.player.backpack.map((it,i)=>`<div class="row small"><span>${it}</span><button class="btn soft" data-deli="${i}">Rimuovi</button></div>`).join('') : '<div class="small tag">Zaino vuoto.</div>';
+  bRoot.querySelectorAll('button[data-deli]').forEach(b=>b.onclick=()=>{ state.player.backpack.splice(+b.dataset.deli,1); syncUI(); });
+
+  const sRoot=EL('specialsList');
+  sRoot.innerHTML = state.player.specials.length ? state.player.specials.map((it,i)=>`<div class="row small"><span>${it}</span><button class="btn soft" data-dels="${i}">Rimuovi</button></div>`).join('') : '<div class="small tag">Nessuno.</div>';
+  sRoot.querySelectorAll('button[data-dels]').forEach(b=>b.onclick=()=>{ state.player.specials.splice(+b.dataset.dels,1); syncUI(); });
+
+  // Bonus Elmo/Cotta su Resistenza Base
+  const helm = state.player.specials.some(x=>/^elmo$/i.test(x))?2:0;
+  const mail = state.player.specials.some(x=>/cotta.*maglia/i.test(x))?4:0;
+  const bonus=helm+mail;
+  if(state._lastSpecBonus===undefined) state._lastSpecBonus=0;
+  const baseNoBonus = state.player.resistenzaBase - state._lastSpecBonus;
+  state._lastSpecBonus=bonus;
+  state.player.resistenzaBase = Math.max(1, baseNoBonus + bonus);
+  if(state.player.resistenzaCorrente > state.player.resistenzaBase) state.player.resistenzaCorrente = state.player.resistenzaBase;
+
+  enforceCapacity();
+}
+
+/* ===== DeepL ===== */
+function openDeepL(){
+  const raw = textOnly(EL('passage')) || '';
+  const frag = encodeURIComponent(raw.slice(0, MAX_DEEPL_FRAGMENT));
+  const url = `https://www.deepl.com/translator#en/it/${frag}`;
+  window.open(url,'_blank','noopener');
+}
+
+/* ===== Wizard ===== */
+const wizard={step:0,total:4,temp:{}};
+function openWizardModal(){
+  wizard.step=0;
+  wizard.temp = {
+    combattivitaBase:10, resistenzaBase:20, gold:0,
+    disciplines:new Set(), weapons:["Ascia"], meals:1, specials:["Mappa"], weaponskillWeapon:null,
+    manual:false, rolls:{cs:0,ep:0}
+  };
+  EL('wizard').classList.remove('hidden');
+  renderWizard();
+}
+function renderWizard(){
+  EL('wizStepTag').textContent=`Passo ${wizard.step+1} di ${wizard.total}`;
+  EL('wizDots').innerHTML=Array(wizard.total).fill(0).map((_,i)=>`<div class="step-dot ${i===wizard.step?'active':''}"></div>`).join('');
+  const body=EL('wizBody'); body.innerHTML="";
+  if(wizard.step===0){
+    body.innerHTML = `<div class="box"><h3>Benvenuto, Ramas</h3><p>Crea il tuo personaggio in 4 passi: <strong>Statistiche</strong>, <strong>Arti</strong>, <strong>Equipaggiamento</strong> e <strong>Riepilogo</strong>.</p><label class="row small"><input type="checkbox" id="wizManual"> Tiri manuali (inserirai tu un numero 0–9)</label></div>`;
+    EL('wizManual').checked=wizard.temp.manual;
+    EL('wizManual').onchange=e=>wizard.temp.manual=e.target.checked;
+  }
+  if(wizard.step===1){
+    body.innerHTML = `<div class="two">
+      <div class="box"><h3>Combattività (CS)</h3><div class="row"><button class="btn" id="wizRollCS">Estrai</button><input id="wizCS" type="number" readonly style="width:100px" value="${wizard.temp.combattivitaBase}"/><span class="tag">= 10 + RN</span><span class="tag" id="tryCS"></span></div></div>
+      <div class="box"><h3>Resistenza (EP)</h3><div class="row"><button class="btn" id="wizRollEP">Estrai</button><input id="wizEP" type="number" readonly style="width:100px" value="${wizard.temp.resistenzaBase}"/><span class="tag">= 20 + RN</span><span class="tag" id="tryEP"></span></div></div>
+    </div>
+    <div class="small tag">I primi due numeri determinano CS ed EP. Con tiri automatici, <strong>max 2 tentativi</strong> per statistica.</div>`;
+    const upd=()=>{ EL('tryCS').textContent=`tentativi: ${wizard.temp.rolls.cs}/2`; EL('tryEP').textContent=`tentativi: ${wizard.temp.rolls.ep}/2`; };
+    upd();
+    EL('wizRollCS').onclick=()=>{ if(!wizard.temp.manual && wizard.temp.rolls.cs>=2) return;
+      const r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9(); if(!wizard.temp.manual) wizard.temp.rolls.cs++;
+      wizard.temp.combattivitaBase = 10 + r; EL('wizCS').value=wizard.temp.combattivitaBase; upd();
+      immersion(`Numero ${r}. CS = 10 + ${r} = ${10+r}.`,'Tiro'); };
+    EL('wizRollEP').onclick=()=>{ if(!wizard.temp.manual && wizard.temp.rolls.ep>=2) return;
+      const r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9(); if(!wizard.temp.manual) wizard.temp.rolls.ep++;
+      wizard.temp.resistenzaBase = 20 + r; EL('wizEP').value=wizard.temp.resistenzaBase; upd();
+      immersion(`Numero ${r}. EP = 20 + ${r} = ${20+r}.`,'Tiro'); };
+  }
+  if(wizard.step===2){
+    body.innerHTML = `<div class="box"><h3>Scegli 5 Arti Ramas</h3><div class="row"><button id="wizRandom5Btn" class="btn soft">Scegli 5 casuali</button></div><div id="wizDiscList" class="list" style="margin-top: 8px;"></div></div>`;
+    const list=EL('wizDiscList');
+    DISCIPLINES.forEach(name=>{
+      const id=`wd_${name.replace(/\s+/g,'_')}`;
+      list.insertAdjacentHTML('beforeend', `<label class="row small"><input type="checkbox" id="${id}"> <strong>${name}</strong> <span class="tag">— ${DISC_DESC[name]}</span></label>`);
+      const cb=EL(id); cb.checked=wizard.temp.disciplines.has(name);
+      cb.onchange=e=>{
+        if(e.target.checked){ if(wizard.temp.disciplines.size>=5){ e.target.checked=false; immersion('Massimo 5 Arti.','Wizard'); return; } wizard.temp.disciplines.add(name); }
+        else wizard.temp.disciplines.delete(name);
+      };
+    });
+    EL('wizRandom5Btn').onclick=()=>{
+      wizard.temp.disciplines.clear();
+      [...DISCIPLINES].sort(()=>0.5-Math.random()).slice(0,5).forEach(d=>wizard.temp.disciplines.add(d));
+      renderWizard();
+    };
+  }
+  if(wizard.step===3){
+    body.innerHTML = `<div class="box">
+      <h3>Equipaggiamento Iniziale</h3>
+      <p class="small tag">Parti con un’<strong>Ascia</strong>, <strong>1 Pasto</strong>, <strong>Mappa</strong>, <strong>Oro</strong> pari a un RN (0–9), e <em>uno</em> fra i seguenti oggetti in base a un RN.</p>
+      <div class="row"><button id="wizGoldRoll" class="btn">Tira l'Oro</button><span class="pill" id="wizGoldOut">—</span></div>
+      <div class="row"><button id="wizBonusRoll" class="btn">Tira l'oggetto bonus</button><span id="bonusItem" class="pill">—</span></div>
+      <div class="row"><button id="wizWSroll" class="btn soft">Tira Scherma (se selezionata)</button><span class="tag" id="wsOut">—</span></div>
+    </div>`;
+    EL('wizGoldRoll').onclick=()=>{ const g=random0to9(); wizard.temp.gold=g; EL('wizGoldOut').textContent=`${g} Corone`; immersion(`Oro iniziale: ${g}`,'Fato'); };
+    EL('wizBonusRoll').onclick=()=>{
+      const r=random0to9();
+      const map={0:"Spadone",1:"Spada",2:"Elmo",3:"Due Pasti",4:"Cotta di Maglia",5:"Mazza",6:"Pozione Magica",7:"Bastone",8:"Lancia",9:"12 Corone d'Oro"};
+      const got=map[r]; wizard.temp.bonusItem=got; EL('bonusItem').textContent=got; immersion(`Oggetto bonus: ${got}`,'Fato');
+    };
+    EL('wizWSroll').onclick=()=>{
+      if(!wizard.temp.disciplines.has('Scherma')){ immersion('Non hai selezionato Scherma.','Scherma'); return; }
+      const rn=random0to9(); const weap=WEAPONLIST_WS[rn]; wizard.temp.weaponskillWeapon=weap; EL('wsOut').textContent=`Scherma: ${weap} (+2 CS quando impugnata)`; immersion(`Maestro di Scherma in: ${weap}`,'Scherma');
+    };
+  }
+  EL('wizPrev').disabled = wizard.step===0;
+  EL('wizNext').classList.toggle('hidden', wizard.step===wizard.total-1);
+  EL('wizFinish').classList.toggle('hidden', wizard.step!==wizard.total-1);
+}
+function applyWizard(){
+  state.player.combattivitaBase = wizard.temp.combattivitaBase;
+  state.player.resistenzaBase = wizard.temp.resistenzaBase;
+  state.player.resistenzaCorrente = wizard.temp.resistenzaBase;
+  state.player.disciplines = wizard.temp.disciplines;
+  state.player.weapons = ["Ascia"];
+  state.player.equipped = "Ascia";
+  state.player.backpack = [];
+  state.player.specials = ["Mappa"];
+  state.player.meals = 1;
+  // Oro iniziale (0–9) — lo tiriamo nello step 3
+  state.player.gold = clamp(wizard.temp.gold||0,0,50);
+
+  // Bonus oggetto
+  const bonus=wizard.temp.bonusItem;
+  if(bonus){
+    if(["Spadone","Spada","Mazza","Bastone","Lancia","Ascia"].includes(bonus) && state.player.weapons.length<2) state.player.weapons.push(bonus);
+    if(bonus==="Due Pasti") state.player.meals += 2;
+    if(bonus==="Pozione Magica") state.player.backpack.push("Pozione Magica");
+    if(bonus==="Elmo") state.player.specials.push("Elmo");
+    if(bonus==="Cotta di Maglia") state.player.specials.push("Cotta di Maglia");
+    if(bonus==="12 Corone d'Oro") state.player.gold = Math.min(50, state.player.gold + 12);
+  }
+  // Weaponskill
+  if(state.player.disciplines.has('Scherma')){
+    state.player.weaponskillWeapon = wizard.temp.weaponskillWeapon || WEAPONLIST_WS[random0to9()];
+  }
+
+  state.flags.started=true;
+  syncUI();
+  closeWizard();
+  immersion('Il tuo viaggio ha inizio…','Avventura');
+}
+function closeWizard(){ EL('wizard').classList.add('hidden'); }
+
+/* ===== Save/Load ===== */
+function buildSaveObj(){ return {player:{...state.player,disciplines:[...state.player.disciplines]},section:state.current.section,flags:state.flags,history:state.navHistory}; }
+function applySaveObj(obj){
+  state.player=obj.player; state.player.disciplines = new Set(obj.player.disciplines||[]);
+  state.flags=obj.flags; state.navHistory=obj.history||[];
+  if(obj.section) navGoTo(obj.section,false);
+  syncUI();
+}
+function hasAutosave(){ try{return !!localStorage.getItem(AUTOSAVE_KEY);}catch{return false;} }
+function scheduleAutosave(){ if(!state.flags.autosave) return; try{ localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(buildSaveObj())); EL('btnResume').disabled=false; }catch(e){} }
+function restoreAutosave(){ try{ const raw=localStorage.getItem(AUTOSAVE_KEY); if(!raw) return false; const obj=JSON.parse(raw); applySaveObj(obj); immersion('Salvataggio automatico ripristinato.','Riprendi'); return true; }catch(e){ return false; } }
+
+/* ===== Eventi ===== */
+function initEventListeners(){
+  EL('themeToggle').addEventListener('change', e=>{ const mode=e.target.checked?'light':''; document.documentElement.setAttribute('data-theme',mode); localStorage.setItem(THEME_PREF,mode); });
+  EL('fileInput').addEventListener('change', async e=>{ const f=e.target.files?.[0]; if(!f) return; importBook(await f.text()); });
+  EL('openWizardBtn').addEventListener('click', openWizardModal);
+  EL('quickStartBtn').addEventListener('click', ()=>{
+    state.player={
+      combattivitaBase:10+random0to9(), resistenzaBase:20+random0to9(),
+      resistenzaCorrente:0, // settiamo dopo
+      disciplines:new Set(), weapons:["Ascia"], equipped:"Ascia",
+      backpack:[], specials:["Mappa"], meals:1, gold:random0to9(),
+      weaponskillWeapon: WEAPONLIST_WS[random0to9()]
+    };
+    state.player.resistenzaCorrente = state.player.resistenzaBase;
+    [...DISCIPLINES].sort(()=>0.5-Math.random()).slice(0,5).forEach(d=>state.player.disciplines.add(d));
+    state.flags.started=true; syncUI(); immersion('Personaggio rapido creato!','Inizio Rapido');
+  });
+  EL('newGameBtn').addEventListener('click', ()=>{ if(confirm('Nuova partita? Perderai i progressi non salvati.')){ localStorage.removeItem(AUTOSAVE_KEY); location.reload(); }});
+  EL('exportSaveBtn').addEventListener('click', ()=>{ EL('saveCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(buildSaveObj())))); immersion('Codice di salvataggio generato.','Salvataggio'); });
+  EL('importSaveBtn').addEventListener('click', ()=>{
+    const raw=prompt('Incolla il codice di salvataggio:',''); if(!raw) return;
+    try{ const obj=JSON.parse(decodeURIComponent(escape(atob(raw)))); applySaveObj(obj); immersion('Salvataggio caricato.','Import'); }
+    catch(e){ alert('Codice non valido.'); }
+  });
+  EL('btnResume').addEventListener('click', ()=>{ if(!restoreAutosave()) immersion('Nessun salvataggio trovato.','Riprendi'); });
+  EL('toggleAutosave').addEventListener('change', e=>{ state.flags.autosave=e.target.checked; try{ localStorage.setItem(AUTOSAVE_PREF, e.target.checked?'1':'0'); }catch{} });
+  EL('jumpGo').addEventListener('click', ()=>{ const n=+EL('jumpInput').value; if(Number.isInteger(n)) navGoTo(n); });
+  EL('navBack').addEventListener('click',()=>{ if(!state.navHistory.length) return; const prev=state.navHistory.pop(); if(prev){ state.navFuture.unshift(state.current.section); navGoTo(prev,false);} });
+  EL('navForward').addEventListener('click',()=>{ if(!state.navFuture.length) return; const next=state.navFuture.shift(); if(next){ state.navHistory.push(state.current.section); navGoTo(next,false);} });
+  EL('passage').addEventListener('click', ev=>{
+    const a=ev.target.closest('a'); if(!a) return;
+    const m=(a.getAttribute('href')||'').match(/#sect(\d+)/i); if(!m) return;
+    const target=+m[1];
+    if(state.flags.enforceCond && state.allowedTargets.has(target) && !state.allowedTargets.get(target)){
+      ev.preventDefault(); immersion('Scelta bloccata: requisiti non soddisfatti.','Scelta'); return;
+    }
+    ev.preventDefault(); navGoTo(target);
+  });
+
+  EL('prepareCombatBtn').addEventListener('click', prepareCombatPanel);
+  EL('startCombatBtn').addEventListener('click', startCombat);
+  EL('combatRoundBtn').addEventListener('click', ()=>resolveRound(false));
+  EL('evadeBtn').addEventListener('click', ()=>resolveRound(true));
+  EL('endCombatBtn').addEventListener('click', ()=>endCombat('Combattimento terminato.'));
+  ['useMindblast','youMod','foeMod'].forEach(id=> EL(id)?.addEventListener('input', updateCombatUI));
+  EL('enforceCond').addEventListener('change', e=>{ state.flags.enforceCond=e.target.checked; renderChoicesAssist(); });
+
+  EL('wizSkip').addEventListener('click', closeWizard);
+  EL('wizPrev').addEventListener('click', ()=>{ wizard.step=Math.max(0, wizard.step-1); renderWizard(); });
+  EL('wizNext').addEventListener('click', ()=>{ if(wizard.step===2 && wizard.temp.disciplines.size!==5){ immersion('Devi scegliere esattamente 5 Arti Ramas.','Wizard'); return; } wizard.step=Math.min(wizard.total-1, wizard.step+1); renderWizard(); });
+  EL('wizFinish').addEventListener('click', applyWizard);
+
+  EL('addWeaponBtn').addEventListener('click',()=>{
+    const v=(EL('weaponInput').value||'').trim(); if(!v) return;
+    if(state.player.weapons.includes(v)) return;
+    if(state.player.weapons.length>=2){ immersion('Puoi portare al massimo 2 armi.','Inventario'); return; }
+    state.player.weapons.push(v); if(!state.player.equipped) state.player.equipped=v; EL('weaponInput').value=''; syncUI();
+  });
+  EL('addBackpackBtn').addEventListener('click',()=>{
+    const v=(EL('backpackInput').value||'').trim(); if(!v) return;
+    const cap=state.player.backpack.length + state.player.meals; if(cap>=8){ immersion('Zaino pieno (max 8 fra oggetti + pasti).','Inventario'); return; }
+    state.player.backpack.push(v); EL('backpackInput').value=''; syncUI();
+  });
+  EL('addSpecialBtn').addEventListener('click',()=>{ const v=(EL('specialInput').value||'').trim(); if(!v) return; state.player.specials.push(v); EL('specialInput').value=''; syncUI(); });
+  EL('eatMealBtn').addEventListener('click',()=>{ if(state.player.meals>0){ state.player.meals--; state.player.resistenzaCorrente=Math.min(state.player.resistenzaBase, state.player.resistenzaCorrente+4); syncUI(); } else immersion('Nessun Pasto disponibile.','Inventario'); });
+  EL('goldPlus1Btn').addEventListener('click',()=>{ state.player.gold = clamp(state.player.gold+1,0,50); syncUI(); });
+  EL('goldMinus1Btn').addEventListener('click',()=>{ state.player.gold = clamp(state.player.gold-1,0,50); syncUI(); });
+  EL('rng0to9Btn').addEventListener('click',()=>{ const v=random0to9(); EL('rngVal').textContent=String(v); });
+  EL('btnDice').addEventListener('click',()=>EL('diceModal').classList.remove('hidden'));
+  EL('diceClose').addEventListener('click',()=>EL('diceModal').classList.add('hidden'));
+  EL('diceRoll').addEventListener('click',()=>{ const v=random0to9(); EL('diceFace').textContent=String(v); EL('rngVal').textContent=String(v); immersion(`Numero Casuale: ${v}`,'Dado'); });
+  EL('btnExport').addEventListener('click', ()=>EL('exportSaveBtn').click());
+  EL('btnImport').addEventListener('click', ()=>EL('importSaveBtn').click());
+  EL('btnReset').addEventListener('click', ()=>{ if(confirm('Reset totale?')){ localStorage.removeItem(AUTOSAVE_KEY); location.reload(); }});
+  EL('equippedWeapon').addEventListener('change', e=>{ state.player.equipped=e.target.value; updateCombatUI(); scheduleAutosave(); });
+  // mapping diretto (bugfix rispetto alla tua versione)
+  EL('combattivitaBase').addEventListener('input', ()=>{ state.player.combattivitaBase=+EL('combattivitaBase').value||0; updateCombatUI(); scheduleAutosave(); });
+  EL('resistenzaBase').addEventListener('input', ()=>{ state.player.resistenzaBase=+EL('resistenzaBase').value||1; state.player.resistenzaCorrente=Math.min(state.player.resistenzaCorrente,state.player.resistenzaBase); syncUI(); });
+  EL('resistenzaCorrente').addEventListener('input', ()=>{ state.player.resistenzaCorrente=clamp(+EL('resistenzaCorrente').value||0,0,state.player.resistenzaBase); scheduleAutosave(); });
+  EL('meals').addEventListener('input', ()=>{ state.player.meals=clamp(+EL('meals').value||0,0,8); enforceCapacity(); scheduleAutosave(); });
+  EL('gold').addEventListener('input', ()=>{ state.player.gold=clamp(+EL('gold').value||0,0,50); scheduleAutosave(); });
+  EL('rngManual').addEventListener('change', e=>{ state.flags.rngManual=e.target.checked; });
+  EL('btnDeepL').addEventListener('click', openDeepL);
+}
+
+/* ===== Init ===== */
+(async function init(){
+  initEventListeners();
+  try{ const pref=localStorage.getItem(AUTOSAVE_PREF); if(pref!==null){ state.flags.autosave=(pref==='1'); EL('toggleAutosave').checked=state.flags.autosave; } EL('btnResume').disabled=!hasAutosave(); }catch(e){}
+  EL('enforceCond').checked=state.flags.enforceCond;
+  const ok = await tryAutoLoad();
+  if(!ok){ EL('importHelp').classList.remove('hidden'); }
+  syncUI(); updateNavButtons();
+})();
 </script>
 </body>
 </html>
