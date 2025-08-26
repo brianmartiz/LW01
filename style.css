@@ -1,0 +1,333 @@
+/*
+ * FOGLIO DI STILE PER MOTORE DI GIOCO LUPO SOLITARIO
+ *
+ * NOTE DI DESIGN:
+ * - Tema Scuro (Default): evoca un'atmosfera mistica, da pergamena antica illuminata da una candela.
+ * - Tema Chiaro (Opzionale): pulito e leggibile, come un documento reale o una pagina di libro stampata.
+ * - Tipografia: unisce un font serif classico per il testo narrativo (per l'immersione)
+ * a un sans-serif moderno per l'interfaccia (per la leggibilità).
+ * - Dettagli: transizioni morbide, ombre sottili e un layout responsive per un'esperienza premium.
+*/
+
+/* ================== 1. VARIABILI E TEMA ================== */
+:root {
+  /* Tema Scuro (Default) */
+  --bg-main: #0d1117;
+  --bg-panel: #161c27;
+  --bg-paper: #1a1d24;
+  --bg-inset: #0c1016;
+
+  --border-main: #30363d;
+  --border-subtle: #21262d;
+
+  --ink-main: #c9d1d9;
+  --ink-muted: #8b949e;
+  --ink-bright: #e6edf3;
+
+  --accent-kai: #238636;
+  --accent-link: #58a6ff;
+  --accent-gold: #d2a85e;
+  --accent-warn: #d29922;
+  --accent-danger: #f85149;
+
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] {
+  /* Tema Chiaro */
+  --bg-main: #f0f4f8;
+  --bg-panel: #ffffff;
+  --bg-paper: #ffffff;
+  --bg-inset: #f0f6fc;
+
+  --border-main: #d0d7de;
+  --border-subtle: #e6edf3;
+
+  --ink-main: #1f2328;
+  --ink-muted: #656d76;
+  --ink-bright: #000000;
+
+  --accent-kai: #1a6333;
+  --accent-link: #0969da;
+  --accent-gold: #956c15;
+  --accent-warn: #9a6700;
+  --accent-danger: #d1242f;
+  
+  --shadow-color: rgba(140, 149, 159, 0.2);
+}
+
+
+/* ================== 2. STILI DI BASE ================== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-main);
+  color: var(--ink-main);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  color: var(--accent-link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3 {
+  color: var(--ink-bright);
+  font-weight: 600;
+  margin: 0 0 0.5em 0;
+}
+
+h1 { font-size: 1.5rem; }
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1rem; }
+
+.hidden { display: none !important; }
+.mono { font-family: "SF Mono", "Consolas", "Liberation Mono", Menlo, monospace; }
+
+/* Scrollbar personalizzata */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+
+/* ================== 3. LAYOUT PRINCIPALE ================== */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh; /* Fallback per vecchi browser */
+  min-height: 100dvh;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(22, 28, 42, 0.8);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: saturate(1.2) blur(10px);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+}
+:root[data-theme="light"] .topbar {
+  background: rgba(255, 255, 255, 0.8);
+}
+.topbar .spacer { flex: 1; }
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 440px;
+  padding: 14px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-main);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer {
+  padding: 10px 14px;
+  color: var(--ink-muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+/* ================== 4. COMPONENTI UI ================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #21262d;
+  border: 1px solid var(--border-main);
+  color: var(--ink-main);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn:hover {
+  border-color: #8b949e;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+.btn:active {
+  transform: translateY(0);
+  filter: brightness(0.9);
+}
+.btn.primary { background-color: var(--accent-kai); border-color: #319648; color: white; }
+.btn.primary:hover { background-color: #289c46; }
+.btn.soft { background-color: transparent; }
+.btn.success { background-color: #238636; border-color: #319648; color: white; }
+.btn.warn { background-color: #b08728; border-color: #e4b242; color: white; }
+.btn.danger { background-color: var(--accent-danger); border-color: #ff6a64; color: white; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+input[type="number"], input[type="text"], select, textarea {
+  background: var(--bg-inset);
+  color: var(--ink-main);
+  border: 1px solid var(--border-main);
+  border-radius: 8px;
+  padding: 8px 10px;
+  outline: none;
+  min-height: 40px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-link);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+textarea { width: 100%; min-height: 84px; }
+
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.list { display: flex; flex-direction: column; gap: 6px; }
+.divider { height: 1px; background: var(--border-main); margin: 12px -14px; }
+.tag { font-size: 12px; color: var(--ink-muted); }
+.pill { display: inline-flex; gap: 6px; align-items: center; background: var(--bg-inset); border: 1px solid var(--border-main); border-radius: 999px; padding: 4px 10px; font-size: 13px; }
+
+/* ================== 5. PANNELLO LIBRO E PASSAGE ================== */
+.paper {
+  background: radial-gradient(1200px 600px at 20% -10%, rgba(255,255,255,0.03) 0%, transparent 60%), var(--bg-paper);
+  border-color: var(--border-subtle);
+  padding: 1.5rem;
+}
+:root[data-theme="light"] .paper {
+  background: var(--bg-paper);
+}
+
+.passage {
+  max-width: 78ch;
+  font-family: "Iowan Old Style", "Palatino", "Georgia", serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--ink-main);
+}
+:root[data-theme="light"] .passage { color: #2a3038; }
+
+.passage p { margin: 1.2em 0; }
+.passage p:first-of-type::first-letter {
+  font-size: 3em;
+  float: left;
+  line-height: 0.9;
+  margin: 0 .14em 0 0;
+  color: var(--accent-gold);
+  text-shadow: 0 0 12px rgba(210, 168, 94, 0.2);
+}
+.passage strong {
+  color: var(--ink-bright);
+  font-weight: 600;
+}
+.dead-text {
+  font-family: "Iowan Old Style", "Palatino", "Georgia", serif;
+  color: var(--accent-danger);
+  font-weight: bold;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 1rem;
+  border: 1px dashed var(--accent-danger);
+  border-radius: 8px;
+}
+
+/* Stile per i link di scelta nel testo */
+a.choiceLink {
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  background: rgba(88, 166, 255, 0.1);
+  border-bottom: 1px solid rgba(88, 166, 255, 0.3);
+  font-weight: 500;
+}
+:root[data-theme="light"] a.choiceLink {
+  background: rgba(9, 105, 218, 0.1);
+  border-bottom-color: rgba(9, 105, 218, 0.3);
+}
+a.choiceLink:hover {
+  background: rgba(88, 166, 255, 0.2);
+  text-decoration: none;
+}
+a.choiceLink.disabled {
+  pointer-events: none;
+  opacity: .5;
+  text-decoration: none;
+  border: 1px dashed var(--border-main);
+  background: transparent;
+}
+
+
+/* ================== 6. COMBATTIMENTO E STATISTICHE ================== */
+.enemyBox { border: 1px dashed var(--border-main); border-radius: 10px; padding: 10px; margin: 6px 0; }
+.combatGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.statCard { border: 1px solid var(--border-main); border-radius: 10px; padding: 10px; background: var(--bg-inset); transition: background-color .3s, border-color .3s; }
+.statCard h3 { margin: 0 0 6px; }
+.stat { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; align-items: center; }
+.big { font-size: 24px; font-weight: 700; color: var(--ink-bright); }
+.kicker { font-size: 12px; color: var(--ink-muted); }
+.crBadge { background: var(--bg-inset); }
+.combat-log { margin-top: 8px; white-space: pre-wrap; max-height: 240px; overflow: auto; border: 1px dashed var(--border-main); border-radius: 10px; padding: 8px; background: var(--bg-inset); }
+
+/* ================== 7. MODALI (Wizard, Dado) ================== */
+.modal { background: rgba(13, 17, 23, 0.8); }
+.wiz { width: min(960px, 96vw); max-height: 88dvh; background: var(--bg-panel); border: 1px solid var(--border-main); border-radius: 14px; padding: 14px 14px 12px; display: flex; flex-direction: column; }
+.wiz .header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.steps { display: flex; gap: 6px; margin: 6px 0 10px; }
+.step-dot { width: 10px; height: 10px; border-radius: 50%; background: #243048; border: 1px solid #32425b; }
+.step-dot.active { background: var(--accent-link); }
+.wiz .body { display: grid; gap: 10px; overflow: auto; padding: 4px; }
+.wiz .footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; position: sticky; bottom: -12px; background: linear-gradient(180deg, transparent, var(--bg-panel) 50%); padding-top: 8px; }
+.wiz h3 { margin: 6px 0 4px; font-size: 16px; }
+.wiz .box { border: 1px solid var(--border-main); border-radius: 10px; padding: 12px; background: var(--bg-inset); }
+.wiz .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.dice-face { font-size:42px; line-height:1; border:1px dashed var(--border-main); border-radius:12px; padding:16px 18px; min-width:64px; text-align:center; }
+
+/* ================== 8. EFFETTI E ANIMAZIONI ================== */
+.glow { animation: glow-anim 1.2s ease-out; }
+@keyframes glow-anim {
+  0% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
+  40% { box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.3); }
+  100% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
+}
+
+.immersion { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 11000; pointer-events: none; }
+.immersion .card { background: linear-gradient(180deg, #1f2533, #161b27); border: 1px solid var(--border-main); border-radius: 14px; padding: 14px 18px; max-width: 86vw; color: #e7ecff; box-shadow: 0 14px 60px var(--shadow-color); opacity: 0; transform: translateY(12px); transition: .35s; }
+.immersion.show .card { opacity: 1; transform: translateY(0); }
+.immersion .title { font-weight: 700; margin-bottom: 6px; color: var(--accent-kai); }
+.immersion .txt { font-size: 14px; color: #c9d4ee; }
+
+
+/* ================== 9. RESPONSIVE (MOBILE) ================== */
+@media (max-width: 980px) {
+  .grid { grid-template-columns: 1fr; }
+  input, select, textarea { font-size: 16px; }
+  .wiz .two { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; gap: 6px; }
+  .btn { padding: 10px 12px; }
+  #bookPanel { order: 1; }
+  #actionPanel { order: 2; }
+  .combatGrid { grid-template-columns: 1fr; }
+}
+
