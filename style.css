@@ -331,3 +331,60 @@ a.choiceLink.disabled {
   .combatGrid { grid-template-columns: 1fr; }
 }
 
+/* ============= HP BARS ============= */
+.hpbar {
+  --h: 12px;
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 6px;
+}
+.hpbar__track {
+  position: relative; flex: 1; height: var(--h);
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--bg-inset) 96%, transparent),
+    color-mix(in oklab, var(--bg-inset) 88%, transparent));
+  border: 1px solid var(--line-subtle);
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.18);
+}
+.hpbar__fill {
+  position: absolute; inset: 0;
+  width: 100%;
+  /* colore adattivo per stato: gestito via classi is-high/is-mid/is-low */
+  background: linear-gradient(90deg, #5ae0a2, #6ee7b7 60%, #9af0d0);
+  box-shadow: inset 0 -6px 12px rgba(0,0,0,.15);
+  transition: width .45s cubic-bezier(.2,.7,.2,1), background .25s ease;
+}
+.hpbar--foe .hpbar__fill {
+  background: linear-gradient(90deg, #ff6b6b, #ffa36c 60%, #ffd284);
+}
+
+/* Stati (alto/medio/basso) con palette dedicate */
+.hpbar.is-high .hpbar__fill {
+  background: linear-gradient(90deg, #5ae0a2, #6ee7b7 60%, #9af0d0);
+}
+.hpbar.is-mid .hpbar__fill {
+  background: linear-gradient(90deg, #f3c969, #ffd78a 60%, #ffe6b3);
+}
+.hpbar.is-low .hpbar__fill {
+  background: linear-gradient(90deg, #ff6b6b, #ff9a76 60%, #ffc3a1);
+}
+
+.hpbar__label {
+  min-width: 76px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .2px;
+}
+
+/* Effetto "hit" quando si subiscono danni */
+.hpbar.hit .hpbar__fill {
+  animation: hpHit .7s ease;
+}
+@keyframes hpHit {
+  0%   { filter: brightness(1) saturate(1); }
+  20%  { filter: brightness(1.25) saturate(1.15); }
+  100% { filter: brightness(1) saturate(1); }
+}
