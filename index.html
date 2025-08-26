@@ -59,20 +59,35 @@
 
         <div id="combatPanel" class="panel hidden" style="margin-top:12px">
           <h2>Combattimento</h2>
-          <div class="combatGrid">
-            <div class="statCard" id="youCard">
-              <h3>Tu</h3>
-              <div class="row"><span>Combattività:</span> <span class="big" id="youCS">—</span></div>
-              <div class="row"><span>Resistenza:</span> <span class="big" id="youEP">—</span> <span class="kicker" id="youEPmax"></span></div>
-              <div class="row small" id="youNotes"></div>
-            </div>
-            <div class="statCard" id="foeCard">
-              <h3 id="foeName">Nemico</h3>
-              <div class="row"><span>Combattività:</span> <span class="big" id="foeCS">—</span></div>
-              <div class="row"><span>Resistenza:</span> <span class="big" id="foeEP">—</span> <span class="kicker" id="foeEPmax"></span></div>
-              <div class="row small" id="foeNotes"></div>
-            </div>
-          </div>
+<div class="combatGrid">
+  <div class="statCard" id="youCard">
+    <h3>Tu</h3>
+    <div class="row"><span>Combattività:</span> <span class="big" id="youCS">—</span></div>
+    <div class="row"><span>Resistenza:</span> <span class="big" id="youEP">—</span> <span class="kicker" id="youEPmax"></span></div>
+    <!-- HP BAR YOU -->
+    <div class="hpbar hpbar--you is-high" id="youHPBar" aria-label="Resistenza (Tu)">
+      <div class="hpbar__track">
+        <div class="hpbar__fill" id="youHPFill" style="width: 100%"></div>
+      </div>
+      <div class="hpbar__label"><span id="youHPLabel">—/—</span></div>
+    </div>
+    <div class="row small" id="youNotes"></div>
+  </div>
+
+  <div class="statCard" id="foeCard">
+    <h3 id="foeName">Nemico</h3>
+    <div class="row"><span>Combattività:</span> <span class="big" id="foeCS">—</span></div>
+    <div class="row"><span>Resistenza:</span> <span class="big" id="foeEP">—</span> <span class="kicker" id="foeEPmax"></span></div>
+    <!-- HP BAR FOE -->
+    <div class="hpbar hpbar--foe is-high" id="foeHPBar" aria-label="Resistenza (Nemico)">
+      <div class="hpbar__track">
+        <div class="hpbar__fill" id="foeHPFill" style="width: 100%"></div>
+      </div>
+      <div class="hpbar__label"><span id="foeHPLabel">—/—</span></div>
+    </div>
+    <div class="row small" id="foeNotes"></div>
+  </div>
+</div>
 
           <div class="row" style="margin-top:6px">
             <span class="pill">Rapporto di Forza: <strong class="mono" id="crNow">—</strong></span>
