@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-store, max-age=0">
 <title>Lupo Solitario — Libro 1 (single-file stabile)</title>
+<meta http-equiv="Cache-Control" content="no-store, max-age=0">
 
 <style>
 /* ====== THEME (scuro default, chiaro opzionale) ====== */
@@ -13,14 +13,17 @@
   --br:#30363d;--br-sub:#21262d;
   --ink:#c9d1d9;--ink-muted:#8b949e;--ink-strong:#e6edf3;
   --link:#58a6ff;--kai:#2aa83a;--gold:#d2a85e;--warn:#d29922;--danger:#f85149;
-  --shadow:rgba(0,0,0,.35)
+  --shadow:rgba(0,0,0,.35);
+  /* Bottoni (nuove var per il tema chiaro) */
+  --btn-bg:#21262d; --btn-bg-hover:#2a313a; --btn-fg:var(--ink); --btn-br:var(--br);
 }
 :root[data-theme="light"]{
-  --bg-main:#f6f8fa;--bg-panel:#fff;--bg-paper:#fff;--bg-inset:#f0f6fc;
+  --bg-main:#f6f8fa;--bg-panel:#ffffff;--bg-paper:#ffffff;--bg-inset:#f0f6fc;
   --br:#d0d7de;--br-sub:#e6edf3;
   --ink:#24292f;--ink-muted:#656d76;--ink-strong:#111;
   --link:#0969da;--kai:#1a7f37;--gold:#966c19;--warn:#9a6700;--danger:#d1242f;
-  --shadow:rgba(140,149,159,.25)
+  --shadow:rgba(140,149,159,.25);
+  --btn-bg:#f6f8fa; --btn-bg-hover:#eef2f6; --btn-fg:#24292f; --btn-br:#d0d7de;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -34,17 +37,19 @@ h1{font-size:1.4rem} h2{font-size:1.15rem} h3{font-size:1rem}
 .topbar{position:sticky;top:0;z-index:50;display:flex;gap:8px;align-items:center;padding:10px 14px;background:rgba(22,28,39,.85);border-bottom:1px solid var(--br-sub);backdrop-filter:saturate(1.2) blur(10px)}
 :root[data-theme="light"] .topbar{background:rgba(255,255,255,.85)}
 .spacer{flex:1}
-.btn{display:inline-flex;align-items:center;gap:6px;background:#21262d;border:1px solid var(--br);color:var(--ink);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:500;transition:.15s transform,.2s box-shadow,.2s border}
-.btn:hover{border-color:#8b949e;transform:translateY(-1px);box-shadow:0 4px 14px var(--shadow)}
+
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--btn-bg);border:1px solid var(--btn-br);color:var(--btn-fg);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;transition:.15s transform,.2s box-shadow,.2s border,.2s background}
+.btn:hover{border-color:#8b949e;transform:translateY(-1px);box-shadow:0 4px 14px var(--shadow);background:var(--btn-bg-hover)}
 .btn:active{transform:none;filter:brightness(.95)}
 .btn.primary{background:linear-gradient(180deg,var(--kai),#187a2f);color:#fff;border-color:#2e9a44}
-.btn.soft{background:transparent}
 .btn.success{background:var(--kai);color:#fff;border-color:#2e9a44}
+.btn.soft{background:transparent}
 .btn.warn{background:#b08728;color:#fff;border-color:#e4b242}
 .btn.danger{background:var(--danger);color:#fff;border-color:#ff6a64}
 .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
 input[type="number"],input[type="text"],select,textarea{background:var(--bg-inset);color:var(--ink);border:1px solid var(--br);border-radius:10px;padding:8px 10px;min-height:40px;outline:none;transition:.2s border,.2s box-shadow}
-input:focus,select:focus,textarea:focus{border-color:var(--link);box-shadow:0 0 0 3px color-mix(in oklab, var(--link) 30%, transparent)}
+input:focus,select:focus,textarea:focus{border-color:var(--link);box-shadow:0 0 0 3px rgba(88,166,255,.25)}
 textarea{width:100%;min-height:84px}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .list{display:flex;flex-direction:column;gap:6px}
@@ -61,13 +66,14 @@ textarea{width:100%;min-height:84px}
 .passage{max-width:78ch;font-family: "Iowan Old Style","Palatino","Georgia",serif;font-size:18px;line-height:1.75;color:var(--ink)}
 :root[data-theme="light"] .passage{color:#222}
 .passage p{margin:1.1em 0}
-.passage p:first-of-type::first-letter{font-size:3em;float:left;line-height:.9;margin:0 .14em 0 0;color:var(--gold);text-shadow:0 0 10px color-mix(in oklab, var(--gold) 30%, transparent)}
+.passage p:first-of-type::first-letter{font-size:3em;float:left;line-height:.9;margin:0 .14em 0 0;color:var(--gold);text-shadow:0 0 10px rgba(210,168,94,.25)}
 .passage strong{color:var(--ink-strong)}
 .dead-text{font-family:"Iowan Old Style","Palatino","Georgia",serif;color:var(--danger);font-weight:700;margin-top:1rem;text-align:center;padding:10px;border:1px dashed var(--danger);border-radius:10px}
 
 /* Choice links in-text */
-a.choiceLink{padding:.08rem .35rem;border-radius:6px;background:color-mix(in oklab, var(--link) 12%, transparent);border-bottom:1px solid color-mix(in oklab, var(--link) 30%, transparent);font-weight:600}
-a.choiceLink:hover{text-decoration:none;background:color-mix(in oklab, var(--link) 22%, transparent)}
+a.choiceLink{padding:.08rem .35rem;border-radius:6px;background:rgba(88,166,255,.12);border-bottom:1px solid rgba(88,166,255,.35);font-weight:700}
+:root[data-theme="light"] a.choiceLink{background:rgba(9,105,218,.1);border-bottom-color:rgba(9,105,218,.35)}
+a.choiceLink:hover{text-decoration:none;background:rgba(88,166,255,.22)}
 a.choiceLink.disabled{pointer-events:none;opacity:.5;background:transparent;border:1px dashed var(--br)}
 
 /* Combat */
@@ -78,7 +84,8 @@ a.choiceLink.disabled{pointer-events:none;opacity:.5;background:transparent;bord
 .big{font-size:24px;font-weight:800;color:var(--ink-strong)}
 .kicker{font-size:12px;color:var(--ink-muted)}
 .combat-log{margin-top:8px;white-space:pre-wrap;max-height:240px;overflow:auto;border:1px dashed var(--br);border-radius:10px;padding:8px;background:var(--bg-inset)}
-/* Modali & Toast */
+
+/* Modali */
 .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(13,17,23,.7);z-index:10000}
 .wiz{width:min(960px,96vw);max-height:88dvh;background:var(--bg-panel);border:1px solid var(--br);border-radius:14px;padding:14px 14px 12px;display:flex;flex-direction:column}
 .wiz .header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -92,6 +99,7 @@ a.choiceLink.disabled{pointer-events:none;opacity:.5;background:transparent;bord
 .wiz .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .dice-face{font-size:42px;line-height:1;border:1px dashed var(--br);border-radius:12px;padding:16px 18px;min-width:64px;text-align:center}
 
+/* Immersion popups */
 .immersion{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:11000;pointer-events:none}
 .immersion .card{background:linear-gradient(180deg,#1f2533,#161b27);border:1px solid var(--br);border-radius:14px;padding:14px 18px;max-width:86vw;color:#e7ecff;box-shadow:0 14px 60px var(--shadow);opacity:0;transform:translateY(12px);transition:.35s}
 .immersion.show .card{opacity:1;transform:translateY(0)}
@@ -424,7 +432,6 @@ function updateNavButtons(){EL('navBack').disabled=state.navHistory.length===0; 
 /* ===== Analisi paragrafo ===== */
 function analyzeSection(root){
   state.enemies=[];
-  // pattern robusto: "COMBAT SKILL 12 ENDURANCE 18" oppure in ITA
   qa('p,div,li',root).forEach(function(p){
     var t=textOnly(p);
     var m=t.match(/([A-Za-zÀ-ÖØ-öø-ÿ' \-]+?)\s*[:\-]?\s*(?:COMBAT(?:TIVIT[ÀA])?|COMBAT SKILL)\s*[: ]?(\d+).{0,40}?(?:ENDURANCE|RESISTENZA)\s*[: ]?(\d+)/i);
@@ -580,8 +587,7 @@ function fallbackCRT(){
   var ranges=[{min:-999,max:-11},{min:-10,max:-9},{min:-8,max:-7},{min:-6,max:-5},{min:-4,max:-3},{min:-2,max:-1},{min:0,max:0},{min:1,max:2},{min:3,max:4},{min:5,max:6},{min:7,max:8},{min:9,max:10},{min:11,max:999}];
   var rows=[
     [{eLoss:0,lwLoss:0,lwKill:true},{eLoss:0,lwLoss:0,lwKill:true},{eLoss:0,lwLoss:8},{eLoss:0,lwLoss:6},{eLoss:1,lwLoss:6},{eLoss:2,lwLoss:5},{eLoss:3,lwLoss:5},{eLoss:4,lwLoss:5},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:4},{eLoss:7,lwLoss:4},{eLoss:8,lwLoss:3},{eLoss:9,lwLoss:3}],
-    [{eLoss:0,lwLoss:0,lwKill:true},{eLoss:0,lwLoss:8},{eLoss:0,lwLoss:7},{eLoss:1,lwLoss:6},{eLoss:2,lwLoss:5},{eLoss:3,lwLoss:5},{eLoss:4,lwLoss:4},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:3},{eLoss:7,lwLoss:3},{eLoss:8,lwLoss:3},{eLoss:9,lwLoss:3},{eLoss:10,lwLoss:2}],
-    [{eLoss:0,lwLoss:8},{eLoss:0,lwLoss:7},{eLoss:1,lwLoss:6},{eLoss:2,lwLoss:5},{eLoss:3,lwLoss:5},{eLoss:4,lwLoss:4},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:3},{eLoss:7,lwLoss:3},{eLoss:8,lwLoss:3},{eLoss:9,lwLoss:2},{eLoss:10,lwLoss:2},{eLoss:11,lwLoss:2}],
+    [{eLoss:0,lwLoss:8},{eLoss:0,lwLoss:7},{eLoss:1,lwLoss:6},{eLoss:2,lwLoss:5},{eLoss:3,lwLoss:5},{eLoss:4,lwLoss:4},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:3},{eLoss:7,lwLoss:3},{eLoss:8,lwLoss:3},{eLoss:9,lwLoss:3},{eLoss:10,lwLoss:2},{eLoss:11,lwLoss:2}],
     [{eLoss:0,lwLoss:8},{eLoss:1,lwLoss:7},{eLoss:2,lwLoss:6},{eLoss:3,lwLoss:5},{eLoss:4,lwLoss:4},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:3},{eLoss:7,lwLoss:3},{eLoss:8,lwLoss:2},{eLoss:9,lwLoss:2},{eLoss:10,lwLoss:2},{eLoss:11,lwLoss:2},{eLoss:12,lwLoss:2}],
     [{eLoss:1,lwLoss:7},{eLoss:2,lwLoss:6},{eLoss:3,lwLoss:5},{eLoss:4,lwLoss:4},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:3},{eLoss:7,lwLoss:2},{eLoss:8,lwLoss:2},{eLoss:9,lwLoss:2},{eLoss:10,lwLoss:2},{eLoss:11,lwLoss:2},{eLoss:12,lwLoss:2},{eLoss:14,lwLoss:1}],
     [{eLoss:2,lwLoss:6},{eLoss:3,lwLoss:6},{eLoss:4,lwLoss:5},{eLoss:5,lwLoss:4},{eLoss:6,lwLoss:3},{eLoss:7,lwLoss:2},{eLoss:8,lwLoss:2},{eLoss:9,lwLoss:2},{eLoss:10,lwLoss:2},{eLoss:11,lwLoss:1},{eLoss:12,lwLoss:1},{eLoss:14,lwLoss:1},{eLoss:16,lwLoss:1}],
@@ -653,30 +659,60 @@ function scheduleAutosave(){if(!state.flags.autosave) return; try{localStorage.s
 function restoreAutosave(){try{var raw=localStorage.getItem(AUTOSAVE_KEY); if(!raw) return false; var obj=JSON.parse(raw); applySave(obj); immersion('Salvataggio ripristinato.','Riprendi'); return true;}catch(e){return false}}
 
 /* ===== Wizard ===== */
-var wizard={step:0,total:4,temp:{}};
-function openWizard(){wizard.step=0; wizard.temp={manual:false,rolls:{cs:0,ep:0},cs:10,ep:20,gold:0,disc:new Set(),bonus:null}; state.player.disciplines=new Set(); EL('wizard').classList.remove('hidden'); renderWizard();}
+var wizard={step:0,total:4,temp:{},rolls:{cs:0,ep:0,gold:0,bonus:0}};
+function openWizard(){
+  wizard.step=0;
+  wizard.temp={manual:false,cs:10,ep:20,gold:0,bonus:null};
+  wizard.rolls={cs:0,ep:0,gold:0,bonus:0};
+  state.player.disciplines=new Set();
+  EL('wizard').classList.remove('hidden');
+  renderWizard();
+}
 function closeWizard(){EL('wizard').classList.add('hidden');}
 function renderWizard(){
   EL('wizStepTag').textContent='Passo '+(wizard.step+1)+' di '+wizard.total;
-  EL('wizDots').innerHTML=Array(wizard.total+1).join('•').split('•').map(function(_,i){return '<div class="step-dot '+(i===wizard.step?'active':'')+'"></div>'}).join('');
+  EL('wizDots').innerHTML=Array(wizard.total).fill(0).map(function(_,i){return '<div class="step-dot '+(i===wizard.step?'active':'')+'"></div>'}).join('');
   var body=EL('wizBody'); body.innerHTML='';
   if(wizard.step===0){
-    body.innerHTML='<div class="box"><h3>Benvenuto, Ramas</h3><p>Crea il tuo personaggio in 4 passi: Statistiche, Arti, Equipaggiamento e Riepilogo.</p><label class="row small"><input type="checkbox" id="wizManual"> Tiri manuali (0–9)</label></div>';
+    body.innerHTML='<div class="box"><h3>Benvenuto, Ramas</h3><p>Crea il tuo personaggio in 4 passi: <strong>Statistiche</strong>, <strong>Arti</strong>, <strong>Equipaggiamento</strong> e <strong>Riepilogo</strong>.</p><label class="row small"><input type="checkbox" id="wizManual"> Tiri manuali (0–9)</label></div>';
     EL('wizManual').checked=wizard.temp.manual; EL('wizManual').addEventListener('change',function(e){wizard.temp.manual=e.target.checked;});
   }
   if(wizard.step===1){
-    body.innerHTML='<div class="two"><div class="box"><h3>Combattività</h3><div class="row"><button class="btn" id="wizRollCS">Estrai</button><input id="wizCS" type="number" readonly style="width:100px" value="'+(10)+'"><span class="tag">= 10 + Numero</span><span class="tag" id="tryCS"></span></div></div><div class="box"><h3>Resistenza</h3><div class="row"><button class="btn" id="wizRollEP">Estrai</button><input id="wizEP" type="number" readonly style="width:100px" value="'+(20)+'"><span class="tag">= 20 + Numero</span><span class="tag" id="tryEP"></span></div></div></div><div class="tag">Con tiri automatici hai <strong>max 2 tentativi</strong> per ciascuna statistica.</div>';
-    function upd(){EL('tryCS').textContent='tentativi: '+wizard.temp.rolls.cs+'/2'; EL('tryEP').textContent='tentativi: '+wizard.temp.rolls.ep+'/2';}
+    body.innerHTML='' +
+    '<div class="two">' +
+      '<div class="box"><h3>Combattività</h3><div class="row">' +
+        '<button class="btn" id="wizRollCS">Estrai</button>' +
+        '<input id="wizCS" type="number" readonly style="width:100px" value="'+wizard.temp.cs+'">' +
+        '<span class="tag">= 10 + Numero</span><span class="tag" id="tryCS"></span></div></div>' +
+      '<div class="box"><h3>Resistenza</h3><div class="row">' +
+        '<button class="btn" id="wizRollEP">Estrai</button>' +
+        '<input id="wizEP" type="number" readonly style="width:100px" value="'+wizard.temp.ep+'">' +
+        '<span class="tag">= 20 + Numero</span><span class="tag" id="tryEP"></span></div></div>' +
+    '</div>' +
+    '<div class="box"><h3>Corone d’Oro</h3><div class="row">' +
+      '<button class="btn" id="wizRollGold">Estrai</button>' +
+      '<input id="wizGold" type="number" readonly style="width:100px" value="'+wizard.temp.gold+'">' +
+      '<span class="tag">(0–9)</span><span class="tag" id="tryGold"></span></div></div>' +
+    '<div class="tag">In modalità automatica hai <strong>max 2 tentativi</strong> per ciascuna estrazione.</div>';
+    function upd(){EL('tryCS').textContent='tentativi: '+wizard.rolls.cs+'/2'; EL('tryEP').textContent='tentativi: '+wizard.rolls.ep+'/2'; EL('tryGold').textContent='tentativi: '+wizard.rolls.gold+'/2';}
     upd();
     EL('wizRollCS').addEventListener('click',function(){
-      if(!wizard.temp.manual && wizard.temp.rolls.cs>=2) return;
-      var r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9(); if(!wizard.temp.manual) wizard.temp.rolls.cs++;
+      if(!wizard.temp.manual && wizard.rolls.cs>=2) return;
+      var r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9();
+      if(!wizard.temp.manual) wizard.rolls.cs++;
       wizard.temp.cs=10+r; EL('wizCS').value=wizard.temp.cs; upd(); immersion('Numero '+r+'. Combattività = '+wizard.temp.cs,'Tiro');
     });
     EL('wizRollEP').addEventListener('click',function(){
-      if(!wizard.temp.manual && wizard.temp.rolls.ep>=2) return;
-      var r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9(); if(!wizard.temp.manual) wizard.temp.rolls.ep++;
+      if(!wizard.temp.manual && wizard.rolls.ep>=2) return;
+      var r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9();
+      if(!wizard.temp.manual) wizard.rolls.ep++;
       wizard.temp.ep=20+r; EL('wizEP').value=wizard.temp.ep; upd(); immersion('Numero '+r+'. Resistenza = '+wizard.temp.ep,'Tiro');
+    });
+    EL('wizRollGold').addEventListener('click',function(){
+      if(!wizard.temp.manual && wizard.rolls.gold>=2) return;
+      var r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9();
+      if(!wizard.temp.manual) wizard.rolls.gold++;
+      wizard.temp.gold=r; EL('wizGold').value=wizard.temp.gold; upd(); immersion('Oro iniziale: '+r+' Corone','Tiro');
     });
   }
   if(wizard.step===2){
@@ -685,26 +721,52 @@ function renderWizard(){
     DISCIPLINES.forEach(function(name){
       var id='wd_'+name.replace(/\s+/g,'_');
       list.insertAdjacentHTML('beforeend','<label class="row small"><input type="checkbox" id="'+id+'"> <strong>'+name+'</strong> <span class="tag">— '+DISC_DESC[name]+'</span></label>');
-      EL(id).checked=state.player.disciplines.has(name);
-      EL(id).addEventListener('change',function(e){
+      var cb=EL(id);
+      cb.checked=state.player.disciplines.has(name);
+      cb.addEventListener('change',function(e){
         if(e.target.checked){
           if(state.player.disciplines.size>=5){e.target.checked=false; immersion('Massimo 5 Arti.','Wizard'); return;}
-          state.player.disciplines.add(name); if(name==='Scherma' && !state.player.weaponskillWeapon) state.player.weaponskillWeapon=WEAPON_LIST[random0to9()];
-        }else state.player.disciplines.delete(name);
+          state.player.disciplines.add(name);
+          if(name==='Scherma' && !state.player.weaponskillWeapon) state.player.weaponskillWeapon=WEAPON_LIST[random0to9()];
+        }else{
+          state.player.disciplines.delete(name);
+        }
       });
     });
     EL('wizRandom5Btn').addEventListener('click',function(){
-      state.player.disciplines.clear(); var sh=DISCIPLINES.slice().sort(function(){return .5-Math.random()}); sh.slice(0,5).forEach(function(d){state.player.disciplines.add(d)}); renderWizard();
+      state.player.disciplines.clear();
+      var sh=DISCIPLINES.slice().sort(function(){return .5-Math.random()});
+      sh.slice(0,5).forEach(function(d){state.player.disciplines.add(d)});
+      renderWizard();
     });
   }
   if(wizard.step===3){
-    body.innerHTML='<div class="box"><h3>Equipaggiamento Iniziale</h3><p class="tag">Parti con un\'Ascia, 1 Pasto e una Mappa. Inoltre, il fato ti concede un oggetto bonus.</p><div class="row"><button id="wizBonusRoll" class="btn">Tira per l\'oggetto bonus</button><span id="bonusItem" class="pill">—</span></div></div><div class="box"><h3>Riepilogo</h3><div id="wizSummary" class="tag"></div></div>';
+    body.innerHTML='' +
+    '<div class="box"><h3>Equipaggiamento Iniziale</h3>' +
+      '<p class="tag">Parti con un’<strong>Ascia</strong>, <strong>1 Pasto</strong> e una <strong>Mappa</strong>. Inoltre, il fato ti concede <em>un</em> oggetto bonus.</p>' +
+      '<div class="row"><button id="wizBonusRoll" class="btn">Tira oggetto bonus</button><span id="bonusItem" class="pill">—</span><span class="tag" id="tryBonus"></span></div>' +
+    '</div>' +
+    '<div class="box"><h3>Riepilogo del personaggio</h3><div id="wizSummary" class="tag"></div></div>' +
+    '<p class="tag">Con “Inizia l’Avventura” applicherai il profilo e passerai al gioco.</p>';
+    function updBonus(){EL('tryBonus').textContent='tentativi: '+wizard.rolls.bonus+'/2';}
+    updBonus();
     EL('wizBonusRoll').addEventListener('click',function(){
-      var r=random0to9(); var map={0:"Spadone",1:"Spada",2:"Elmo",3:"Due Pasti",4:"Cotta di Maglia",5:"Mazza",6:"Pozione Magica",7:"Asta",8:"Lancia",9:"12 Corone d'Oro"};
-      wizard.temp.bonus=map[r]; EL('bonusItem').textContent=wizard.temp.bonus; immersion('Oggetto bonus: '+wizard.temp.bonus,'Fato'); makeSummary();
+      if(!wizard.temp.manual && wizard.rolls.bonus>=2) return;
+      var r=wizard.temp.manual ? (+prompt('Numero 0–9','0')||0) : random0to9();
+      if(!wizard.temp.manual) wizard.rolls.bonus++;
+      var map={0:"Spadone",1:"Spada",2:"Elmo",3:"Due Pasti",4:"Cotta di Maglia",5:"Mazza",6:"Pozione Magica",7:"Asta",8:"Lancia",9:"12 Corone d'Oro"};
+      wizard.temp.bonus=map[r]; EL('bonusItem').textContent=wizard.temp.bonus; updBonus(); immersion('Oggetto bonus: '+wizard.temp.bonus,'Fato'); makeSummary();
     });
     function makeSummary(){
-      EL('wizSummary').innerHTML='CS '+(wizard.temp.cs||10)+', EP '+(wizard.temp.ep||20)+' · Arti: '+Array.from(state.player.disciplines).join(', ')+(state.player.disciplines.has('Scherma')?' (WS: '+(state.player.weaponskillWeapon||'—')+')':'')+(wizard.temp.bonus?(' · Bonus: '+wizard.temp.bonus):'');
+      var arti=Array.from(state.player.disciplines);
+      var ws=state.player.disciplines.has('Scherma')?(' (Maestro di Scherma in: '+(state.player.weaponskillWeapon||'—')+')'):'';
+      var bonus = wizard.temp.bonus ? ' • Oggetto bonus: '+wizard.temp.bonus : '';
+      var testo = ''+
+        '<p><strong>Combattività</strong>: '+(wizard.temp.cs||10)+' · <strong>Resistenza</strong>: '+(wizard.temp.ep||20)+'</p>'+
+        '<p><strong>Corone d’Oro</strong>: '+(wizard.temp.gold||0)+' · <strong>Pasti</strong>: 1</p>'+
+        '<p><strong>Arti Ramas</strong>: '+(arti.length?arti.join(', '):'—')+ws+'</p>'+
+        '<p><strong>Armi</strong>: Ascia (equipaggiata) · <strong>Oggetti Speciali</strong>: Mappa'+bonus+'</p>';
+      EL('wizSummary').innerHTML=testo;
     }
     makeSummary();
   }
@@ -716,10 +778,12 @@ function applyWizard(){
   state.player.combattivitaBase=wizard.temp.cs||10;
   state.player.resistenzaBase=wizard.temp.ep||20;
   state.player.resistenzaCorrente=state.player.resistenzaBase;
+  state.player.gold=clamp(wizard.temp.gold||0,0,50);
   state.player.weapons=["Ascia"]; state.player.equipped="Ascia";
-  state.player.backpack=[]; state.player.specials=["Mappa"]; state.player.meals=1; state.player.gold=random0to9();
-  if(wizard.temp.bonus){
-    var b=wizard.temp.bonus;
+  state.player.backpack=[]; state.player.specials=["Mappa"]; state.player.meals=1;
+  // Bonus
+  var b=wizard.temp.bonus;
+  if(b){
     if(["Spadone","Spada","Mazza","Asta","Lancia"].indexOf(b)>-1 && state.player.weapons.length<2) state.player.weapons.push(b);
     if(b==="Due Pasti") state.player.meals+=2;
     if(b==="Pozione Magica") state.player.backpack.push("Pozione Magica");
