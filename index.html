@@ -1,288 +1,92 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Lupo Solitario — Libro 1</title>
-  <!-- Il tuo style.css nel root -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Lupo Solitario - I Signori delle Tenebre</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Font in stile fantasy -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <!-- CSS esterno -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-  <!-- Topbar -->
-  <div class="topbar">
-    <strong>🐺 Lupo Solitario — Motore di Gioco</strong>
-    <span class="tag">Libro 1 · Project Aon</span>
-    <div class="spacer"></div>
-    <label class="btn soft" title="Carica HTML del libro">
-      <input id="fileInput" type="file" accept=".htm,.html,.xhtml,text/html" class="hidden">Importa libro
-    </label>
-    <button id="openWizardBtn" class="btn primary">Wizard</button>
-    <button id="quickStartBtn" class="btn">Inizio rapido</button>
-    <button id="newGameBtn" class="btn">Nuova</button>
-    <button id="exportSaveBtn" class="btn">Esporta</button>
-    <button id="importSaveBtn" class="btn">Importa</button>
-    <label class="btn soft" title="Tema chiaro/scuro">
-      <input id="themeToggle" type="checkbox"> Light
-    </label>
-    <label class="btn soft"><input id="toggleAutosave" type="checkbox" checked> Autosave</label>
-    <button id="btnResume" class="btn success" disabled>Riprendi</button>
-  </div>
-
-  <!-- Contenuto -->
-  <div class="grid">
-    <!-- Pannello libro -->
-    <div id="bookPanel" class="panel paper">
-      <h1 class="row">
-        Capitolo &amp; Paragrafo
-        <span id="bookStatus" class="tag">Nessun libro caricato</span>
-        <span class="pill">§ <strong id="secNo">—</strong></span>
-        <button id="btnDeepL" class="btn soft" title="Apri traduzione del paragrafo su DeepL">🌐 Traduci (DeepL)</button>
-      </h1>
-
-      <div class="row small" style="margin-bottom:8px">
-        <button class="btn soft" id="navBack" disabled>◀ Indietro</button>
-        <button class="btn soft" id="navForward" disabled>Avanti ▶</button>
-        <span class="muted">Vai a §</span>
-        <input id="jumpInput" class="mono" style="width:80px" placeholder="es. 121"/>
-        <button class="btn soft" id="jumpGo">Vai</button>
-      </div>
-
-      <div id="importHelp" class="tag">
-        Per iniziare, metti <code>01fftd.htm</code> nel root accanto a questo <code>index.html</code>.
-        Il motore proverà a caricarlo automaticamente. In alternativa usa “Importa libro”.
-      </div>
-
-      <div id="passage" class="passage"></div>
-      <div id="deadend" class="dead-text hidden">La tua avventura finisce qui.</div>
-
-      <div id="autoDetections" class="hidden">
-        <h2 style="margin-top:1.5rem;">Azioni rilevate</h2>
-        <div id="detectedCombat" class="list hidden" style="margin-top:6px">
-          <div class="row">
-            <strong>Nemici trovati:</strong> <span id="enemyCount" class="pill"></span>
-          </div>
-          <div id="enemyList"></div>
-          <div class="row small" id="psionHints" style="display:none; flex-direction: column; align-items: flex-start;"></div>
-          <button class="btn primary" id="prepareCombatBtn">Prepara combattimento</button>
-        </div>
-
-        <div id="combatPanel" class="panel hidden" style="margin-top:12px">
-          <h2>Combattimento</h2>
-          <div class="combatGrid">
-            <div class="statCard" id="youCard">
-              <h3>Tu</h3>
-              <div class="row"><span>Combattività:</span> <span class="big" id="youCS">—</span></div>
-              <div class="row"><span>Resistenza:</span> <span class="big" id="youEP">—</span> <span class="kicker" id="youEPmax"></span></div>
-              <div class="row small" id="youNotes"></div>
-            </div>
-            <div class="statCard" id="foeCard">
-              <h3 id="foeName">Nemico</h3>
-              <div class="row"><span>Combattività:</span> <span class="big" id="foeCS">—</span></div>
-              <div class="row"><span>Resistenza:</span> <span class="big" id="foeEP">—</span> <span class="kicker" id="foeEPmax"></span></div>
-              <div class="row small" id="foeNotes"></div>
-            </div>
-          </div>
-
-          <div class="row" style="margin-top:6px">
-            <span class="pill crBadge">Rapporto di Forza: <strong class="mono" id="crNow">—</strong></span>
-            <span class="pill">Numero: <strong class="mono" id="lastRN">–</strong></span>
-            <span class="pill">Esito: <strong class="mono" id="lastResult">–</strong></span>
-          </div>
-
-          <div class="row" style="margin-top:6px">
-            <button class="btn success" id="startCombatBtn" disabled>Inizia</button>
-            <button class="btn" id="combatRoundBtn" disabled>Risolvi round</button>
-            <button class="btn warn" id="evadeBtn" style="display:none">Evadi</button>
-            <button class="btn danger" id="endCombatBtn" disabled>Termina</button>
-          </div>
-
-          <div class="row small" id="combatOptions" style="margin-top:4px">
-            <label id="mbWrap" class="hidden">
-              <input type="checkbox" id="useMindblast"> Usa <strong>Psicolaser</strong> (+2)
+    <header>
+        <h1>Lupo Solitario: I Signori delle Tenebre</h1>
+        <div class="controls">
+            <button id="saveBtn">Salva</button>
+            <button id="loadBtn">Carica</button>
+            <!-- Switch tema chiaro/scuro -->
+            <label class="switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
             </label>
-            <label>
-              <span class="tag">Mod. temporanei:</span>
-              <input id="youMod" type="number" value="0" style="width:70px" title="Modificatori a te">
-              <input id="foeMod" type="number" value="0" style="width:70px" title="Modificatori al nemico">
-            </label>
-          </div>
-
-          <div id="combatLog" class="mono small combat-log"></div>
+            <span>Dark Mode</span>
         </div>
+    </header>
 
-        <h2 style="margin-top:10px">Assistente scelte</h2>
-        <div class="row small">
-          <label><input type="checkbox" id="enforceCond" checked> <strong>Forza condizioni</strong></label>
-          <span class="muted">(i link non consentiti nel paragrafo vengono disabilitati)</span>
+    <!-- Wizard iniziale per creazione eroe -->
+    <div id="wizard" class="overlay">
+        <div class="wizard-content">
+            <h2>Benvenuto in Lupo Solitario</h2>
+            <p>Scegli come assegnare i tuoi valori iniziali:</p>
+            <button id="autoRollBtn">Tiro automatico valori</button>
+            <button id="manualRollBtn">Scelta manuale valori</button>
+            <div id="manualRollSection" class="hidden">
+                <p>Seleziona un numero (0-9) per determinare il tuo <strong>Combat Skill</strong>:</p>
+                <input type="number" id="csInput" min="0" max="9" value="0">
+                <button id="confirmCSBtn">Conferma Combat Skill</button>
+                <p>Seleziona un numero (0-9) per determinare il tuo <strong>Endurance</strong>:</p>
+                <input type="number" id="endInput" min="0" max="9" value="0">
+                <button id="confirmEndBtn">Conferma Endurance</button>
+            </div>
+            <div id="statResult" class="hidden">
+                <p>Il tuo Combat Skill iniziale è: <span id="csVal"></span></p>
+                <p>Il tuo Endurance iniziale è: <span id="endVal"></span></p>
+                <button id="chooseDisciplinesBtn">Scegli 5 Discipline Kai</button>
+            </div>
+            <div id="disciplinesSection" class="hidden">
+                <p>Seleziona le 5 Discipline Kai:</p>
+                <div class="discipline-list">
+                    <label><input type="checkbox" value="Camouflage"> Camouflage</label>
+                    <label><input type="checkbox" value="Hunting"> Hunting</label>
+                    <label><input type="checkbox" value="Sixth Sense"> Sixth Sense</label>
+                    <label><input type="checkbox" value="Tracking"> Tracking</label>
+                    <label><input type="checkbox" value="Healing"> Healing</label>
+                    <label><input type="checkbox" value="Weaponskill"> Weaponskill</label>
+                    <label><input type="checkbox" value="Mindshield"> Mindshield</label>
+                    <label><input type="checkbox" value="Mindblast"> Mindblast</label>
+                    <label><input type="checkbox" value="Animal Kinship"> Animal Kinship</label>
+                    <label><input type="checkbox" value="Mind Over Matter"> Mind Over Matter</label>
+                </div>
+                <button id="finishWizardBtn">Concludi Creazione Eroe</button>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Pannello azioni -->
-    <div id="actionPanel" class="panel">
-      <h1>Registro di Guerra</h1>
-      <div class="stat">
-        <label>Combattività</label>
-        <div class="row">
-          <input id="combattivitaBase" type="number" min="0" step="1" style="width:88px">
-          <span class="tag">base</span>
+    <!-- Riassunto finale dell'eroe -->
+    <div id="heroSummary" class="overlay hidden">
+        <div class="wizard-content">
+            <h2>Resoconto Finale dell'Eroe</h2>
+            <pre id="summaryText"></pre>
+            <button id="startGameBtn">Inizia Avventura</button>
         </div>
-        <label>Resistenza</label>
-        <div class="row">
-          <input id="resistenzaCorrente" type="number" min="0" step="1" style="width:88px">
-          <span class="muted">/</span>
-          <input id="resistenzaBase" type="number" min="1" step="1" style="width:88px">
-          <span class="tag">attuale / base</span>
+    </div>
+
+    <!-- Area di gioco principale, dove viene mostrato il testo del libro -->
+    <main id="gameArea">
+        <!-- I paragrafi del libro verranno caricati dinamicamente qui -->
+    </main>
+
+    <!-- Modale del combattimento -->
+    <div id="combatModal" class="overlay hidden">
+        <div class="combat-content">
+            <h2>Combattimento in corso</h2>
+            <div id="combatLog"></div>
+            <button id="startFightBtn">Inizia combattimento</button>
         </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <h2>Arti Ramas <span class="tag small" id="discNote"></span></h2>
-      <div class="list" id="disciplinesList"></div>
-      <div id="wsPanel" class="tag hidden">
-        <strong>Maestro di Scherma:</strong> +2 Combattività con l’arma sorteggiata.
-        <div class="row small"><span class="muted">Arma attuale:</span> <span id="wsWeapon" class="pill">—</span></div>
-      </div>
-
-      <div class="divider"></div>
-
-      <h2>Armi <span class="tag small">(max 2)</span></h2>
-      <div class="list" id="weaponsList"></div>
-      <div class="row">
-        <input id="weaponInput" placeholder="Aggiungi arma (es. Spada)" style="flex:1;min-width:180px"/>
-        <button class="btn" id="addWeaponBtn">Aggiungi</button>
-      </div>
-      <div class="row">
-        <label>Equipaggiata:</label>
-        <select id="equippedWeapon" style="min-width:220px"></select>
-        <span class="small tag">Senza arma = −4 Combattività</span>
-      </div>
-
-      <div class="divider"></div>
-
-      <h2>Zaino <span class="tag small">(max 8 incl. Pasti)</span></h2>
-      <div class="list" id="backpackList"></div>
-      <div class="row">
-        <input id="backpackInput" placeholder="Aggiungi oggetto allo zaino" style="flex:1;min-width:180px"/>
-        <button class="btn" id="addBackpackBtn">Aggiungi</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="row">
-        <div style="flex:1">
-          <h2>Pasti <span class="tag small" id="capInfo"></span></h2>
-          <div class="row">
-            <input id="meals" type="number" min="0" step="1" style="width:88px">
-            <button class="btn" id="eatMealBtn">Mangia un Pasto</button>
-          </div>
-          <div id="mealHint" class="tag hidden">
-            Se il paragrafo lo impone: con <em>Caccia</em> non consumi un Pasto; altrimenti senza Pasto: <strong>−3 Resistenza</strong>.
-          </div>
-        </div>
-        <div style="flex:1">
-          <h2>Corone d’Oro <span class="tag small">(max 50)</span></h2>
-          <div class="row">
-            <input id="gold" type="number" min="0" max="50" step="1" style="width:88px">
-            <button class="btn" id="goldPlus1Btn">+1</button>
-            <button class="btn" id="goldMinus1Btn">−1</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <h2>Oggetti Speciali</h2>
-      <div class="list" id="specialsList"></div>
-      <div class="row">
-        <input id="specialInput" placeholder="Aggiungi oggetto speciale" style="flex:1;min-width:180px"/>
-        <button class="btn" id="addSpecialBtn">Aggiungi</button>
-      </div>
-      <div class="tag">Bonus automatici: Elmo +2 Resistenza, Cotta di Maglia +4 Resistenza.</div>
-
-      <div class="divider"></div>
-
-      <h2>Utilità</h2>
-      <div class="row">
-        <button class="btn" id="rng0to9Btn">Tira un Numero Casuale</button>
-        <span class="pill">Numero: <strong class="mono" id="rngVal">–</strong></span>
-        <button class="btn soft" id="btnDice">🎲 Dado</button>
-      </div>
-      <div class="row small">
-        <label><input type="checkbox" id="rngManual"> Numero manuale</label>
-        <input id="rngManualVal" type="number" min="0" max="9" step="1" value="0" style="width:60px">
-        <span class="muted">0–9 come Tabella del Destino.</span>
-      </div>
-
-      <div class="divider"></div>
-
-      <h2>Salvataggio / Caricamento</h2>
-      <div class="row"><textarea id="saveCode" class="mono" placeholder="Incolla qui il codice di salvataggio per importare..."></textarea></div>
-      <div class="row">
-        <button class="btn" id="btnExport">Genera Codice</button>
-        <button class="btn" id="btnImport">Carica da Codice</button>
-        <button class="btn danger" id="btnReset">Reset Totale</button>
-      </div>
-      <div class="tag">Il codice include statistiche, inventario e paragrafo (non il contenuto del libro).</div>
     </div>
-  </div>
 
-  <div class="footer small">
-    Uso personale. Lone Wolf © Joe Dever / Project Aon (non redistribuire). Il contenuto del libro resta nel browser.
-  </div>
-</div>
-
-<!-- Modal Wizard -->
-<div id="wizard" class="modal hidden" role="dialog" aria-modal="true">
-  <div class="wiz">
-    <div class="header">
-      <strong>✨ Creazione Personaggio</strong>
-      <span class="tag" id="wizStepTag">Passo 1 di 4</span>
-      <div class="spacer"></div>
-      <button class="btn soft" id="wizSkip">Chiudi</button>
-    </div>
-    <div class="steps" id="wizDots"></div>
-    <div class="body" id="wizBody"></div>
-    <div class="footer">
-      <button class="btn soft" id="wizPrev">Indietro</button>
-      <button class="btn primary" id="wizNext">Avanti</button>
-      <button class="btn success hidden" id="wizFinish">Inizia l’Avventura</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Dado -->
-<div id="diceModal" class="modal hidden" role="dialog" aria-modal="true">
-  <div class="wiz">
-    <div class="header">
-      <strong>🎲 Dado (0–9)</strong>
-      <span class="tag">Equivalente alla Tabella del Destino</span>
-      <div class="spacer"></div>
-      <button class="btn soft" id="diceClose">Chiudi</button>
-    </div>
-    <div class="body">
-      <div class="row" style="align-items:flex-start;gap:16px">
-        <div id="diceFace" class="dice-face">–</div>
-        <div id="diceTrail" class="tag">Premi “Tira”. Il risultato aggiorna anche il Numero Casuale.</div>
-      </div>
-    </div>
-    <div class="footer">
-      <button class="btn" id="diceRoll">Tira</button>
-    </div>
-  </div>
-</div>
-
-<!-- Notifiche immersive -->
-<div id="immersive" class="immersion">
-  <div class="card">
-    <div class="title" id="immTitle"></div>
-    <div class="txt" id="immTxt"></div>
-  </div>
-</div>
-
-<!-- App -->
-<script defer src="app.js"></script>
+    <!-- JS esterno -->
+    <script src="app.js" defer></script>
 </body>
 </html>
