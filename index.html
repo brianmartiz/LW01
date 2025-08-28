@@ -2,91 +2,107 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Lupo Solitario - I Signori delle Tenebre</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font in stile fantasy -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <!-- CSS esterno -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lupo Solitario - L'Avventura Digitale</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=MedievalSharp&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Lupo Solitario: I Signori delle Tenebre</h1>
-        <div class="controls">
-            <button id="saveBtn">Salva</button>
-            <button id="loadBtn">Carica</button>
-            <!-- Switch tema chiaro/scuro -->
-            <label class="switch">
-                <input type="checkbox" id="themeToggle">
-                <span class="slider"></span>
-            </label>
-            <span>Dark Mode</span>
-        </div>
-    </header>
-
-    <!-- Wizard iniziale per creazione eroe -->
-    <div id="wizard" class="overlay">
-        <div class="wizard-content">
-            <h2>Benvenuto in Lupo Solitario</h2>
-            <p>Scegli come assegnare i tuoi valori iniziali:</p>
-            <button id="autoRollBtn">Tiro automatico valori</button>
-            <button id="manualRollBtn">Scelta manuale valori</button>
-            <div id="manualRollSection" class="hidden">
-                <p>Seleziona un numero (0-9) per determinare il tuo <strong>Combat Skill</strong>:</p>
-                <input type="number" id="csInput" min="0" max="9" value="0">
-                <button id="confirmCSBtn">Conferma Combat Skill</button>
-                <p>Seleziona un numero (0-9) per determinare il tuo <strong>Endurance</strong>:</p>
-                <input type="number" id="endInput" min="0" max="9" value="0">
-                <button id="confirmEndBtn">Conferma Endurance</button>
-            </div>
-            <div id="statResult" class="hidden">
-                <p>Il tuo Combat Skill iniziale è: <span id="csVal"></span></p>
-                <p>Il tuo Endurance iniziale è: <span id="endVal"></span></p>
-                <button id="chooseDisciplinesBtn">Scegli 5 Discipline Kai</button>
-            </div>
-            <div id="disciplinesSection" class="hidden">
-                <p>Seleziona le 5 Discipline Kai:</p>
-                <div class="discipline-list">
-                    <label><input type="checkbox" value="Camouflage"> Camouflage</label>
-                    <label><input type="checkbox" value="Hunting"> Hunting</label>
-                    <label><input type="checkbox" value="Sixth Sense"> Sixth Sense</label>
-                    <label><input type="checkbox" value="Tracking"> Tracking</label>
-                    <label><input type="checkbox" value="Healing"> Healing</label>
-                    <label><input type="checkbox" value="Weaponskill"> Weaponskill</label>
-                    <label><input type="checkbox" value="Mindshield"> Mindshield</label>
-                    <label><input type="checkbox" value="Mindblast"> Mindblast</label>
-                    <label><input type="checkbox" value="Animal Kinship"> Animal Kinship</label>
-                    <label><input type="checkbox" value="Mind Over Matter"> Mind Over Matter</label>
+    <div id="game-container">
+        <main id="main-panel">
+            <div id="start-screen">
+                <h1>Lupo Solitario</h1>
+                <p>L'ultimo dei Ramas.</p>
+                <div id="game-selection">
+                    <button id="new-game-book1" class="menu-button">Nuova Avventura: I Signori delle Tenebre</button>
+                    <button id="new-game-book2" class="menu-button">Nuova Avventura: Traversata Infernale</button>
+                    <button id="load-game" class="menu-button">Carica Partita</button>
                 </div>
-                <button id="finishWizardBtn">Concludi Creazione Eroe</button>
             </div>
-        </div>
+
+            <div id="character-creation-screen" class="hidden">
+                </div>
+
+            <div id="game-screen" class="hidden">
+                <div id="section-image-container"></div>
+                <div id="section-text"></div>
+                <div id="choices"></div>
+            </div>
+
+            <div id="combat-screen" class="hidden">
+                <h2 id="combat-title">Combattimento!</h2>
+                <div id="combat-status">
+                    <div id="combat-player-status">
+                        <h3>Lupo Solitario</h3>
+                        <p>Combattività: <span id="combat-player-cs"></span></p>
+                        <p>Resistenza: <span id="combat-player-end"></span></p>
+                    </div>
+                    <div id="combat-enemy-status">
+                        <h3 id="combat-enemy-name"></h3>
+                        <p>Combattività: <span id="combat-enemy-cs"></span></p>
+                        <p>Resistenza: <span id="combat-enemy-end"></span></p>
+                    </div>
+                </div>
+                <div id="combat-log"></div>
+                <div id="combat-actions">
+                    <button id="fight-button">Combatti</button>
+                    <button id="evade-button" class="hidden">Fuggi</button>
+                </div>
+            </div>
+
+        </main>
+        <aside id="sidebar">
+            <button id="toggle-sidebar">☰</button>
+            <div id="sidebar-content">
+                <h2>Registro di Guerra</h2>
+                <div class="stat-box">
+                    <h3>Statistiche</h3>
+                    <p><strong>Combattività:</strong> <span id="player-cs"></span></p>
+                    <p><strong>Resistenza:</strong> <span id="player-end"></span> / <span id="player-max-end"></span></p>
+                    <div class="endurance-bar-container">
+                        <div id="endurance-bar"></div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <h3>Arti Ramas</h3>
+                    <ul id="player-disciplines"></ul>
+                </div>
+                <div class="stat-box">
+                    <h3>Borsa</h3>
+                    <p><span id="player-gold"></span> Corone d'oro</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Armamento</h3>
+                    <ul id="player-weapons"></ul>
+                </div>
+                <div class="stat-box">
+                    <h3>Zaino (<span id="backpack-count">0</span>/8)</h3>
+                    <ul id="player-backpack"></ul>
+                </div>
+                 <div class="stat-box">
+                    <h3>Oggetti Speciali</h3>
+                    <ul id="player-special-items"></ul>
+                </div>
+                <div class="stat-box">
+                    <h3>Pasti</h3>
+                    <p><span id="player-meals">0</span></p>
+                </div>
+                <div id="game-controls">
+                    <button id="save-game">Salva Partita</button>
+                    <button id="restart-game">Ricomincia</button>
+                </div>
+            </div>
+        </aside>
     </div>
 
-    <!-- Riassunto finale dell'eroe -->
-    <div id="heroSummary" class="overlay hidden">
-        <div class="wizard-content">
-            <h2>Resoconto Finale dell'Eroe</h2>
-            <pre id="summaryText"></pre>
-            <button id="startGameBtn">Inizia Avventura</button>
-        </div>
+    <div id="random-number-table" class="hidden">
+        <h3>Tabella del Destino</h3>
+        <p>Clicca sulla tabella per scegliere un numero.</p>
+        <div id="random-grid"></div>
     </div>
 
-    <!-- Area di gioco principale, dove viene mostrato il testo del libro -->
-    <main id="gameArea">
-        <!-- I paragrafi del libro verranno caricati dinamicamente qui -->
-    </main>
-
-    <!-- Modale del combattimento -->
-    <div id="combatModal" class="overlay hidden">
-        <div class="combat-content">
-            <h2>Combattimento in corso</h2>
-            <div id="combatLog"></div>
-            <button id="startFightBtn">Inizia combattimento</button>
-        </div>
-    </div>
-
-    <!-- JS esterno -->
-    <script src="app.js" defer></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
