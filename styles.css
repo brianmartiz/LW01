@@ -1,0 +1,249 @@
+:root {
+  color-scheme: light dark;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  background: #f5f2eb;
+  color: #1f1b16;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: linear-gradient(135deg, #4b5320, #0d2b45);
+  color: #f8f8f2;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+}
+
+header .subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 1rem;
+  max-width: 45rem;
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem 2rem;
+}
+
+#character-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 1.5rem;
+  align-self: start;
+}
+
+#character-panel h2 {
+  margin-top: 0;
+}
+
+#app {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+}
+
+#section-content p,
+#section-content ul,
+#section-content ol {
+  margin: 0.75rem 0;
+}
+
+#section-content .illustration {
+  font-style: italic;
+  text-align: center;
+  color: #555;
+}
+
+#choice-panel {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.choice-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid #4b5320;
+  background: #f0efe7;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.choice-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.choice-button:not([disabled]):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.choice-button small {
+  color: #503a0d;
+}
+
+#combat-panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid #a68a64;
+  background: #faf4e6;
+}
+
+#combat-panel h3 {
+  margin-top: 0;
+}
+
+#combat-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#combat-panel th,
+#combat-panel td {
+  border: 1px solid #cbb38e;
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+}
+
+#log {
+  max-height: 280px;
+  overflow-y: auto;
+  border-radius: 0.75rem;
+  background: rgba(18, 30, 39, 0.85);
+  color: #f4efe0;
+  padding: 1rem;
+  font-family: "Fira Mono", "Courier New", monospace;
+}
+
+#log h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.log-entry {
+  margin: 0.35rem 0;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.stat-box {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  background: #ede3d3;
+  text-align: center;
+}
+
+.inventory-group {
+  margin-top: 1rem;
+}
+
+.inventory-group h3 {
+  margin-bottom: 0.25rem;
+}
+
+.inventory-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.inventory-group li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f6efe0;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.45rem;
+}
+
+.inventory-group button {
+  border: none;
+  background: #d9534f;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+}
+
+.inventory-group button:hover {
+  background: #c9302c;
+}
+
+button.primary {
+  border: none;
+  background: #4b5320;
+  color: #fff;
+  padding: 0.65rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button.primary:hover {
+  background: #394214;
+}
+
+button.secondary {
+  border: 1px solid #4b5320;
+  background: transparent;
+  color: #4b5320;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.requirement-warning {
+  color: #91231b;
+  font-size: 0.85rem;
+}
+
+.roll-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: #eee6d3;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+@media (max-width: 960px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  #character-panel {
+    position: static;
+  }
+}
