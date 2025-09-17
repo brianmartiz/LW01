@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <title>Flight from the Dark - Master Virtuale</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Flight from the Dark &mdash; Master Virtuale</h1>
+    <p class="subtitle">Web app per guidare l'avventura di <em>Lupo Solitario</em> come un vero master di gioco.</p>
+  </header>
+  <main>
+    <aside id="character-panel" aria-live="polite"></aside>
+    <section id="app">
+      <div id="wizard" class="card" aria-live="polite"></div>
+      <div id="game" class="card" hidden>
+        <div id="section-header"></div>
+        <div id="section-content"></div>
+        <div id="combat-panel" aria-live="polite"></div>
+        <div id="choice-panel"></div>
+        <div id="section-actions"></div>
+      </div>
+      <section id="log" aria-live="polite" aria-label="Registro eventi"></section>
+    </section>
+  </main>
+  <template id="inventory-item-template">
+    <li><span class="item-name"></span><button type="button" class="remove">Rimuovi</button></li>
+  </template>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
